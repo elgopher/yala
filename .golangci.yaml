@@ -1,0 +1,25 @@
+issues:
+  exclude-rules:
+    # Disable some linters in tests.
+    - path: _test\.go
+      linters:
+        - funlen
+
+linters:
+  enable:
+    - testpackage
+    - exportloopref
+  disable:
+    - paralleltest
+    - gofumpt
+    - exhaustivestruct
+    - scopelint
+    - gochecknoinits
+    - gochecknoglobals
+  presets:
+    - bugs
+    - complexity
+    - format
+    - performance
+    - style
+    - unused
