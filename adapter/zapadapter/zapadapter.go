@@ -8,6 +8,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
+// Service is a logger.Service implementation, which is using `zap` module (https://github.com/uber-go/zap).
 type Service struct {
 	*zap.Logger
 }

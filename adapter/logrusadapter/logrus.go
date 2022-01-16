@@ -7,6 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// Service is a logger.Service implementation, which is using `logrus` module (https://github.com/sirupsen/logrus).
 type Service struct {
 	*logrus.Entry
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/jacekolszak/yala/logger"
 )
 
+// Service is a logger.Service implementation, which is using `glog` package (https://github.com/golang/glog).
 type Service struct{}
 
 func (s Service) Log(_ context.Context, entry logger.Entry) {

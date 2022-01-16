@@ -7,6 +7,8 @@ import (
 	"github.com/jacekolszak/yala/logger"
 )
 
+// Service is a logger.Service implementation, which is using `log15` package
+// (https://github.com/inconshreveable/log15).
 type Service struct {
 	log15.Logger
 }

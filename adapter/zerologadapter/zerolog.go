@@ -7,6 +7,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
+// Service is a logger.Service implementation, which is using `zerolog` module (https://github.com/rs/zerolog).
 type Service struct {
 	zerolog.Logger
 }

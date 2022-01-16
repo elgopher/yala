@@ -10,6 +10,8 @@ import (
 	"github.com/jacekolszak/yala/logger"
 )
 
+// Service is a logger.Service implementation, which is using Printer interface. This interface is implemented for
+// example by log.Logger from the Go standard library.
 type Service struct {
 	Printer
 }
@@ -18,10 +20,12 @@ type Printer interface {
 	Println(...interface{})
 }
 
+// StdErrorService returns a logger.Service implementation which prints log messages to stderr using `fmt` package.
 func StdErrorService() Service {
 	return Service{Printer: WriterPrinter{os.Stderr}}
 }
 
+// StdoutService returns a logger.Service implementation which prints log messages to stdout using `fmt` package.
 func StdoutService() Service {
 	return Service{Printer: WriterPrinter{os.Stdout}}
 }
