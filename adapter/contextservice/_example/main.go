@@ -29,7 +29,7 @@ func main() {
 	ctx = context.WithValue(ctx, contextServiceKey, contextService)
 
 	logger.Debug(ctx, "Hello zap from ctx")
-	logger.With(ctx, "tag", "bbb").Info("Some info")
+	logger.With(ctx, "field_name", "field_value").Info("Some info")
 	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
 	logger.WithError(ctx, errors.New("ss")).Error("Some error")
 }

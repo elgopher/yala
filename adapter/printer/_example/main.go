@@ -16,7 +16,7 @@ func main() {
 	logger.SetService(printer.StdoutService())
 
 	logger.Debug(ctx, "Hello fmt")
-	logger.With(ctx, "tag", "bbb").Info("Some info")
+	logger.With(ctx, "field_name", "field_value").Info("Some info")
 	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
 	logger.Error(ctx, "Some error")
 
@@ -26,7 +26,7 @@ func main() {
 	logger.SetService(service)
 
 	logger.Debug(ctx, "Hello stdlog")
-	logger.With(ctx, "tag", "bbb").Info("Some info")
+	logger.With(ctx, "field_name", "field_value").Info("Some info")
 	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
 	logger.Error(ctx, "Some error")
 }

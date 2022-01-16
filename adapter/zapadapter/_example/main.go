@@ -20,7 +20,7 @@ func main() {
 	logger.SetService(service)                       // set it globally
 
 	logger.Debug(ctx, "Hello zap")
-	logger.With(ctx, "tag", "bbb").Info("Some info")
+	logger.With(ctx, "field_name", "field_value").Info("Some info")
 	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
 	logger.WithError(ctx, ErrSome).Error("Some error")
 }

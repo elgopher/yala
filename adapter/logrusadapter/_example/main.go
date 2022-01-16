@@ -28,7 +28,7 @@ func main() {
 	logger.SetService(service)
 
 	logger.Debug(ctx, "Hello logrus ")
-	logger.With(ctx, "tag", "bbb").With("another", "ccc").Info("Some info")
+	logger.With(ctx, "field_name", "field_value").With("another", "ccc").Info("Some info")
 	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
 	logger.WithError(ctx, ErrSome).Error("Some error")
 }
