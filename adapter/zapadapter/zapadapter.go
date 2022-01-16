@@ -5,7 +5,6 @@ import (
 
 	"github.com/jacekolszak/yala/logger"
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 )
 
 // Service is a logger.Service implementation, which is using `zap` module (https://github.com/uber-go/zap).
@@ -25,13 +24,7 @@ func (s Service) Log(_ context.Context, entry logger.Entry) {
 	}
 
 	for _, f := range entry.Fields {
-		zapLogger = zapLogger.With(
-			zap.Field{
-				Key:       f.Key,
-				Interface: f.Value,
-				Type:      zapcore.StringType,
-			},
-		)
+		zapLogger = zapLogger.With(zap.Any(f.Key, f.Value))
 	}
 
 	zapLogger = zapLogger.WithOptions(zap.AddCallerSkip(entry.SkippedCallerFrames))
