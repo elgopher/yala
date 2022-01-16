@@ -10,7 +10,7 @@ import (
 // Service is a logger.Service implementation, which is using `log15` package
 // (https://github.com/inconshreveable/log15).
 type Service struct {
-	log15.Logger
+	Logger log15.Logger
 }
 
 func (s Service) Log(ctx context.Context, entry logger.Entry) {

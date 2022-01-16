@@ -10,7 +10,7 @@ import (
 
 // Service is a logger.Service implementation, which is using `zap` module (https://github.com/uber-go/zap).
 type Service struct {
-	*zap.Logger
+	Logger *zap.Logger
 }
 
 func (s Service) Log(_ context.Context, entry logger.Entry) {
