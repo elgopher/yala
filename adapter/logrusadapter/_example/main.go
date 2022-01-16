@@ -29,5 +29,6 @@ func main() {
 
 	logger.Debug(ctx, "Hello logrus ")
 	logger.With(ctx, "tag", "bbb").With("another", "ccc").Info("Some info")
+	logger.Warnf(ctx, "Be careful with %s", "hot water")
 	logger.WithError(ctx, ErrSome).Error("Some error")
 }

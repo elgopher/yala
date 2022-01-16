@@ -32,6 +32,8 @@ func (s Service) Log(ctx context.Context, entry logger.Entry) {
 		log15Logger.Debug(entry.Message)
 	case logger.InfoLevel:
 		log15Logger.Info(entry.Message)
+	case logger.WarnLevel:
+		log15Logger.Warn(entry.Message)
 	case logger.ErrorLevel:
 		log15Logger.Error(entry.Message)
 	default:

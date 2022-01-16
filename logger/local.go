@@ -37,6 +37,14 @@ func (l LocalLogger) Infof(ctx context.Context, format string, args ...interface
 	l.WithSkippedCallerFrame(ctx).Info(fmt.Sprintf(format, args...))
 }
 
+func (l LocalLogger) Warn(ctx context.Context, msg string) {
+	l.service.Log(ctx, Entry{Level: WarnLevel, Message: msg, SkippedCallerFrames: localLoggerSkippedCallerFrames})
+}
+
+func (l LocalLogger) Warnf(ctx context.Context, format string, args ...interface{}) {
+	l.WithSkippedCallerFrame(ctx).Warn(fmt.Sprintf(format, args...))
+}
+
 func (l LocalLogger) Error(ctx context.Context, msg string) {
 	l.service.Log(ctx, Entry{Level: ErrorLevel, Message: msg, SkippedCallerFrames: localLoggerSkippedCallerFrames})
 }

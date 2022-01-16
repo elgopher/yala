@@ -41,6 +41,8 @@ func (s Service) Log(_ context.Context, entry logger.Entry) {
 		zapLogger.Debug(entry.Message)
 	case logger.InfoLevel:
 		zapLogger.Info(entry.Message)
+	case logger.WarnLevel:
+		zapLogger.Warn(entry.Message)
 	case logger.ErrorLevel:
 		zapLogger.Error(entry.Message)
 	default:
