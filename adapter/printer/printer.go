@@ -47,17 +47,22 @@ func (f Adapter) Log(ctx context.Context, entry logger.Entry) {
 	if entry.Error == nil {
 		f.Printer.Println(entry.Level, entry.Message, fieldsAsString)
 	} else {
-		f.Printer.Println(entry.Level, entry.Message, fieldsAsString, entry.Error)
+		f.Printer.Println(entry.Level, entry.Message, fieldsAsString, "error:", entry.Error)
 	}
 }
 
 func fieldsToString(fields []logger.Field) string {
 	var b strings.Builder
 
-	for _, f := range fields {
+	for i, f := range fields {
 		b.WriteString(f.Key)
 		b.WriteRune('=')
 		b.WriteString(fmt.Sprintf("%s", f.Value))
+
+		notLast := i < len(fields)-1
+		if notLast {
+			b.WriteRune(',')
+		}
 	}
 
 	return b.String()
