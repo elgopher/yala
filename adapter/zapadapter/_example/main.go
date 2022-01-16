@@ -10,6 +10,8 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
+var ErrSome = errors.New("ErrSome")
+
 func main() {
 	ctx := context.Background()
 
@@ -20,7 +22,7 @@ func main() {
 	logger.Debug(ctx, "Hello zap")
 	logger.With(ctx, "tag", "bbb").Info("Some info")
 	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
-	logger.WithError(ctx, errors.New("ss")).Error("Some error")
+	logger.WithError(ctx, ErrSome).Error("Some error")
 }
 
 func newZapLogger() *zap.Logger {
