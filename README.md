@@ -39,7 +39,7 @@ logger.SetService(printer.StdoutService())
 ```go
 logger.Debug(ctx, "Debug message")
 logger.With(ctx, "field_name", "value").Info("Message with field")
-logger.WithError(err).Error(ctx, "Message with error")
+logger.WithError(ctx, err).Error("Message with error")
 ```
 
 ### Why context.Context is a parameter?
