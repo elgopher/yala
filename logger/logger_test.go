@@ -3,6 +3,7 @@ package logger_test
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/jacekolszak/yala/logger"
@@ -46,6 +47,35 @@ func TestGlobalLogging(t *testing.T) {
 						Level:               lvl,
 						Message:             message,
 						SkippedCallerFrames: 4,
+					},
+				)
+			})
+		}
+	})
+
+	t.Run("should format message using global service", func(t *testing.T) {
+		type functionUnderTest func(ctx context.Context, fmt string, args ...interface{})
+		tests := map[logger.Level]functionUnderTest{
+			logger.DebugLevel: logger.Debugf,
+			logger.InfoLevel:  logger.Infof,
+			logger.WarnLevel:  logger.Warnf,
+			logger.ErrorLevel: logger.Errorf,
+		}
+
+		for lvl, log := range tests {
+			testName := string(lvl)
+
+			t.Run(testName, func(t *testing.T) {
+				service := &serviceMock{}
+				logger.SetService(service)
+				// when
+				log(ctx, fmt.Sprintf("formatted %s", "message"))
+				// then
+				service.HasExactlyOneEntry(t,
+					logger.Entry{
+						Level:               lvl,
+						Message:             "formatted message",
+						SkippedCallerFrames: 5,
 					},
 				)
 			})
