@@ -19,6 +19,7 @@ func main() {
 
 	logger.Debug(ctx, "Hello zap")
 	logger.With(ctx, "tag", "bbb").Info("Some info")
+	logger.Warnf(ctx, "Be careful with %s", "hot water")
 	logger.WithError(ctx, errors.New("ss")).Error("Some error")
 }
 

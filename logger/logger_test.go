@@ -28,6 +28,7 @@ func TestGlobalLogging(t *testing.T) {
 		tests := map[logger.Level]functionUnderTest{
 			logger.DebugLevel: logger.Debug,
 			logger.InfoLevel:  logger.Info,
+			logger.WarnLevel:  logger.Warn,
 			logger.ErrorLevel: logger.Error,
 		}
 
@@ -102,6 +103,7 @@ func TestLocalLogger(t *testing.T) {
 		tests := map[logger.Level]functionUnderTest{
 			logger.DebugLevel: logger.LocalLogger.Debug,
 			logger.InfoLevel:  logger.LocalLogger.Info,
+			logger.WarnLevel:  logger.LocalLogger.Warn,
 			logger.ErrorLevel: logger.LocalLogger.Error,
 		}
 

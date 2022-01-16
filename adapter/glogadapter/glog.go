@@ -20,8 +20,12 @@ func (s Service) Log(_ context.Context, entry logger.Entry) {
 		logMessage = glog.Infoln
 	case logger.InfoLevel:
 		logMessage = glog.Infoln
+	case logger.WarnLevel:
+		logMessage = glog.Warningln
 	case logger.ErrorLevel:
 		logMessage = glog.Errorln
+	default:
+		logMessage = glog.Infoln
 	}
 
 	var args []interface{}

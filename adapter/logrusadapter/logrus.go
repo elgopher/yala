@@ -24,6 +24,8 @@ func (s Service) Log(ctx context.Context, entry logger.Entry) {
 		lvl = logrus.DebugLevel
 	case logger.InfoLevel:
 		lvl = logrus.InfoLevel
+	case logger.WarnLevel:
+		lvl = logrus.WarnLevel
 	case logger.ErrorLevel:
 		lvl = logrus.ErrorLevel
 	}

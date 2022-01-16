@@ -32,6 +32,8 @@ func convertLevel(level logger.Level) zerolog.Level {
 		return zerolog.DebugLevel
 	case logger.InfoLevel:
 		return zerolog.InfoLevel
+	case logger.WarnLevel:
+		return zerolog.WarnLevel
 	case logger.ErrorLevel:
 		return zerolog.ErrorLevel
 	default:

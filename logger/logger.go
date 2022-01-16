@@ -30,6 +30,16 @@ func Infof(ctx context.Context, format string, args ...interface{}) {
 	globalLoggerWithSkippedCallerFrame(ctx).Infof(format, args...)
 }
 
+// Warn logs message using globally configured logger.Service.
+func Warn(ctx context.Context, msg string) {
+	globalLoggerWithSkippedCallerFrame(ctx).Warn(msg)
+}
+
+// Warnf logs message using globally configured logger.Service.
+func Warnf(ctx context.Context, format string, args ...interface{}) {
+	globalLoggerWithSkippedCallerFrame(ctx).Warnf(format, args...)
+}
+
 // Error logs message using globally configured logger.Service.
 func Error(ctx context.Context, msg string) {
 	globalLoggerWithSkippedCallerFrame(ctx).Error(msg)
@@ -95,6 +105,14 @@ func (l Logger) Info(msg string) {
 
 func (l Logger) Infof(format string, args ...interface{}) {
 	l.Info(fmt.Sprintf(format, args...))
+}
+
+func (l Logger) Warn(msg string) {
+	l.log(WarnLevel, msg)
+}
+
+func (l Logger) Warnf(format string, args ...interface{}) {
+	l.Warn(fmt.Sprintf(format, args...))
 }
 
 func (l Logger) Error(msg string) {
