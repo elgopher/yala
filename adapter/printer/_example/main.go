@@ -2,12 +2,15 @@ package main
 
 import (
 	"context"
+	"errors"
 	"log"
 	"os"
 
 	"github.com/jacekolszak/yala/adapter/printer"
 	"github.com/jacekolszak/yala/logger"
 )
+
+var ErrSome = errors.New("ErrSome")
 
 func main() {
 	ctx := context.Background()
@@ -18,7 +21,7 @@ func main() {
 	logger.Debug(ctx, "Hello fmt")
 	logger.With(ctx, "field_name", "field_value").Info("Some info")
 	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
-	logger.Error(ctx, "Some error")
+	logger.WithError(ctx, ErrSome).Error("Some error")
 
 	// log using standard log package
 	standardLog := log.New(os.Stdout, "", log.LstdFlags)
@@ -26,7 +29,7 @@ func main() {
 	logger.SetAdapter(adapter)
 
 	logger.Debug(ctx, "Hello stdlog")
-	logger.With(ctx, "field_name", "field_value").Info("Some info")
+	logger.With(ctx, "f1", "v1").With("f2", "f2").Info("Some info")
 	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
-	logger.Error(ctx, "Some error")
+	logger.WithError(ctx, ErrSome).Error("Some error")
 }
