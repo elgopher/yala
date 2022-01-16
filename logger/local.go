@@ -2,7 +2,6 @@ package logger
 
 import (
 	"context"
-	"fmt"
 )
 
 const localLoggerSkippedCallerFrames = 2
@@ -25,32 +24,16 @@ func (l LocalLogger) Debug(ctx context.Context, msg string) {
 	l.service.Log(ctx, Entry{Level: DebugLevel, Message: msg, SkippedCallerFrames: localLoggerSkippedCallerFrames})
 }
 
-func (l LocalLogger) Debugf(ctx context.Context, format string, args ...interface{}) {
-	l.WithSkippedCallerFrame(ctx).Debug(fmt.Sprintf(format, args...))
-}
-
 func (l LocalLogger) Info(ctx context.Context, msg string) {
 	l.service.Log(ctx, Entry{Level: InfoLevel, Message: msg, SkippedCallerFrames: localLoggerSkippedCallerFrames})
-}
-
-func (l LocalLogger) Infof(ctx context.Context, format string, args ...interface{}) {
-	l.WithSkippedCallerFrame(ctx).Info(fmt.Sprintf(format, args...))
 }
 
 func (l LocalLogger) Warn(ctx context.Context, msg string) {
 	l.service.Log(ctx, Entry{Level: WarnLevel, Message: msg, SkippedCallerFrames: localLoggerSkippedCallerFrames})
 }
 
-func (l LocalLogger) Warnf(ctx context.Context, format string, args ...interface{}) {
-	l.WithSkippedCallerFrame(ctx).Warn(fmt.Sprintf(format, args...))
-}
-
 func (l LocalLogger) Error(ctx context.Context, msg string) {
 	l.service.Log(ctx, Entry{Level: ErrorLevel, Message: msg, SkippedCallerFrames: localLoggerSkippedCallerFrames})
-}
-
-func (l LocalLogger) Errorf(ctx context.Context, format string, args ...interface{}) {
-	l.WithSkippedCallerFrame(ctx).Error(fmt.Sprintf(format, args...))
 }
 
 // With creates a new Logger with field.

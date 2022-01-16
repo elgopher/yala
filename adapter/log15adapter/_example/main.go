@@ -20,6 +20,6 @@ func main() {
 
 	logger.Debug(ctx, "Hello log15")
 	logger.With(ctx, "tag", "bbb").Info("Some info")
-	logger.Warnf(ctx, "Be careful with %s", "hot water")
+	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
 	logger.WithError(ctx, ErrSome).Error("Some error")
 }
