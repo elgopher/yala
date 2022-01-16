@@ -9,7 +9,7 @@ import (
 
 // Service is a logger.Service implementation, which is using `logrus` module (https://github.com/sirupsen/logrus).
 type Service struct {
-	*logrus.Entry
+	Entry *logrus.Entry
 }
 
 func (s Service) Log(ctx context.Context, entry logger.Entry) {

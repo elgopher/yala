@@ -9,11 +9,11 @@ import (
 
 // Service is a logger.Service implementation, which is using `zerolog` module (https://github.com/rs/zerolog).
 type Service struct {
-	zerolog.Logger
+	Logger zerolog.Logger
 }
 
 func (l Service) Log(ctx context.Context, entry logger.Entry) {
-	event := l.WithLevel(convertLevel(entry.Level))
+	event := l.Logger.WithLevel(convertLevel(entry.Level))
 
 	for _, field := range entry.Fields {
 		event = event.Interface(field.Key, field.Value)

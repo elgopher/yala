@@ -13,7 +13,7 @@ import (
 // Service is a logger.Service implementation, which is using Printer interface. This interface is implemented for
 // example by log.Logger from the Go standard library.
 type Service struct {
-	Printer
+	Printer Printer
 }
 
 type Printer interface {
