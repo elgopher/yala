@@ -9,7 +9,7 @@ import (
 	"github.com/jacekolszak/yala/logger"
 )
 
-var ErrSome = errors.New("some error")
+var ErrSome = errors.New("ErrSome")
 
 func main() {
 	ctx := context.Background()
@@ -19,5 +19,5 @@ func main() {
 
 	logger.Debug(ctx, "Hello glog ")
 	logger.With(ctx, "tag", "bbb").Info("Some info")
-	logger.WithError(ctx, ErrSome).Error("Some error")
+	logger.WithError(ctx, ErrSome).Error("Error occurred")
 }
