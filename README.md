@@ -14,11 +14,23 @@ Simple logging abstraction with adapters for most popular logging Go libraries a
 * And you don't want to manually inject logger to every possible place where you want to log something
 * If you need nice and elegant API with a bunch of useful functions, but at the same time you don't want your clients spend hours on writing their own logging adapter.
 
+## Installation
+
+```shell
+# Add recent version of yala to Go module:
+go get -d -u github.com/jacekolszak/yala        
+```
+
 ## How to use
 
 ### Set logger implementation (globally)
 
 ```go
+import (
+	"github.com/jacekolszak/yala/adapter/printer"
+	"github.com/jacekolszak/yala/logger"
+)
+...
 logger.SetService(printer.StdoutService())
 ```
 
