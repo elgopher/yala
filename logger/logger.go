@@ -96,7 +96,7 @@ func (l Logger) Debug(msg string) {
 }
 
 func (l Logger) Debugf(format string, args ...interface{}) {
-	l.Debug(fmt.Sprintf(format, args...))
+	l.WithSkippedCallerFrame().Debug(fmt.Sprintf(format, args...))
 }
 
 func (l Logger) Info(msg string) {
@@ -104,7 +104,7 @@ func (l Logger) Info(msg string) {
 }
 
 func (l Logger) Infof(format string, args ...interface{}) {
-	l.Info(fmt.Sprintf(format, args...))
+	l.WithSkippedCallerFrame().Info(fmt.Sprintf(format, args...))
 }
 
 func (l Logger) Warn(msg string) {
@@ -112,7 +112,7 @@ func (l Logger) Warn(msg string) {
 }
 
 func (l Logger) Warnf(format string, args ...interface{}) {
-	l.Warn(fmt.Sprintf(format, args...))
+	l.WithSkippedCallerFrame().Warn(fmt.Sprintf(format, args...))
 }
 
 func (l Logger) Error(msg string) {
@@ -120,7 +120,7 @@ func (l Logger) Error(msg string) {
 }
 
 func (l Logger) Errorf(format string, args ...interface{}) {
-	l.Error(fmt.Sprintf(format, args...))
+	l.WithSkippedCallerFrame().Error(fmt.Sprintf(format, args...))
 }
 
 func (l Logger) log(level Level, msg string) {
