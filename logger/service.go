@@ -17,6 +17,7 @@ func SetService(service Service) {
 	)
 }
 
+// Service is an interface to be implemented by logger adapters.
 type Service interface {
 	Log(context.Context, Entry)
 }
@@ -24,9 +25,9 @@ type Service interface {
 type Entry struct {
 	Level   Level
 	Message string
-	Fields  []Field
-	Error   error
-	// SkippedCallerFrames can be used by logger.Service to caller information (file and line number)
+	Fields  []Field // Fields can be nil
+	Error   error   // Error can be nil
+	// SkippedCallerFrames can be used by logger.Service to extract caller information (file and line number)
 	SkippedCallerFrames int
 }
 

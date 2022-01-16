@@ -45,6 +45,7 @@ func (l LocalLogger) Errorf(ctx context.Context, format string, args ...interfac
 	l.WithSkippedCallerFrame(ctx).Error(fmt.Sprintf(format, args...))
 }
 
+// With creates a new Logger with field.
 func (l LocalLogger) With(ctx context.Context, key string, value interface{}) Logger {
 	return l.fromContext(ctx).With(key, value)
 }
@@ -56,6 +57,7 @@ func (l LocalLogger) fromContext(ctx context.Context) Logger {
 	}
 }
 
+// WithError creates a new Logger with error.
 func (l LocalLogger) WithError(ctx context.Context, err error) Logger {
 	return l.fromContext(ctx).WithError(err)
 }

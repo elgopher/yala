@@ -21,7 +21,8 @@ func main() {
 
 	// log using standard log package
 	standardLog := log.New(os.Stdout, "", log.LstdFlags)
-	logger.SetService(printer.Service{Printer: standardLog})
+	service := printer.Service{Printer: standardLog}
+	logger.SetService(service)
 
 	logger.Debug(ctx, "Hello stdlog")
 	logger.With(ctx, "tag", "bbb").Info("Some info")
