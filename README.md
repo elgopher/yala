@@ -106,4 +106,6 @@ But there are limitations for such solution:
 * even though your module will be independent of any specific logging implementation, you still have to import 
   `github.com/jacekolszak/yala/logger`. This package is relatively small though, compared to real logging libraries
   (about ~240 lines of production code) and it does not import any external libraries.
-
+* yala is optimized for the ease of use (both for the developer who logs messages and for the developer writing
+  adapter). It is not optimized for performance, because this would hurt the user experience and readability of the
+  created code.
