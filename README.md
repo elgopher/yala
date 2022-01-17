@@ -89,7 +89,7 @@ func (s Adapter) Log(ctx context.Context, entry logger.Entry) {
 Yes, you can also create your own. Very often it just an interface with a single method, like this:
 
 ```go
-type Logger interface {
+type ImaginaryLogger interface {
     Log(context.Context, Entry)
 }
 ```
