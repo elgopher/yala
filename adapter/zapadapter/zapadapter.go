@@ -7,7 +7,7 @@ import (
 	"go.uber.org/zap"
 )
 
-// Service is a logger.Service implementation, which is using `zap` module (https://github.com/uber-go/zap).
+// Service is a logger.Adapter implementation, which is using `zap` module (https://github.com/uber-go/zap).
 type Service struct {
 	Logger *zap.Logger
 }

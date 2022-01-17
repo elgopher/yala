@@ -46,10 +46,10 @@ func BenchmarkLogrus(b *testing.B) {
 	logrusLogger := logrus.New()
 	logrusLogger.SetOutput(discardWriter{})
 
-	service := logrusadapter.Service{
+	adapter := logrusadapter.Service{
 		Entry: logrus.NewEntry(logrusLogger),
 	}
-	logger.SetService(service)
+	logger.SetAdapter(adapter)
 
 	for i := 0; i < b.N; i++ {
 		logger.Info(ctx, "msg") // 1200ns

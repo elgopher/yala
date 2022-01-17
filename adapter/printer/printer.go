@@ -10,9 +10,9 @@ import (
 	"github.com/jacekolszak/yala/logger"
 )
 
-// Service is a logger.Service implementation, which is using Printer interface. This interface is implemented for
+// Adapter is a logger.Adapter implementation, which is using Printer interface. This interface is implemented for
 // example by log.Logger from the Go standard library.
-type Service struct {
+type Adapter struct {
 	Printer Printer
 }
 
@@ -20,14 +20,14 @@ type Printer interface {
 	Println(...interface{})
 }
 
-// StdErrorService returns a logger.Service implementation which prints log messages to stderr using `fmt` package.
-func StdErrorService() Service {
-	return Service{Printer: WriterPrinter{os.Stderr}}
+// StdErrorAdapter returns a logger.Adapter implementation which prints log messages to stderr using `fmt` package.
+func StdErrorAdapter() Adapter {
+	return Adapter{Printer: WriterPrinter{os.Stderr}}
 }
 
-// StdoutService returns a logger.Service implementation which prints log messages to stdout using `fmt` package.
-func StdoutService() Service {
-	return Service{Printer: WriterPrinter{os.Stdout}}
+// StdoutAdapter returns a logger.Adapter implementation which prints log messages to stdout using `fmt` package.
+func StdoutAdapter() Adapter {
+	return Adapter{Printer: WriterPrinter{os.Stdout}}
 }
 
 type WriterPrinter struct {
@@ -38,7 +38,7 @@ func (p WriterPrinter) Println(args ...interface{}) {
 	_, _ = fmt.Fprintln(p.Writer, args...)
 }
 
-func (f Service) Log(ctx context.Context, entry logger.Entry) {
+func (f Adapter) Log(ctx context.Context, entry logger.Entry) {
 	if f.Printer == nil {
 		return
 	}

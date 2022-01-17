@@ -5,7 +5,7 @@ import (
 	"context"
 )
 
-// Debug logs message using globally configured logger.Service.
+// Debug logs message using globally configured logger.Adapter.
 func Debug(ctx context.Context, msg string) {
 	globalLoggerWithSkippedCallerFrame(ctx).Debug(msg)
 }
@@ -14,34 +14,34 @@ func globalLoggerWithSkippedCallerFrame(ctx context.Context) Logger {
 	return getGlobalLogger().WithSkippedCallerFrame(ctx)
 }
 
-// Info logs message using globally configured logger.Service.
+// Info logs message using globally configured logger.Adapter.
 func Info(ctx context.Context, msg string) {
 	globalLoggerWithSkippedCallerFrame(ctx).Info(msg)
 }
 
-// Warn logs message using globally configured logger.Service.
+// Warn logs message using globally configured logger.Adapter.
 func Warn(ctx context.Context, msg string) {
 	globalLoggerWithSkippedCallerFrame(ctx).Warn(msg)
 }
 
-// Error logs message using globally configured logger.Service.
+// Error logs message using globally configured logger.Adapter.
 func Error(ctx context.Context, msg string) {
 	globalLoggerWithSkippedCallerFrame(ctx).Error(msg)
 }
 
-// With creates a new Logger with field and using globally configured logger.Service.
+// With creates a new Logger with field and using globally configured logger.Adapter.
 func With(ctx context.Context, key string, value interface{}) Logger {
 	return getGlobalLogger().With(ctx, key, value)
 }
 
-// WithError creates a new Logger with error and using globally configured logger.Service.
+// WithError creates a new Logger with error and using globally configured logger.Adapter.
 func WithError(ctx context.Context, err error) Logger {
 	return getGlobalLogger().WithError(ctx, err)
 }
 
 type Logger struct {
 	entry   Entry
-	service Service
+	adapter Adapter
 	ctx     context.Context
 }
 
@@ -91,5 +91,6 @@ func (l Logger) log(level Level, msg string) {
 	e.Level = level
 	e.Message = msg
 	e.SkippedCallerFrames += 3
-	l.service.Log(l.ctx, e)
+
+	l.adapter.Log(l.ctx, e)
 }

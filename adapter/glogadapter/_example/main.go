@@ -15,7 +15,7 @@ func main() {
 	ctx := context.Background()
 
 	flag.Parse()                             // glog does not work without parsing the flags first
-	logger.SetService(glogadapter.Service{}) // set glog service globally
+	logger.SetAdapter(glogadapter.Service{}) // set glog adapter globally
 
 	logger.Debug(ctx, "Hello glog ")
 	logger.With(ctx, "field_name", "field_value").Info("Some info")

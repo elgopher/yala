@@ -16,8 +16,8 @@ func main() {
 	ctx := context.Background()
 
 	zapLogger := newZapLogger()
-	service := zapadapter.Service{Logger: zapLogger} // create logger.Service for zap
-	logger.SetService(service)                       // set it globally
+	adapter := zapadapter.Service{Logger: zapLogger} // create logger.Adapter for zap
+	logger.SetAdapter(adapter)                       // set it globally
 
 	logger.Debug(ctx, "Hello zap")
 	logger.With(ctx, "field_name", "field_value").Info("Some info")

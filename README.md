@@ -31,7 +31,7 @@ import (
 	"github.com/jacekolszak/yala/logger"
 )
 ...
-logger.SetService(printer.StdoutService())
+logger.SetAdapter(printer.StdoutAdapter())
 ```
 
 ### Log message in any function
@@ -44,19 +44,19 @@ logger.WithError(ctx, err).Error("Message with error")
 
 ### Why context.Context is a parameter?
 
-`context.Context` can very useful in transiting request-scoped tags or logger API. Service implementation might use them
+`context.Context` can very useful in transiting request-scoped tags or logger. logger.Adapter implementation might use them
 making possible to log messages instrumented with tags.
 
 ### Why global state?
 
 Logging is a special kind of dependency. It is used all over the place. Adding it as an explicit dependency to every
 function, struct etc. can be cumbersome. Still though, you have an option to use local logger by injecting
-logger.Service into your library:
+logger.Adapter into your library:
 
 ```go
 // your library code:
-func NewLibrary(service logger.Service) YourLib {
-    localLogger := logger.Local(service)
+func NewLibrary(adapter logger.Adapter) YourLib {
+    localLogger := logger.Local(adapter)
     return YourLib{localLogger: localLogger}
 }
 
@@ -65,31 +65,31 @@ func (l YourLib) Method(ctx context.Context) {
 }
 
 // client code
-service := printer.StdoutService()
-lib := NewLibrary(service)
+adapter := printer.StdoutAdapter()
+lib := NewLibrary(adapter)
 ```
 
-### Difference between logger.Logger and logger.Service
+### Difference between logger.Logger and logger.Adapter
 
 * logger.Logger is a struct for logging messages (optionally with fields and error). It is used by packages in your module.
-* logger.Service is an abstraction which should be implemented by adapters, such as logrusadapter (client of your module should provide it)
+* logger.Adapter is an abstraction which should be implemented by adapters, such as logrusadapter (consumer of your module should provide it)
 
-### Writing your own service
+### Writing your own adapter
 
 ```go
-type Service struct{}
+type Adapter struct{}
 
-func (s Service) Log(ctx context.Context, entry logger.Entry) {
+func (s Adapter) Log(ctx context.Context, entry logger.Entry) {
     // here you can do whatever you want with the log entry 
 }
 ```
 
-### Why just don't create my own abstraction?
+### Why just don't create my own abstraction instead of using yala?
 
 Yes, you can also create your own. Very often it just an interface with a single method, like this:
 
 ```go
-type Service interface {
+type Logger interface {
     Log(context.Context, Entry)
 }
 ```
