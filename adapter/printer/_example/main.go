@@ -13,7 +13,7 @@ func main() {
 	ctx := context.Background()
 
 	// log using fmt.Println
-	logger.SetService(printer.StdoutService())
+	logger.SetAdapter(printer.StdoutAdapter())
 
 	logger.Debug(ctx, "Hello fmt")
 	logger.With(ctx, "field_name", "field_value").Info("Some info")
@@ -22,8 +22,8 @@ func main() {
 
 	// log using standard log package
 	standardLog := log.New(os.Stdout, "", log.LstdFlags)
-	service := printer.Service{Printer: standardLog}
-	logger.SetService(service)
+	adapter := printer.Adapter{Printer: standardLog}
+	logger.SetAdapter(adapter)
 
 	logger.Debug(ctx, "Hello stdlog")
 	logger.With(ctx, "field_name", "field_value").Info("Some info")

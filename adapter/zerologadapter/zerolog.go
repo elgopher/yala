@@ -7,12 +7,12 @@ import (
 	"github.com/rs/zerolog"
 )
 
-// Service is a logger.Service implementation, which is using `zerolog` module (https://github.com/rs/zerolog).
-type Service struct {
+// Adapter is a logger.Adapter implementation, which is using `zerolog` module (https://github.com/rs/zerolog).
+type Adapter struct {
 	Logger zerolog.Logger
 }
 
-func (l Service) Log(ctx context.Context, entry logger.Entry) {
+func (l Adapter) Log(ctx context.Context, entry logger.Entry) {
 	event := l.Logger.WithLevel(convertLevel(entry.Level))
 
 	for _, field := range entry.Fields {

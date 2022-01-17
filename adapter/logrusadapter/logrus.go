@@ -7,12 +7,12 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// Service is a logger.Service implementation, which is using `logrus` module (https://github.com/sirupsen/logrus).
-type Service struct {
+// Adapter is a logger.Adapter implementation, which is using `logrus` module (https://github.com/sirupsen/logrus).
+type Adapter struct {
 	Entry *logrus.Entry
 }
 
-func (s Service) Log(ctx context.Context, entry logger.Entry) {
+func (s Adapter) Log(ctx context.Context, entry logger.Entry) {
 	if s.Entry == nil {
 		return
 	}

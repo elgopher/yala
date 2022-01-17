@@ -15,8 +15,8 @@ func main() {
 	ctx := context.Background()
 
 	l := log15.New()                           // create log15 logger
-	service := log15adapter.Service{Logger: l} // create logger.Service for log15
-	logger.SetService(service)                 // set log15 it globally
+	adapter := log15adapter.Adapter{Logger: l} // create logger.Adapter for log15
+	logger.SetAdapter(adapter)                 // set log15 it globally
 
 	logger.Debug(ctx, "Hello log15")
 	logger.With(ctx, "field_name", "field_value").Info("Some info")

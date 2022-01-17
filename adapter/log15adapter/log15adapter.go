@@ -7,13 +7,13 @@ import (
 	"github.com/jacekolszak/yala/logger"
 )
 
-// Service is a logger.Service implementation, which is using `log15` package
+// Adapter is a logger.Adapter implementation, which is using `log15` package
 // (https://github.com/inconshreveable/log15).
-type Service struct {
+type Adapter struct {
 	Logger log15.Logger
 }
 
-func (s Service) Log(ctx context.Context, entry logger.Entry) {
+func (s Adapter) Log(ctx context.Context, entry logger.Entry) {
 	if s.Logger == nil {
 		return
 	}

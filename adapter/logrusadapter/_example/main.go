@@ -20,12 +20,12 @@ func main() {
 	l.SetFormatter(&logrus.TextFormatter{
 		ForceColors: true,
 	})
-	// Then create a logger.Service
-	service := logrusadapter.Service{
+	// Then create a logger.Adapter
+	adapter := logrusadapter.Adapter{
 		Entry: logrus.NewEntry(l),
 	}
 	// And use it globally
-	logger.SetService(service)
+	logger.SetAdapter(adapter)
 
 	logger.Debug(ctx, "Hello logrus ")
 	logger.With(ctx, "field_name", "field_value").With("another", "ccc").Info("Some info")

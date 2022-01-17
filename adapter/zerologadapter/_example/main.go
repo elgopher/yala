@@ -14,8 +14,8 @@ func main() {
 	ctx := context.Background()
 
 	l := zerolog.New(os.Stdout)                  // create zerolog logger
-	service := zerologadapter.Service{Logger: l} // create logger.Service for zerolog
-	logger.SetService(service)                   // set it globally
+	adapter := zerologadapter.Adapter{Logger: l} // create logger.Adapter for zerolog
+	logger.SetAdapter(adapter)                   // set it globally
 
 	logger.Debug(ctx, "Hello zerolog")
 	logger.With(ctx, "field_name", "field_value").Info("Some info")

@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/jacekolszak/yala/adapter/contextservice"
+	"github.com/jacekolszak/yala/adapter/contextadapter"
 	"github.com/jacekolszak/yala/adapter/zapadapter"
 	"github.com/jacekolszak/yala/logger"
 	"go.uber.org/zap"
@@ -13,20 +13,20 @@ import (
 
 type key string
 
-const contextServiceKey key = "contextService"
+const contextAdapterKey key = "contextAdapter"
 
 // This example shows how to pass zap logger in the context.Context
 func main() {
 	ctx := context.Background()
 
 	zapLogger := newZapLogger()
-	defaultContextService := zapadapter.Service{Logger: zapLogger}
-	service := contextservice.New(contextServiceKey, defaultContextService) // create logger.Service implementation which will look for logger.Service in the context
-	logger.SetService(service)                                              // set it globally
+	defaultContextAdapter := zapadapter.Adapter{Logger: zapLogger}
+	adapter := contextadapter.New(contextAdapterKey, defaultContextAdapter) // create logger.Adapter implementation which will look for logger.Adapter in the context
+	logger.SetAdapter(adapter)                                              // set it globally
 
 	contextLogger := zapLogger.With(zap.String("request_field", "value")) // create zap logger which will be bound to context.Context
-	contextService := zapadapter.Service{Logger: contextLogger}
-	ctx = context.WithValue(ctx, contextServiceKey, contextService)
+	contextAdapter := zapadapter.Adapter{Logger: contextLogger}
+	ctx = context.WithValue(ctx, contextAdapterKey, contextAdapter)
 
 	logger.Debug(ctx, "Hello zap from ctx")
 	logger.With(ctx, "field_name", "field_value").Info("Some info")

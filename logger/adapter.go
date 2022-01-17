@@ -5,20 +5,20 @@ import (
 	"sync/atomic"
 )
 
-// SetService sets a global service implementation used by logging functions in the logger package,
+// SetAdapter sets a global adapter implementation used by logging functions in the logger package,
 // such as `logger.Info`. By default, nothing is logged.
-func SetService(service Service) {
-	if service == nil {
-		service = noopLogger{}
+func SetAdapter(adapter Adapter) {
+	if adapter == nil {
+		adapter = noopLogger{}
 	}
 
 	globalLogger.Store(
-		LocalLogger{service: service},
+		LocalLogger{adapter: adapter},
 	)
 }
 
-// Service is an interface to be implemented by logger adapters.
-type Service interface {
+// Adapter is an interface to be implemented by logger adapters.
+type Adapter interface {
 	Log(context.Context, Entry)
 }
 
@@ -27,7 +27,7 @@ type Entry struct {
 	Message string
 	Fields  []Field // Fields can be nil
 	Error   error   // Error can be nil
-	// SkippedCallerFrames can be used by logger.Service to extract caller information (file and line number)
+	// SkippedCallerFrames can be used by logger.Adapter to extract caller information (file and line number)
 	SkippedCallerFrames int
 }
 
@@ -46,7 +46,7 @@ type Field struct {
 }
 
 func init() {
-	SetService(noopLogger{})
+	SetAdapter(noopLogger{})
 }
 
 var globalLogger atomic.Value
