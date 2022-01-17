@@ -13,12 +13,12 @@ type Adapter struct {
 	Logger log15.Logger
 }
 
-func (s Adapter) Log(ctx context.Context, entry logger.Entry) {
-	if s.Logger == nil {
+func (a Adapter) Log(ctx context.Context, entry logger.Entry) {
+	if a.Logger == nil {
 		return
 	}
 
-	log15Logger := s.Logger
+	log15Logger := a.Logger
 	for _, field := range entry.Fields {
 		log15Logger = log15Logger.New(field.Key, field.Value)
 	}

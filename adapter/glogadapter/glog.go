@@ -12,7 +12,7 @@ type Adapter struct{}
 
 type log func(args ...interface{})
 
-func (s Adapter) Log(_ context.Context, entry logger.Entry) {
+func (a Adapter) Log(_ context.Context, entry logger.Entry) {
 	var logMessage log
 
 	switch entry.Level {

@@ -79,7 +79,7 @@ lib := NewLibrary(adapter)
 ```go
 type Adapter struct{}
 
-func (s Adapter) Log(ctx context.Context, entry logger.Entry) {
+func (Adapter) Log(context.Context, logger.Entry) {
     // here you can do whatever you want with the log entry 
 }
 ```

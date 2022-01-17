@@ -12,12 +12,12 @@ type Adapter struct {
 	Logger *zap.Logger
 }
 
-func (s Adapter) Log(_ context.Context, entry logger.Entry) {
-	if s.Logger == nil {
+func (a Adapter) Log(_ context.Context, entry logger.Entry) {
+	if a.Logger == nil {
 		return
 	}
 
-	zapLogger := s.Logger
+	zapLogger := a.Logger
 
 	if entry.Error != nil {
 		zapLogger = zapLogger.With(zap.Error(entry.Error))
