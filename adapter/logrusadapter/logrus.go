@@ -12,8 +12,8 @@ type Adapter struct {
 	Entry *logrus.Entry
 }
 
-func (s Adapter) Log(ctx context.Context, entry logger.Entry) {
-	if s.Entry == nil {
+func (a Adapter) Log(ctx context.Context, entry logger.Entry) {
+	if a.Entry == nil {
 		return
 	}
 
@@ -30,7 +30,7 @@ func (s Adapter) Log(ctx context.Context, entry logger.Entry) {
 		lvl = logrus.ErrorLevel
 	}
 
-	logrusEntry := s.Entry
+	logrusEntry := a.Entry
 
 	for _, f := range entry.Fields {
 		logrusEntry = logrusEntry.WithField(f.Key, f.Value)

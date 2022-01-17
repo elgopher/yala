@@ -132,30 +132,30 @@ type adapterMock struct {
 	entries []logger.Entry
 }
 
-func (s *adapterMock) Log(_ context.Context, entry logger.Entry) {
-	s.entries = append(s.entries, entry)
+func (a *adapterMock) Log(_ context.Context, entry logger.Entry) {
+	a.entries = append(a.entries, entry)
 }
 
-func (s *adapterMock) HasExactlyOneEntry(t *testing.T, expected logger.Entry) {
+func (a *adapterMock) HasExactlyOneEntry(t *testing.T, expected logger.Entry) {
 	t.Helper()
 
-	require.Len(t, s.entries, 1)
-	actual := s.entries[0]
+	require.Len(t, a.entries, 1)
+	actual := a.entries[0]
 	assert.Equal(t, expected, actual)
 }
 
-func (s *adapterMock) HasExactlyOneEntryWithFields(t *testing.T, expected []logger.Field) {
+func (a *adapterMock) HasExactlyOneEntryWithFields(t *testing.T, expected []logger.Field) {
 	t.Helper()
 
-	require.Len(t, s.entries, 1)
-	actual := s.entries[0].Fields
+	require.Len(t, a.entries, 1)
+	actual := a.entries[0].Fields
 	assert.Equal(t, expected, actual)
 }
 
-func (s *adapterMock) HasExactlyOneEntryWithError(t *testing.T, expected error) {
+func (a *adapterMock) HasExactlyOneEntryWithError(t *testing.T, expected error) {
 	t.Helper()
 
-	require.Len(t, s.entries, 1)
-	actual := s.entries[0].Error
+	require.Len(t, a.entries, 1)
+	actual := a.entries[0].Error
 	assert.Equal(t, expected, actual)
 }
