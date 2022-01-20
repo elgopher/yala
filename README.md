@@ -44,7 +44,7 @@ logger.WithError(ctx, err).Error("Message with error")
 
 ### Why context.Context is a parameter?
 
-`context.Context` can very useful in transiting request-scoped tags or logger. logger.Adapter implementation might use them
+`context.Context` can very useful in transiting request-scoped tags or even entire logger. logger.Adapter implementation might use them
 making possible to log messages instrumented with tags.
 
 ### Why global state?
