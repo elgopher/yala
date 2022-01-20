@@ -1,6 +1,6 @@
 # YALA - Yet Another Logging Abstraction
 
-Simple logging abstraction with adapters for most popular logging Go libraries and easy way to roll your own.
+Tiny logging abstraction with adapters for most popular logging Go libraries and easy way to roll your own.
 
 ## Supported logging implementations
 
