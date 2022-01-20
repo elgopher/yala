@@ -11,6 +11,7 @@ import (
 
 var ErrSome = errors.New("some error")
 
+// This example shows how to use yala with log15 adapter
 func main() {
 	ctx := context.Background()
 

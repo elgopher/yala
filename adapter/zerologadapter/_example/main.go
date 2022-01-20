@@ -10,6 +10,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
+// This example shows how to use yala with zerolog adapter
 func main() {
 	ctx := context.Background()
 
