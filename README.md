@@ -17,7 +17,7 @@ Tiny structured logging abstraction with adapters for most popular logging Go li
 ## Installation
 
 ```shell
-# Add recent version of yala to Go module:
+# Add yala to your Go module:
 go get github.com/jacekolszak/yala        
 ```
 
