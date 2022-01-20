@@ -33,7 +33,7 @@ import (
 	"github.com/jacekolszak/yala/logger"
 )
 ...
-logger.SetAdapter(printer.StdoutAdapter())
+logger.SetAdapter(printer.StdoutAdapter()) // will use fmt.Println
 ```
 
 ### Log message from anywhere
