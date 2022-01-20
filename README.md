@@ -1,3 +1,5 @@
+[![Go](https://github.com/jacekolszak/yala/actions/workflows/go.yml/badge.svg)](https://github.com/jacekolszak/yala/actions/workflows/go.yml)
+
 # YALA - Yet Another Logging Abstraction for Go
 
 Tiny structured logging abstraction with adapters for most popular logging Go libraries and easy way to roll your own.
