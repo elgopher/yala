@@ -60,29 +60,6 @@ func TestGlobalLogging(t *testing.T) {
 			})
 		}
 	})
-
-	t.Run("should log message with error", func(t *testing.T) {
-		adapter := &adapterMock{}
-		logger.SetAdapter(adapter)
-		// when
-		logger.WithError(ctx, ErrSome).Error("message")
-		// then
-		adapter.HasExactlyOneEntryWithError(t, ErrSome)
-	})
-
-	t.Run("adding error should not modify existing logger but create a new one", func(t *testing.T) {
-		adapter := &adapterMock{}
-		logger.SetAdapter(adapter)
-		loggerWithSomeError := logger.WithError(ctx, ErrSome)
-		// when
-		loggerWithAnotherError := loggerWithSomeError.WithError(ErrAnother)
-		// then
-		loggerWithSomeError.Error(message)
-		loggerWithAnotherError.Error(message)
-		require.Len(t, adapter.entries, 2)
-		assert.Same(t, adapter.entries[0].Error, ErrSome)
-		assert.Same(t, adapter.entries[1].Error, ErrAnother)
-	})
 }
 
 func TestLocalLogger(t *testing.T) {
@@ -172,6 +149,50 @@ func TestWith(t *testing.T) {
 					})
 				})
 			}
+		})
+	}
+}
+
+func TestWithError(t *testing.T) {
+	type newLoggerWithError func(adapter logger.Adapter, err error) logger.Logger
+
+	loggersWithError := map[string]newLoggerWithError{
+		"global": func(adapter logger.Adapter, err error) logger.Logger {
+			logger.SetAdapter(adapter)
+
+			return logger.WithError(ctx, err)
+		},
+		"local": func(adapter logger.Adapter, err error) logger.Logger {
+			return logger.Local(adapter).WithError(ctx, err)
+		},
+	}
+	for name, newLogger := range loggersWithError {
+		t.Run(name, func(t *testing.T) {
+			for methodName, logMessage := range loggerMethods {
+				t.Run(methodName, func(t *testing.T) {
+					t.Run("should log message with error", func(t *testing.T) {
+						adapter := &adapterMock{}
+						l := newLogger(adapter, ErrSome)
+						// when
+						logMessage(l, message)
+						// then
+						adapter.HasExactlyOneEntryWithError(t, ErrSome)
+					})
+				})
+			}
+
+			t.Run("adding error should not modify existing logger but create a new one", func(t *testing.T) {
+				adapter := &adapterMock{}
+				loggerWithSomeError := newLogger(adapter, ErrSome)
+				// when
+				loggerWithAnotherError := loggerWithSomeError.WithError(ErrAnother)
+				// then
+				loggerWithSomeError.Error(message)
+				loggerWithAnotherError.Error(message)
+				require.Len(t, adapter.entries, 2)
+				assert.Same(t, adapter.entries[0].Error, ErrSome)
+				assert.Same(t, adapter.entries[1].Error, ErrAnother)
+			})
 		})
 	}
 }
