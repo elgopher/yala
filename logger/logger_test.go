@@ -32,6 +32,10 @@ func TestGlobalLogging(t *testing.T) {
 		logger.Info(ctx, message)
 	})
 
+	t.Run("should log warning that global adapter was not set", func(t *testing.T) {
+		logger.Warn(ctx, message)
+	})
+
 	t.Run("should log message using global adapter", func(t *testing.T) {
 		type functionUnderTest func(ctx context.Context, msg string)
 		tests := map[logger.Level]functionUnderTest{
