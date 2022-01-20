@@ -58,7 +58,8 @@ logger.Adapter into your library:
 ```go
 // your library code:
 func NewLibrary(adapter logger.Adapter) YourLib {
-    localLogger := logger.Local(adapter)
+    // create a new local logger which provides similar API to the global logger
+    localLogger := logger.Local(adapter)         
     return YourLib{localLogger: localLogger}
 }
 
@@ -71,20 +72,33 @@ adapter := printer.StdoutAdapter()
 lib := NewLibrary(adapter)
 ```
 
-### Difference between logger.Logger and logger.Adapter
+### More examples
 
-* logger.Logger is a struct for logging messages (optionally with fields and error). It is used by packages in your module.
-* logger.Adapter is an abstraction which should be implemented by adapters, such as logrusadapter (consumer of your module should provide it)
+* [Logrus](adapter/logrusadapter/_example/main.go)
+* [fmt.Println and standard log package](adapter/printer/_example/main.go)
+* [Zap](adapter/zapadapter/_example/main.go)
+* [Zerolog](adapter/zerologadapter/_example/main.go)
+* [glog](adapter/glogadapter/_example/main.go)
+* [Log15](adapter/log15adapter/_example/main.go)
+* [Zap logger passed over context.Context](adapter/contextadapter/_example/main.go)
 
 ### Writing your own adapter
 
-```go
-type Adapter struct{}
+Just implement `logger.Adapter` interface:
 
-func (Adapter) Log(context.Context, logger.Entry) {
+```go
+type MyAdapter struct{}
+
+func (MyAdapter) Log(context.Context, logger.Entry) {
     // here you can do whatever you want with the log entry 
 }
 ```
+
+### Difference between logger.Logger and logger.Adapter
+
+* logger.Logger is a struct for logging messages (optionally with fields and error). It is used by packages in your module.
+* logger.Adapter is an abstraction which should be implemented by adapters. Some adapters are already implemented (such as logrusadapter) and new adapter can be easily implemented. 
+
 
 ### Why just don't create my own abstraction instead of using yala?
 
@@ -98,7 +112,7 @@ type ImaginaryLogger interface {
 
 But there are limitations for such solution:
 
-* such interface is not very easy to use in your module
+* such interface alone is not very easy to use in your module/library/package
 * someone who is using your module is supposed to write his own adapter of this interface (or you can provide adapters which
   of course takes your valuable time)
 * it is not obvious how logging API should look like
