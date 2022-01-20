@@ -47,12 +47,14 @@ type Logger struct {
 
 // With creates a new Logger with field.
 func (l Logger) With(key string, value interface{}) Logger {
-	c := l
-	c.entry.Fields = make([]Field, len(c.entry.Fields), cap(c.entry.Fields))
-	copy(c.entry.Fields, l.entry.Fields)
-	c.entry.Fields = append(c.entry.Fields, Field{key, value})
+	loggerCopy := l
 
-	return c
+	newLen := len(l.entry.Fields) + 1
+	loggerCopy.entry.Fields = make([]Field, newLen)
+	copy(loggerCopy.entry.Fields, l.entry.Fields)
+	loggerCopy.entry.Fields[newLen-1] = Field{key, value}
+
+	return loggerCopy
 }
 
 // WithError creates a new Logger with error.
