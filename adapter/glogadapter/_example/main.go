@@ -11,6 +11,7 @@ import (
 
 var ErrSome = errors.New("ErrSome")
 
+// This example shows how to use yala with glog adapter
 func main() {
 	ctx := context.Background()
 

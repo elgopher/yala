@@ -11,6 +11,7 @@ import (
 
 var ErrSome = errors.New("some error")
 
+// This example shows how to use yala with logrus adapter
 func main() {
 	ctx := context.Background()
 
@@ -22,7 +23,7 @@ func main() {
 	})
 	// Then create a logger.Adapter
 	adapter := logrusadapter.Adapter{
-		Entry: logrus.NewEntry(l),
+		Entry: logrus.NewEntry(l), // inject logrus entry
 	}
 	// And use it globally
 	logger.SetAdapter(adapter)

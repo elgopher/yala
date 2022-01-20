@@ -12,6 +12,7 @@ import (
 
 var ErrSome = errors.New("ErrSome")
 
+// This example shows how to use yala with standard fmt.Println and standard `log` package
 func main() {
 	ctx := context.Background()
 

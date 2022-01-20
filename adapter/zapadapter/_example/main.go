@@ -12,6 +12,7 @@ import (
 
 var ErrSome = errors.New("ErrSome")
 
+// This example shows how to use yala with zap adapter
 func main() {
 	ctx := context.Background()
 
