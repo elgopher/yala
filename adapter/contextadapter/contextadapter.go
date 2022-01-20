@@ -6,23 +6,21 @@ import (
 	"github.com/jacekolszak/yala/logger"
 )
 
-func New(contextKey interface{}, a logger.Adapter) logger.Adapter { // nolint
+func New(contextKey interface{}, adapterFromContextLogger func(loggerOrNil interface{}) logger.Adapter) logger.Adapter { // nolint
 	return adapter{
-		adapter:    a,
-		contextKey: contextKey,
+		contextKey:               contextKey,
+		adapterFromContextLogger: adapterFromContextLogger,
 	}
 }
 
 type adapter struct {
-	adapter    logger.Adapter
-	contextKey interface{}
+	contextKey               interface{}
+	adapterFromContextLogger func(loggerOrNil interface{}) logger.Adapter
 }
 
 func (p adapter) Log(ctx context.Context, entry logger.Entry) {
-	loggerAdapter, ok := ctx.Value(p.contextKey).(logger.Adapter)
-	if !ok {
-		loggerAdapter = p.adapter
-	}
+	contextLogger := ctx.Value(p.contextKey)
+	loggerAdapter := p.adapterFromContextLogger(contextLogger)
 
 	newEntry := entry
 	newEntry.SkippedCallerFrames++
