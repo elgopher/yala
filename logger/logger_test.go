@@ -17,6 +17,15 @@ var ErrAnother = errors.New("another error")
 
 var ctx = context.Background()
 
+type loggerMethod func(l logger.Logger, msg string)
+
+var loggerMethods = map[string]loggerMethod{
+	"Debug": logger.Logger.Debug,
+	"Info":  logger.Logger.Info,
+	"Warn":  logger.Logger.Warn,
+	"Error": logger.Logger.Error,
+}
+
 func TestGlobalLogging(t *testing.T) {
 	t.Run("passing nil global adapter should disable logger", func(t *testing.T) {
 		logger.SetAdapter(nil)
@@ -50,22 +59,6 @@ func TestGlobalLogging(t *testing.T) {
 				)
 			})
 		}
-	})
-
-	t.Run("should log message with field", func(t *testing.T) {
-		adapter := &adapterMock{}
-		logger.SetAdapter(adapter)
-		const (
-			fieldName  = "field_name"
-			fieldValue = "field_value"
-		)
-		// when
-		logger.With(ctx, fieldName, fieldValue).Info("message")
-		// then
-		expectedFields := []logger.Field{
-			{Key: fieldName, Value: fieldValue},
-		}
-		adapter.HasExactlyOneEntryWithFields(t, expectedFields)
 	})
 
 	t.Run("should log message with error", func(t *testing.T) {
@@ -126,4 +119,59 @@ func TestLocalLogger(t *testing.T) {
 			})
 		}
 	})
+}
+
+func TestWith(t *testing.T) {
+	type newLoggerWithField func(adapter logger.Adapter, fieldName string, fieldValue interface{}) logger.Logger
+
+	loggersWithField := map[string]newLoggerWithField{
+		"global": func(adapter logger.Adapter, fieldName string, fieldValue interface{}) logger.Logger {
+			logger.SetAdapter(adapter)
+
+			return logger.With(ctx, fieldName, fieldValue)
+		},
+		"local": func(adapter logger.Adapter, fieldName string, fieldValue interface{}) logger.Logger {
+			return logger.Local(adapter).With(ctx, fieldName, fieldValue)
+		},
+	}
+
+	const (
+		field1Name  = "field1_name"
+		field1Value = "field1_value"
+		field2Name  = "field2_name"
+		field2Value = "field2_value"
+	)
+
+	for name, newLogger := range loggersWithField {
+		t.Run(name, func(t *testing.T) {
+			for methodName, logMessage := range loggerMethods {
+				t.Run(methodName, func(t *testing.T) {
+					t.Run("should log message with field", func(t *testing.T) {
+						adapter := &adapterMock{}
+						l := newLogger(adapter, field1Name, field1Value)
+						// when
+						logMessage(l, message)
+						// then
+						expectedFields := []logger.Field{
+							{Key: field1Name, Value: field1Value},
+						}
+						adapter.HasExactlyOneEntryWithFields(t, expectedFields)
+					})
+
+					t.Run("should log message with two fields", func(t *testing.T) {
+						adapter := &adapterMock{}
+						l := newLogger(adapter, field1Name, field1Value).With(field2Name, field2Value)
+						// when
+						logMessage(l, message)
+						// then
+						expectedFields := []logger.Field{
+							{Key: field1Name, Value: field1Value},
+							{Key: field2Name, Value: field2Value},
+						}
+						adapter.HasExactlyOneEntryWithFields(t, expectedFields)
+					})
+				})
+			}
+		})
+	}
 }
