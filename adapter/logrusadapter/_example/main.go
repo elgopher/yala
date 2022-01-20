@@ -15,21 +15,26 @@ var ErrSome = errors.New("some error")
 func main() {
 	ctx := context.Background()
 
-	// First create logrus logger
-	l := logrus.New()
-	l.SetLevel(logrus.DebugLevel)
-	l.SetFormatter(&logrus.TextFormatter{
-		ForceColors: true,
-	})
+	// First create a logrus logger entry. This is basically a Logger with some optional fields.
+	entry := newLogrusEntry()
 	// Then create a logger.Adapter
 	adapter := logrusadapter.Adapter{
-		Entry: logrus.NewEntry(l), // inject logrus entry
+		Entry: entry, // inject logrus
 	}
-	// And use it globally
+	// And use adapter globally
 	logger.SetAdapter(adapter)
 
 	logger.Debug(ctx, "Hello logrus ")
 	logger.With(ctx, "field_name", "field_value").With("another", "ccc").Info("Some info")
 	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
 	logger.WithError(ctx, ErrSome).Error("Some error")
+}
+
+func newLogrusEntry() *logrus.Entry {
+	l := logrus.New()
+	l.SetLevel(logrus.DebugLevel)
+	l.SetFormatter(&logrus.TextFormatter{
+		ForceColors: true,
+	})
+	return logrus.NewEntry(l)
 }
