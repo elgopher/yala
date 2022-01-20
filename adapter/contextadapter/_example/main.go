@@ -15,6 +15,8 @@ type key string
 
 const contextLoggerKey key = "contextLogger"
 
+var ErrSome = errors.New("ErrSome")
+
 // This example shows how to pass zap logger with tags in the context.Context
 func main() {
 	ctx := context.Background()
@@ -39,7 +41,7 @@ func main() {
 	logger.Debug(ctx, "Hello zap from ctx")
 	logger.With(ctx, "field_name", "field_value").Info("Some info")
 	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
-	logger.WithError(ctx, errors.New("ss")).Error("Some error")
+	logger.WithError(ctx, ErrSome).Error("Some error")
 }
 
 func newZapLogger() *zap.Logger {
