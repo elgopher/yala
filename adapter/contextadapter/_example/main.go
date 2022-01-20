@@ -13,7 +13,7 @@ import (
 
 type key string
 
-const contextAdapterKey key = "contextAdapter"
+const contextLoggerKey key = "contextLogger"
 
 // This example shows how to pass zap logger with tags in the context.Context
 func main() {
@@ -22,7 +22,7 @@ func main() {
 	defaultZapLogger := newZapLogger()
 
 	// this adapter will look for zap logger in the context and will wrap it with zapadapter.Adapter
-	adapter := contextadapter.New(contextAdapterKey, func(loggerOrNil interface{}) logger.Adapter {
+	adapter := contextadapter.New(contextLoggerKey, func(loggerOrNil interface{}) logger.Adapter {
 		if zapLogger, ok := loggerOrNil.(*zap.Logger); ok {
 			return zapadapter.Adapter{Logger: zapLogger}
 		}
@@ -34,7 +34,7 @@ func main() {
 
 	contextLogger := defaultZapLogger.With(zap.String("tag", "value"))
 	// bind zap logger to ctx, so all messages will be logged with tag
-	ctx = context.WithValue(ctx, contextAdapterKey, contextLogger)
+	ctx = context.WithValue(ctx, contextLoggerKey, contextLogger)
 
 	logger.Debug(ctx, "Hello zap from ctx")
 	logger.With(ctx, "field_name", "field_value").Info("Some info")
