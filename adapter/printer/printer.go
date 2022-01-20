@@ -12,6 +12,8 @@ import (
 
 // Adapter is a logger.Adapter implementation, which is using Printer interface. This interface is implemented for
 // example by log.Logger from the Go standard library.
+//
+// This adapter prints fields and error in logfmt format.
 type Adapter struct {
 	Printer Printer
 }
@@ -43,27 +45,34 @@ func (f Adapter) Log(ctx context.Context, entry logger.Entry) {
 		return
 	}
 
-	fieldsAsString := fieldsToString(entry.Fields)
-	if entry.Error == nil {
-		f.Printer.Println(entry.Level, entry.Message, fieldsAsString)
-	} else {
-		f.Printer.Println(entry.Level, entry.Message, fieldsAsString, "error:", entry.Error)
+	var builder strings.Builder
+
+	builder.WriteString(string(entry.Level))
+	builder.WriteRune(' ')
+	builder.WriteString(entry.Message)
+
+	if len(entry.Fields) > 0 {
+		builder.WriteRune(' ')
+		writeFields(&builder, entry.Fields)
 	}
+
+	if entry.Error != nil {
+		builder.WriteString(" error=")
+		builder.WriteString(fmt.Sprintf("%s", entry.Error))
+	}
+
+	f.Printer.Println(builder.String())
 }
 
-func fieldsToString(fields []logger.Field) string {
-	var b strings.Builder
-
+func writeFields(builder *strings.Builder, fields []logger.Field) {
 	for i, f := range fields {
-		b.WriteString(f.Key)
-		b.WriteRune('=')
-		b.WriteString(fmt.Sprintf("%s", f.Value))
+		builder.WriteString(f.Key)
+		builder.WriteRune('=')
+		builder.WriteString(fmt.Sprintf("%s", f.Value))
 
 		notLast := i < len(fields)-1
 		if notLast {
-			b.WriteRune(',')
+			builder.WriteRune(' ')
 		}
 	}
-
-	return b.String()
 }
