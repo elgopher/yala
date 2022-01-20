@@ -1,4 +1,4 @@
-# YALA - Yet Another Logging Abstraction
+# YALA - Yet Another Logging Abstraction for Go
 
 Tiny structured logging abstraction with adapters for most popular logging Go libraries and easy way to roll your own.
 
@@ -17,8 +17,8 @@ Tiny structured logging abstraction with adapters for most popular logging Go li
 ## Installation
 
 ```shell
-# Add recent version of yala to Go module:
-go get -d -u github.com/jacekolszak/yala        
+# Add yala to your Go module:
+go get github.com/jacekolszak/yala        
 ```
 
 ## How to use
@@ -34,7 +34,7 @@ import (
 logger.SetAdapter(printer.StdoutAdapter())
 ```
 
-### Log message in any function
+### Log message from anywhere
 
 ```go
 logger.Debug(ctx, "Debug message")
@@ -44,8 +44,8 @@ logger.WithError(ctx, err).Error("Message with error")
 
 ### Why context.Context is a parameter?
 
-`context.Context` can very useful in transiting request-scoped tags or logger. logger.Adapter implementation might use them
-making possible to log messages instrumented with tags.
+`context.Context` can very useful in transiting request-scoped tags or even entire logger. logger.Adapter implementation might use them
+making possible to log messages instrumented with tags. Thanks to that your library can trully participate in the incoming request. 
 
 ### Why global state?
 
@@ -105,7 +105,7 @@ But there are limitations for such solution:
 
 * even though your module will be independent of any specific logging implementation, you still have to import 
   `github.com/jacekolszak/yala/logger`. This package is relatively small though, compared to real logging libraries
-  (about ~240 lines of production code) and it does not import any external libraries.
+  (about ~240 lines of production code) and **it does not import any external libraries**.
 * yala is optimized for the ease of use (both for the developer who logs messages and for the developer writing
   adapter). It is not optimized for performance, because this would hurt the user experience and readability of the
   created code.
