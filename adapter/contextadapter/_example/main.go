@@ -15,18 +15,26 @@ type key string
 
 const contextAdapterKey key = "contextAdapter"
 
-// This example shows how to pass zap logger in the context.Context
+// This example shows how to pass zap logger with tags in the context.Context
 func main() {
 	ctx := context.Background()
 
-	zapLogger := newZapLogger()
-	defaultContextAdapter := zapadapter.Adapter{Logger: zapLogger}
-	adapter := contextadapter.New(contextAdapterKey, defaultContextAdapter) // create logger.Adapter implementation which will look for logger.Adapter in the context
-	logger.SetAdapter(adapter)                                              // set it globally
+	defaultZapLogger := newZapLogger()
 
-	contextLogger := zapLogger.With(zap.String("request_field", "value")) // create zap logger which will be bound to context.Context
-	contextAdapter := zapadapter.Adapter{Logger: contextLogger}
-	ctx = context.WithValue(ctx, contextAdapterKey, contextAdapter)
+	// this adapter will look for zap logger in the context and will wrap it with zapadapter.Adapter
+	adapter := contextadapter.New(contextAdapterKey, func(loggerOrNil interface{}) logger.Adapter {
+		if zapLogger, ok := loggerOrNil.(*zap.Logger); ok {
+			return zapadapter.Adapter{Logger: zapLogger}
+		}
+
+		return zapadapter.Adapter{Logger: defaultZapLogger}
+	})
+	// set it globally
+	logger.SetAdapter(adapter)
+
+	contextLogger := defaultZapLogger.With(zap.String("tag", "value"))
+	// bind zap logger to ctx, so all messages will be logged with tag
+	ctx = context.WithValue(ctx, contextAdapterKey, contextLogger)
 
 	logger.Debug(ctx, "Hello zap from ctx")
 	logger.With(ctx, "field_name", "field_value").Info("Some info")
