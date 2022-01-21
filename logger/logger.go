@@ -1,4 +1,13 @@
 // Package logger provides API for logging messages, to be used by code which is not aware what logging library is used.
+//
+// Each message logged has a level, which was modeled after http://tools.ietf.org/html/rfc5424 severity levels:
+//
+// 	* Debug - Information useful to developers for debugging the application.
+// 	* Info  - Normal operational messages that require no action.
+// 	* Warn  - May indicate that an error will occur if action is not taken.
+// 	* Error - Non-urgent failures - these should be relayed to developers or admins; each item must be resolved within
+//	          a given time.
+//
 package logger
 
 import (
