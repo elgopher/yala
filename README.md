@@ -10,7 +10,7 @@ Tiny structured logging abstraction with adapters for most popular logging Go li
 
 ## When to use?
 
-* If you are a module/package author
+* If you are a module/package/library author
 * And you want to participate in a caller logging system (log messages using the logger provided by the consumer)
 * And you don't want to add dependency to any specific logging library to your code
 * And you don't want to manually inject logger to every possible place where you want to log something
