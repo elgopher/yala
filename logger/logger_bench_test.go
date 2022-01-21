@@ -34,3 +34,12 @@ func BenchmarkWith(b *testing.B) {
 		_ = logger.With(ctx, "k", "v") // 55ns, 1 alloc
 	}
 }
+
+func BenchmarkWithError(b *testing.B) {
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = logger.WithError(ctx, ErrSome) // 15ns, 0 allocs
+	}
+}
