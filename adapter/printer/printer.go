@@ -22,8 +22,8 @@ type Printer interface {
 	Println(...interface{})
 }
 
-// StdErrorAdapter returns a logger.Adapter implementation which prints log messages to stderr using `fmt` package.
-func StdErrorAdapter() Adapter {
+// StderrAdapter returns a logger.Adapter implementation which prints log messages to stderr using `fmt` package.
+func StderrAdapter() Adapter {
 	return Adapter{Printer: WriterPrinter{os.Stderr}}
 }
 
