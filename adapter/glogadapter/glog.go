@@ -2,8 +2,10 @@ package glogadapter
 
 import (
 	"context"
+	"strings"
 
 	"github.com/golang/glog"
+	"github.com/jacekolszak/yala/adapter/logfmt"
 	"github.com/jacekolszak/yala/logger"
 )
 
@@ -28,16 +30,19 @@ func (a Adapter) Log(_ context.Context, entry logger.Entry) {
 		logMessage = glog.Infoln
 	}
 
-	var args []interface{}
-	args = append(args, entry.Message)
+	var fieldsAndError strings.Builder
 
 	if len(entry.Fields) > 0 {
-		args = append(args, "fields:", entry.Fields)
+		logfmt.WriteFields(&fieldsAndError, entry.Fields)
 	}
 
 	if entry.Error != nil {
-		args = append(args, "error:", entry.Error)
+		if len(entry.Fields) > 0 {
+			fieldsAndError.WriteByte(' ')
+		}
+
+		logfmt.WriteField(&fieldsAndError, logger.Field{Key: "error", Value: entry.Error})
 	}
 
-	logMessage(args...)
+	logMessage(entry.Message, fieldsAndError.String())
 }
