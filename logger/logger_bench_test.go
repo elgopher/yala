@@ -1,57 +1,36 @@
 package logger_test
 
 import (
-	"context"
 	"testing"
 
-	"github.com/jacekolszak/yala/adapter/logrusadapter"
 	"github.com/jacekolszak/yala/logger"
-	"github.com/sirupsen/logrus"
 )
 
 func BenchmarkInfo(b *testing.B) {
-	ctx := context.Background()
+	b.ReportAllocs()
+	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		logger.Info(ctx, "msg") // 5ns
+		logger.Info(ctx, "msg") // 30ns, 0 allocs
 	}
 }
 
 func BenchmarkLogger_Info(b *testing.B) {
-	ctx := context.Background()
-	l := logger.With(ctx, "k", "v")
+	loggerWithField := logger.With(ctx, "k", "v")
+
+	b.ReportAllocs()
+	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		l.Info("msg") // 12ns
+		loggerWithField.Info("msg") // 12ns, 0 allocs
 	}
 }
 
 func BenchmarkWith(b *testing.B) {
-	ctx := context.Background()
+	b.ReportAllocs()
+	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		_ = logger.With(ctx, "k", "v") // 55ns
-	}
-}
-
-type discardWriter struct{}
-
-func (d discardWriter) Write(p []byte) (n int, err error) {
-	return len(p), nil
-}
-
-func BenchmarkLogrus(b *testing.B) {
-	ctx := context.Background()
-
-	logrusLogger := logrus.New()
-	logrusLogger.SetOutput(discardWriter{})
-
-	adapter := logrusadapter.Adapter{
-		Entry: logrus.NewEntry(logrusLogger),
-	}
-	logger.SetAdapter(adapter)
-
-	for i := 0; i < b.N; i++ {
-		logger.Info(ctx, "msg") // 1200ns
+		_ = logger.With(ctx, "k", "v") // 55ns, 1 alloc
 	}
 }
