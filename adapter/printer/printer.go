@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/jacekolszak/yala/adapter/logfmt"
 	"github.com/jacekolszak/yala/logger"
 )
 
@@ -48,71 +49,18 @@ func (f Adapter) Log(ctx context.Context, entry logger.Entry) {
 	var builder strings.Builder
 
 	builder.WriteString(string(entry.Level))
-	builder.WriteRune(' ')
+	builder.WriteByte(' ')
 	builder.WriteString(entry.Message)
 
 	if len(entry.Fields) > 0 {
-		builder.WriteRune(' ')
-		writeFields(&builder, entry.Fields)
+		builder.WriteByte(' ')
+		logfmt.WriteFields(&builder, entry.Fields)
 	}
 
 	if entry.Error != nil {
-		builder.WriteString(" error=")
-		writeValue(&builder, entry.Error)
+		builder.WriteByte(' ')
+		logfmt.WriteField(&builder, logger.Field{Key: "error", Value: entry.Error})
 	}
 
 	f.Printer.Println(builder.String())
-}
-
-func writeFields(builder *strings.Builder, fields []logger.Field) {
-	for i, f := range fields {
-		builder.WriteString(f.Key)
-		builder.WriteRune('=')
-		writeValue(builder, f.Value)
-
-		notLast := i < len(fields)-1
-		if notLast {
-			builder.WriteRune(' ')
-		}
-	}
-}
-
-func writeValue(builder *strings.Builder, value interface{}) {
-	if value == nil {
-		builder.WriteString("nil")
-
-		return
-	}
-
-	if value == "nil" {
-		builder.WriteString(`"nil"`)
-
-		return
-	}
-
-	valueStr := fmt.Sprintf("%s", value)
-
-	if strings.ContainsRune(valueStr, '\\') {
-		valueStr = strings.ReplaceAll(valueStr, `\`, `\\`)
-	}
-
-	if strings.ContainsRune(valueStr, '"') {
-		valueStr = strings.ReplaceAll(valueStr, `"`, `\"`)
-	}
-
-	requiresQuoting := false
-
-	if strings.ContainsRune(valueStr, ' ') || strings.ContainsRune(valueStr, '=') {
-		requiresQuoting = true
-	}
-
-	if requiresQuoting {
-		builder.WriteRune('"')
-	}
-
-	builder.WriteString(valueStr)
-
-	if requiresQuoting {
-		builder.WriteRune('"')
-	}
 }
