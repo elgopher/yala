@@ -17,7 +17,7 @@ const contextLoggerKey key = "contextLogger"
 
 var ErrSome = errors.New("ErrSome")
 
-// This example shows how to pass zap logger with tags in the context.Context
+// This example shows how to make use of zap logger passed in the context.Context
 func main() {
 	ctx := context.Background()
 
