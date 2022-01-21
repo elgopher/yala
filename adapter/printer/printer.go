@@ -58,7 +58,7 @@ func (f Adapter) Log(ctx context.Context, entry logger.Entry) {
 
 	if entry.Error != nil {
 		builder.WriteString(" error=")
-		builder.WriteString(fmt.Sprintf("%s", entry.Error))
+		writeValue(&builder, entry.Error)
 	}
 
 	f.Printer.Println(builder.String())
@@ -68,11 +68,51 @@ func writeFields(builder *strings.Builder, fields []logger.Field) {
 	for i, f := range fields {
 		builder.WriteString(f.Key)
 		builder.WriteRune('=')
-		builder.WriteString(fmt.Sprintf("%s", f.Value))
+		writeValue(builder, f.Value)
 
 		notLast := i < len(fields)-1
 		if notLast {
 			builder.WriteRune(' ')
 		}
+	}
+}
+
+func writeValue(builder *strings.Builder, value interface{}) {
+	if value == nil {
+		builder.WriteString("nil")
+
+		return
+	}
+
+	if value == "nil" {
+		builder.WriteString(`"nil"`)
+
+		return
+	}
+
+	valueStr := fmt.Sprintf("%s", value)
+
+	if strings.ContainsRune(valueStr, '\\') {
+		valueStr = strings.ReplaceAll(valueStr, `\`, `\\`)
+	}
+
+	if strings.ContainsRune(valueStr, '"') {
+		valueStr = strings.ReplaceAll(valueStr, `"`, `\"`)
+	}
+
+	requiresQuoting := false
+
+	if strings.ContainsRune(valueStr, ' ') || strings.ContainsRune(valueStr, '=') {
+		requiresQuoting = true
+	}
+
+	if requiresQuoting {
+		builder.WriteRune('"')
+	}
+
+	builder.WriteString(valueStr)
+
+	if requiresQuoting {
+		builder.WriteRune('"')
 	}
 }
