@@ -14,7 +14,9 @@ import (
 // Adapter is a logger.Adapter implementation, which is using Printer interface. This interface is implemented for
 // example by log.Logger from the Go standard library.
 //
-// This adapter prints fields and error in logfmt format.
+// This adapter prints fields and error in logfmt format. For example:
+//
+// 		message key=value error=message
 type Adapter struct {
 	Printer Printer
 }
