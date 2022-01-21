@@ -46,7 +46,7 @@ type Field struct {
 }
 
 func init() {
-	SetAdapter(&initialNoopLogger{})
+	SetAdapter(&initialGlobalNoopLogger{})
 }
 
 var globalLogger atomic.Value
