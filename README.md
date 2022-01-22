@@ -59,10 +59,10 @@ func Function(ctx context.Context) {
 package main
 
 import (
-  "context"
+	"context"
 
-  "github.com/jacekolszak/yala/adapter/printer"
-  "lib"
+	"github.com/jacekolszak/yala/adapter/printer"
+	"lib"
 )
 
 func main() {
