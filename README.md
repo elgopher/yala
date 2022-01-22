@@ -52,7 +52,7 @@ making possible to log messages instrumented with tags. Thanks to that your libr
 ### Why global state?
 
 Logging is a special kind of dependency. It is used all over the place. Adding it as an explicit dependency to every
-function, struct etc. can be cumbersome. Still though, you have an option to use local logger by injecting
+function, struct etc. can be cumbersome. Still though, you have an option to use **local** logger by injecting
 logger.Adapter into your library:
 
 ```go
