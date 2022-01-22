@@ -19,12 +19,19 @@ func TestAdapter_Log(t *testing.T) {
 		entry           logger.Entry
 		expectedMessage string
 	}{
-		"message alone": {
+		"message debug": {
 			entry: logger.Entry{
 				Level:   logger.DebugLevel,
 				Message: message,
 			},
 			expectedMessage: "DEBUG message\n",
+		},
+		"message warn": {
+			entry: logger.Entry{
+				Level:   logger.WarnLevel,
+				Message: message,
+			},
+			expectedMessage: "WARN message\n",
 		},
 		"fields": {
 			entry: logger.Entry{
@@ -65,6 +72,25 @@ func TestAdapter_Log(t *testing.T) {
 			assert.Equal(t, test.expectedMessage, builder.String())
 		})
 	}
+
+	t.Run("should not panic when printer is nil", func(t *testing.T) {
+		adapter := printer.Adapter{Printer: nil}
+		assert.NotPanics(t, func() {
+			adapter.Log(ctx, logger.Entry{
+				Level:   logger.InfoLevel,
+				Message: message,
+			})
+		})
+	})
+}
+
+func TestWriterPrinter_Println(t *testing.T) {
+	t.Run("should not panic when Writer is nil", func(t *testing.T) {
+		p := printer.WriterPrinter{Writer: nil}
+		assert.NotPanics(t, func() {
+			p.Println("")
+		})
+	})
 }
 
 type stringError string
