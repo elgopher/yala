@@ -8,10 +8,12 @@ import (
 )
 
 func BenchmarkPrinter(b *testing.B) {
-	adapter := printer.Adapter{Printer: discardPrinter{}}
+	adapter := printer.Adapter{Printer: printer.WriterPrinter{Writer: discardWriter{}}}
 	benchmark.Adapter(b, adapter)
 }
 
-type discardPrinter struct{}
+type discardWriter struct{}
 
-func (d discardPrinter) Println(...interface{}) {}
+func (d discardWriter) Write(p []byte) (n int, err error) {
+	return len(p), nil
+}

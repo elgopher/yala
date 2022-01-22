@@ -13,8 +13,8 @@ BenchmarkLog15/global_logger_info-8         	 1370102	       872.8 ns/op	     44
 BenchmarkLog15/local_logger_info-8          	 1210383	       987.1 ns/op	     440 B/op	       3 allocs/op
 BenchmarkLogrus/global_logger_info-8         	  949262	      1232 ns/op	     404 B/op	      14 allocs/op
 BenchmarkLogrus/local_logger_info-8          	 1000000	      1213 ns/op	     404 B/op	      14 allocs/op
-BenchmarkPrinter/global_logger_info-8         	11838319	       118.0 ns/op	      40 B/op	       3 allocs/op
-BenchmarkPrinter/local_logger_info-8          	14313648	        91.28 ns/op	      40 B/op	       3 allocs/op
+BenchmarkPrinter/global_logger_info-8         	 8343602	       144.1 ns/op	      40 B/op	       3 allocs/op
+BenchmarkPrinter/local_logger_info-8          	10002495	       123.1 ns/op	      40 B/op	       3 allocs/op
 BenchmarkZap/global_logger_info-8         	 7031860	       235.8 ns/op	     114 B/op	       2 allocs/op
 BenchmarkZap/local_logger_info-8          	 5700342	       175.6 ns/op	     114 B/op	       2 allocs/op
 BenchmarkZerolog/global_logger_info-8         	11077041	        99.89 ns/op	       0 B/op	       0 allocs/op
