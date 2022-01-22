@@ -18,6 +18,17 @@ type Entry struct {
 	SkippedCallerFrames int
 }
 
+// With creates a new entry with additional field.
+func (e Entry) With(field Field) Entry {
+	newLen := len(e.Fields) + 1
+	fields := make([]Field, newLen)
+	copy(fields, e.Fields)
+	e.Fields = fields
+	e.Fields[newLen-1] = field
+
+	return e
+}
+
 type Level string
 
 const (
