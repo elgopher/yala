@@ -16,36 +16,32 @@ import (
 
 // Debug logs message using globally configured logger.Adapter.
 func Debug(ctx context.Context, msg string) {
-	globalLoggerWithSkippedCallerFrame(ctx).Debug(msg)
-}
-
-func globalLoggerWithSkippedCallerFrame(ctx context.Context) Logger {
-	return getGlobalLogger().WithSkippedCallerFrame(ctx)
+	globalLogger.Debug(ctx, msg)
 }
 
 // Info logs message using globally configured logger.Adapter.
 func Info(ctx context.Context, msg string) {
-	globalLoggerWithSkippedCallerFrame(ctx).Info(msg)
+	globalLogger.Info(ctx, msg)
 }
 
 // Warn logs message using globally configured logger.Adapter.
 func Warn(ctx context.Context, msg string) {
-	globalLoggerWithSkippedCallerFrame(ctx).Warn(msg)
+	globalLogger.Warn(ctx, msg)
 }
 
 // Error logs message using globally configured logger.Adapter.
 func Error(ctx context.Context, msg string) {
-	globalLoggerWithSkippedCallerFrame(ctx).Error(msg)
+	globalLogger.Error(ctx, msg)
 }
 
 // With creates a new Logger with field and using globally configured logger.Adapter.
 func With(ctx context.Context, key string, value interface{}) Logger {
-	return getGlobalLogger().With(ctx, key, value)
+	return globalLogger.With(ctx, key, value)
 }
 
 // WithError creates a new Logger with error and using globally configured logger.Adapter.
 func WithError(ctx context.Context, err error) Logger {
-	return getGlobalLogger().WithError(ctx, err)
+	return globalLogger.WithError(ctx, err)
 }
 
 type Logger struct {

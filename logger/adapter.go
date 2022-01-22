@@ -2,19 +2,12 @@ package logger
 
 import (
 	"context"
-	"sync/atomic"
 )
 
 // SetAdapter sets a global adapter implementation used by logging functions in the logger package,
 // such as `logger.Info`. By default, nothing is logged.
 func SetAdapter(adapter Adapter) {
-	if adapter == nil {
-		adapter = noopLogger{}
-	}
-
-	globalLogger.Store(
-		LocalLogger{adapter: adapter},
-	)
+	globalLogger.SetAdapter(adapter)
 }
 
 // Adapter is an interface to be implemented by logger adapters.
@@ -49,8 +42,4 @@ func init() {
 	SetAdapter(&initialGlobalNoopLogger{})
 }
 
-var globalLogger atomic.Value
-
-func getGlobalLogger() LocalLogger {
-	return globalLogger.Load().(LocalLogger)
-}
+var globalLogger global
