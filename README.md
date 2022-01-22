@@ -76,7 +76,7 @@ func main() {
 `context.Context` can very useful in transiting request-scoped tags or even entire logger. A `logger.Adapter` implementation might use them
 making possible to log messages instrumented with tags. Thanks to that your library can trully participate in the incoming request. 
 
-### Why global state?
+### Use local logger
 
 Logging is a special kind of dependency. It is used all over the place. Adding it as an explicit dependency to every
 function, struct etc. can be cumbersome. Still though, you have an option to use **local** logger by injecting
