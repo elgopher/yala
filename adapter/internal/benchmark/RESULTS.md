@@ -9,8 +9,8 @@ are useful for performance regression testing.
 ```
 BenchmarkGlog/global_logger_info-8         	 1208814	      1003 ns/op	     264 B/op	       4 allocs/op
 BenchmarkGlog/local_logger_info-8          	 1213101	       992.8 ns/op	     264 B/op	       4 allocs/op
-BenchmarkLog15/global_logger_info-8         	 1370102	       872.8 ns/op	     440 B/op	       3 allocs/op
-BenchmarkLog15/local_logger_info-8          	 1210383	       987.1 ns/op	     440 B/op	       3 allocs/op
+BenchmarkLog15/global_logger_info-8         	  826782	      1597 ns/op	     680 B/op	      12 allocs/op
+BenchmarkLog15/local_logger_info-8          	  747548	      1634 ns/op	     680 B/op	      12 allocs/op
 BenchmarkLogrus/global_logger_info-8         	  949262	      1232 ns/op	     404 B/op	      14 allocs/op
 BenchmarkLogrus/local_logger_info-8          	 1000000	      1213 ns/op	     404 B/op	      14 allocs/op
 BenchmarkPrinter/global_logger_info-8         	 8343602	       144.1 ns/op	      40 B/op	       3 allocs/op
