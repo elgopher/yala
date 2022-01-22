@@ -13,7 +13,7 @@ Tiny structured logging abstraction with adapters for most popular logging Go li
 * If you are a module/package/library author
 * And you want to participate in a caller logging system (log messages using the logger provided by the consumer)
 * And you don't want to add dependency to any specific logging library to your code
-* And you don't want to manually inject logger to every possible place where you want to log something
+* And you don't want to manually inject logger to every possible place where you want to log something (function, struct etc.)
 * If you need nice and elegant API with a bunch of useful functions, but at the same time you don't want your clients spend hours on writing their own logging adapter.
 
 ## Installation
