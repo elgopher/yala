@@ -24,8 +24,7 @@ func (p adapter) Log(ctx context.Context, entry logger.Entry) {
 	contextLogger := ctx.Value(p.contextKey)
 	loggerAdapter := p.adapterFromContextLogger(contextLogger)
 
-	newEntry := entry
-	newEntry.SkippedCallerFrames++
+	entry.SkippedCallerFrames++
 
-	loggerAdapter.Log(ctx, newEntry)
+	loggerAdapter.Log(ctx, entry)
 }
