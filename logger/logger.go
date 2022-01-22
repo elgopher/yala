@@ -48,6 +48,9 @@ func WithError(ctx context.Context, err error) Logger {
 	return getGlobalLogger().WithError(ctx, err)
 }
 
+// Logger is an immutable struct to log messages or create new loggers with fields or error.
+//
+// It is safe to use it concurrently.
 type Logger struct {
 	entry   Entry
 	adapter Adapter

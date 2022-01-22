@@ -6,10 +6,14 @@ import (
 
 const localLoggerSkippedCallerFrames = 2
 
+// LocalLogger is an immutable struct to log messages or create new loggers with fields or error.
+//
+// It is safe to use it concurrently.
 type LocalLogger struct {
 	adapter Adapter
 }
 
+// Local creates a new LocalLogger.
 func Local(adapter Adapter) LocalLogger {
 	if adapter == nil {
 		adapter = noopLogger{}
