@@ -45,7 +45,7 @@ func (g *Global) Debug(ctx context.Context, msg string) {
 }
 
 func (g *Global) loggerWithSkippedCallerFrame(ctx context.Context) Logger {
-	return g.getLogger().WithSkippedCallerFrame(ctx).WithSkippedCallerFrame()
+	return g.getLogger().WithSkippedCallerFrame(ctx)
 }
 
 // Info logs message using globally configured logger.Adapter.
