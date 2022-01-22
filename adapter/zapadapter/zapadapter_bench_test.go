@@ -26,10 +26,8 @@ func BenchmarkZap(b *testing.B) {
 	benchmark.Adapter(b, adapter)
 }
 
-type discardSink struct{}
-
-func (d discardSink) Write(p []byte) (n int, err error) {
-	return len(p), nil
+type discardSink struct {
+	benchmark.DiscardWriter
 }
 
 func (d discardSink) Sync() error {

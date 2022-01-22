@@ -10,16 +10,10 @@ import (
 
 func BenchmarkLogrus(b *testing.B) {
 	l := logrus.New()
-	l.SetOutput(discardWriter{})
+	l.SetOutput(benchmark.DiscardWriter{})
 	logrusEntry := logrus.NewEntry(l)
 
 	adapter := logrusadapter.Adapter{Entry: logrusEntry}
 
 	benchmark.Adapter(b, adapter)
-}
-
-type discardWriter struct{}
-
-func (d discardWriter) Write(p []byte) (n int, err error) {
-	return len(p), nil
 }

@@ -9,16 +9,10 @@ import (
 )
 
 func BenchmarkZerolog(b *testing.B) {
-	zerologLogger := zerolog.New(discardWriter{})
+	zerologLogger := zerolog.New(benchmark.DiscardWriter{})
 	adapter := zerologadapter.Adapter{
 		Logger: zerologLogger,
 	}
 
 	benchmark.Adapter(b, adapter)
-}
-
-type discardWriter struct{}
-
-func (d discardWriter) Write(p []byte) (n int, err error) {
-	return len(p), nil
 }
