@@ -32,17 +32,15 @@ func (l Logger) With(key string, value interface{}) Logger {
 
 // WithError creates a new Logger with error.
 func (l Logger) WithError(err error) Logger {
-	c := l
-	c.entry.Error = err
+	l.entry.Error = err
 
-	return c
+	return l
 }
 
 func (l Logger) WithSkippedCallerFrame() Logger {
-	c := l
-	c.entry.SkippedCallerFrames++
+	l.entry.SkippedCallerFrames++
 
-	return c
+	return l
 }
 
 func (l Logger) Debug(msg string) {
