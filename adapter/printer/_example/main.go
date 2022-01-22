@@ -29,7 +29,7 @@ func main() {
 	adapter := printer.Adapter{Printer: standardLog}
 	logger.SetAdapter(adapter)
 
-	logger.Debug(ctx, "Hello stdlog")
+	logger.Debug(ctx, "Hello standard log")
 	logger.With(ctx, "f1", "v1").With("f2", "f2").Info("Some info")
 	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
 	logger.WithError(ctx, ErrSome).Error("Some error")
