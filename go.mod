@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/golang/glog v1.0.0
 	github.com/inconshreveable/log15 v0.0.0-20201112154412-8562bdadbbac
+	github.com/phuslu/log v1.0.76
 	github.com/rs/zerolog v1.26.1
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0

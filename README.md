@@ -115,6 +115,7 @@ lib := NewLibrary(adapter)
 * [Zerolog](adapter/zerologadapter/_example/main.go)
 * [glog](adapter/glogadapter/_example/main.go)
 * [Log15](adapter/log15adapter/_example/main.go)
+* [phuslog](adapter/phuslog/_example/main.go)
 
 #### Advanced examples
 
