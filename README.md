@@ -114,6 +114,10 @@ lib := NewLibrary(adapter)
 * [Zerolog](adapter/zerologadapter/_example/main.go)
 * [glog](adapter/glogadapter/_example/main.go)
 * [Log15](adapter/log15adapter/_example/main.go)
+
+#### Advanced examples
+
+* [Add field to each message taken from context.Context](adapter/merge/_example/main.go)
 * [Zap logger passed over context.Context](adapter/contextadapter/_example/main.go)
 
 ### Writing your own adapter
