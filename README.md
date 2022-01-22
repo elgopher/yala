@@ -66,11 +66,11 @@ import (
 )
 
 func main() {
-  adapter := printer.StdoutAdapter() // will use fmt.Println
-  lib.Logger.SetAdapter(adapter)     // set the adapter
+	adapter := printer.StdoutAdapter() // will use fmt.Println
+	lib.Logger.SetAdapter(adapter)     // set the adapter
 
-  ctx := context.Background()
-  lib.Function(ctx)
+	ctx := context.Background()
+	lib.Function(ctx)
 }
 ```
 
