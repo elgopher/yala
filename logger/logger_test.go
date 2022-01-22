@@ -34,8 +34,20 @@ func TestGlobalLogging(t *testing.T) {
 	})
 
 	t.Run("should log warning that global adapter was not set", func(t *testing.T) {
-		var global logger.Global
-		global.Warn(ctx, message)
+		t.Run("Warn", func(t *testing.T) {
+			var global logger.Global
+			global.Warn(ctx, message)
+		})
+
+		t.Run("With", func(t *testing.T) {
+			var global logger.Global
+			global.With(ctx, "k", "v").Warn(message)
+		})
+
+		t.Run("WithError", func(t *testing.T) {
+			var global logger.Global
+			global.WithError(ctx, ErrSome).Warn(message)
+		})
 	})
 
 	t.Run("should log message using global adapter", func(t *testing.T) {
@@ -62,7 +74,7 @@ func TestGlobalLogging(t *testing.T) {
 					logger.Entry{
 						Level:               lvl,
 						Message:             message,
-						SkippedCallerFrames: 5,
+						SkippedCallerFrames: 4,
 					},
 				)
 			})
