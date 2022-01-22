@@ -123,6 +123,6 @@ But there are limitations for such solution:
   `github.com/jacekolszak/yala/logger`. This package is relatively small though, compared to real logging libraries
   (about ~240 lines of production code) and **it does not import any external libraries**.
 * yala is optimized for the ease of use (both for the developer who logs messages and for the developer writing
-  adapter). It is not optimized for performance, because this would hurt the user experience and readability of the
+  adapter). It is not optimized for *extreme* performance, because this would hurt the user experience and readability of the
   created code. Any intermediary API ads overhead - global synchronized variables, wrapper code and even polymorphism slow down 
   the execution a bit. The overhead varies, but it is usually a matter of tens of nanoseconds per call. 
