@@ -40,6 +40,10 @@ type WriterPrinter struct {
 }
 
 func (p WriterPrinter) Println(args ...interface{}) {
+	if p.Writer == nil {
+		return
+	}
+
 	_, _ = fmt.Fprintln(p.Writer, args...)
 }
 
