@@ -37,16 +37,19 @@ package lib // this is your package, part of module/library etc.
 
 import (
 	"context"
+	"errors"
 
 	"github.com/jacekolszak/yala/logger"
 )
 
 var Logger logger.Global // define global logger, no need to initialize (by default nothing is logged)
 
+var ErrSome = errors.New("ErrSome")
+
 func Function(ctx context.Context) {
 	Logger.Debug(ctx, "Debug message")
 	Logger.With(ctx, "field_name", "value").Info("Message with field")
-	Logger.WithError(ctx, err).Error("Message with error")
+	Logger.WithError(ctx, ErrSome).Error("Message with error")
 }
 ```
 
