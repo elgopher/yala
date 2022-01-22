@@ -12,7 +12,8 @@ import (
 func TestConcurrency(t *testing.T) {
 	t.Run("global log functions", func(t *testing.T) {
 		adapter := &concurrencySafeAdapter{}
-		logger.SetAdapter(adapter)
+		var global logger.Global
+		global.SetAdapter(adapter)
 
 		var wg sync.WaitGroup
 
@@ -21,12 +22,12 @@ func TestConcurrency(t *testing.T) {
 
 			go func() {
 				// when
-				logger.Debug(ctx, message)
-				logger.Info(ctx, message)
-				logger.Warn(ctx, message)
-				logger.Error(ctx, message)
-				logger.With(ctx, "k", "v").Info(message)
-				logger.WithError(ctx, ErrSome).Error(message)
+				global.Debug(ctx, message)
+				global.Info(ctx, message)
+				global.Warn(ctx, message)
+				global.Error(ctx, message)
+				global.With(ctx, "k", "v").Info(message)
+				global.WithError(ctx, ErrSome).Error(message)
 				wg.Done()
 			}()
 		}

@@ -28,21 +28,25 @@ var loggerMethods = map[string]loggerMethod{
 
 func TestGlobalLogging(t *testing.T) {
 	t.Run("passing nil global adapter should disable logger", func(t *testing.T) {
-		logger.SetAdapter(nil)
-		logger.Info(ctx, message)
+		var global logger.Global
+		global.SetAdapter(nil)
+		global.Info(ctx, message)
 	})
 
 	t.Run("should log warning that global adapter was not set", func(t *testing.T) {
-		logger.Warn(ctx, message)
+		var global logger.Global
+		global.Warn(ctx, message)
 	})
 
 	t.Run("should log message using global adapter", func(t *testing.T) {
+		var global logger.Global
+
 		type functionUnderTest func(ctx context.Context, msg string)
 		tests := map[logger.Level]functionUnderTest{
-			logger.DebugLevel: logger.Debug,
-			logger.InfoLevel:  logger.Info,
-			logger.WarnLevel:  logger.Warn,
-			logger.ErrorLevel: logger.Error,
+			logger.DebugLevel: global.Debug,
+			logger.InfoLevel:  global.Info,
+			logger.WarnLevel:  global.Warn,
+			logger.ErrorLevel: global.Error,
 		}
 
 		for lvl, log := range tests {
@@ -50,7 +54,7 @@ func TestGlobalLogging(t *testing.T) {
 
 			t.Run(testName, func(t *testing.T) {
 				adapter := &adapterMock{}
-				logger.SetAdapter(adapter)
+				global.SetAdapter(adapter)
 				// when
 				log(ctx, message)
 				// then
@@ -107,9 +111,10 @@ func TestWith(t *testing.T) {
 
 	loggersWithField := map[string]newLoggerWithField{
 		"global": func(adapter logger.Adapter, field logger.Field) logger.Logger {
-			logger.SetAdapter(adapter)
+			var global logger.Global
+			global.SetAdapter(adapter)
 
-			return logger.With(ctx, field.Key, field.Value)
+			return global.With(ctx, field.Key, field.Value)
 		},
 		"local": func(adapter logger.Adapter, field logger.Field) logger.Logger {
 			return logger.Local(adapter).With(ctx, field.Key, field.Value)
@@ -166,9 +171,10 @@ func TestWithError(t *testing.T) {
 
 	loggersWithError := map[string]newLoggerWithError{
 		"global": func(adapter logger.Adapter, err error) logger.Logger {
-			logger.SetAdapter(adapter)
+			var global logger.Global
+			global.SetAdapter(adapter)
 
-			return logger.WithError(ctx, err)
+			return global.WithError(ctx, err)
 		},
 		"local": func(adapter logger.Adapter, err error) logger.Logger {
 			return logger.Local(adapter).WithError(ctx, err)

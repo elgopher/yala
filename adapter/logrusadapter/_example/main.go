@@ -21,13 +21,13 @@ func main() {
 	adapter := logrusadapter.Adapter{
 		Entry: entry, // inject logrus
 	}
-	// And use adapter globally
-	logger.SetAdapter(adapter)
+	// Create yala logger
+	yalaLogger := logger.Local(adapter)
 
-	logger.Debug(ctx, "Hello logrus ")
-	logger.With(ctx, "field_name", "field_value").With("another", "ccc").Info("Some info")
-	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
-	logger.WithError(ctx, ErrSome).Error("Some error")
+	yalaLogger.Debug(ctx, "Hello logrus ")
+	yalaLogger.With(ctx, "field_name", "field_value").With("another", "ccc").Info("Some info")
+	yalaLogger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
+	yalaLogger.WithError(ctx, ErrSome).Error("Some error")
 }
 
 func newLogrusEntry() *logrus.Entry {

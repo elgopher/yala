@@ -5,11 +5,22 @@ import (
 	"sync/atomic"
 )
 
-type global struct {
+// Global is a logger shared globally. You can use it to define global logger for your package:
+//
+//		package yourpackage
+//		import "github.com/jacekolszak/yala/logger"
+//		var Logger logger.Global // define global logger, no need to initialize (by default nothing is logged)
+//
+//
+// It is safe to use it concurrently.
+type Global struct {
 	logger atomic.Value
 }
 
-func (g *global) SetAdapter(adapter Adapter) {
+// SetAdapter updates adapter implementation. By default, nothing is logged.
+//
+// It can be run anytime.
+func (g *Global) SetAdapter(adapter Adapter) {
 	if adapter == nil {
 		adapter = noopLogger{}
 	}
@@ -17,40 +28,47 @@ func (g *global) SetAdapter(adapter Adapter) {
 	g.logger.Store(LocalLogger{adapter: adapter})
 }
 
-func (g *global) getLogger() LocalLogger {
-	return g.logger.Load().(LocalLogger)
+func (g *Global) getLogger() LocalLogger {
+	logger, ok := g.logger.Load().(LocalLogger)
+	if !ok {
+		g.logger.Store(LocalLogger{adapter: &initialGlobalNoopLogger{}})
+
+		return g.getLogger()
+	}
+
+	return logger
 }
 
 // Debug logs message using globally configured logger.Adapter.
-func (g *global) Debug(ctx context.Context, msg string) {
+func (g *Global) Debug(ctx context.Context, msg string) {
 	g.loggerWithSkippedCallerFrame(ctx).Debug(msg)
 }
 
-func (g *global) loggerWithSkippedCallerFrame(ctx context.Context) Logger {
+func (g *Global) loggerWithSkippedCallerFrame(ctx context.Context) Logger {
 	return g.getLogger().WithSkippedCallerFrame(ctx).WithSkippedCallerFrame()
 }
 
 // Info logs message using globally configured logger.Adapter.
-func (g *global) Info(ctx context.Context, msg string) {
+func (g *Global) Info(ctx context.Context, msg string) {
 	g.loggerWithSkippedCallerFrame(ctx).Info(msg)
 }
 
 // Warn logs message using globally configured logger.Adapter.
-func (g *global) Warn(ctx context.Context, msg string) {
+func (g *Global) Warn(ctx context.Context, msg string) {
 	g.loggerWithSkippedCallerFrame(ctx).Warn(msg)
 }
 
 // Error logs message using globally configured logger.Adapter.
-func (g *global) Error(ctx context.Context, msg string) {
+func (g *Global) Error(ctx context.Context, msg string) {
 	g.loggerWithSkippedCallerFrame(ctx).Error(msg)
 }
 
 // With creates a new Logger with field and using globally configured logger.Adapter.
-func (g *global) With(ctx context.Context, key string, value interface{}) Logger {
+func (g *Global) With(ctx context.Context, key string, value interface{}) Logger {
 	return g.getLogger().With(ctx, key, value)
 }
 
 // WithError creates a new Logger with error and using globally configured logger.Adapter.
-func (g *global) WithError(ctx context.Context, err error) Logger {
+func (g *Global) WithError(ctx context.Context, err error) Logger {
 	return g.getLogger().WithError(ctx, err)
 }

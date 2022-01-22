@@ -14,36 +14,6 @@ import (
 	"context"
 )
 
-// Debug logs message using globally configured logger.Adapter.
-func Debug(ctx context.Context, msg string) {
-	globalLogger.Debug(ctx, msg)
-}
-
-// Info logs message using globally configured logger.Adapter.
-func Info(ctx context.Context, msg string) {
-	globalLogger.Info(ctx, msg)
-}
-
-// Warn logs message using globally configured logger.Adapter.
-func Warn(ctx context.Context, msg string) {
-	globalLogger.Warn(ctx, msg)
-}
-
-// Error logs message using globally configured logger.Adapter.
-func Error(ctx context.Context, msg string) {
-	globalLogger.Error(ctx, msg)
-}
-
-// With creates a new Logger with field and using globally configured logger.Adapter.
-func With(ctx context.Context, key string, value interface{}) Logger {
-	return globalLogger.With(ctx, key, value)
-}
-
-// WithError creates a new Logger with error and using globally configured logger.Adapter.
-func WithError(ctx context.Context, err error) Logger {
-	return globalLogger.WithError(ctx, err)
-}
-
 // Logger is an immutable struct to log messages or create new loggers with fields or error.
 //
 // It is safe to use it concurrently.

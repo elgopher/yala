@@ -4,12 +4,6 @@ import (
 	"context"
 )
 
-// SetAdapter sets a global adapter implementation used by logging functions in the logger package,
-// such as `logger.Info`. By default, nothing is logged.
-func SetAdapter(adapter Adapter) {
-	globalLogger.SetAdapter(adapter)
-}
-
 // Adapter is an interface to be implemented by logger adapters.
 type Adapter interface {
 	Log(context.Context, Entry)
@@ -37,9 +31,3 @@ type Field struct {
 	Key   string
 	Value interface{}
 }
-
-func init() {
-	SetAdapter(&initialGlobalNoopLogger{})
-}
-
-var globalLogger global
