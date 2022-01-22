@@ -38,10 +38,10 @@ func (l LocalLogger) Error(ctx context.Context, msg string) {
 
 // With creates a new Logger with field.
 func (l LocalLogger) With(ctx context.Context, key string, value interface{}) Logger {
-	return l.fromContext(ctx).With(key, value)
+	return l.logger(ctx).With(key, value)
 }
 
-func (l LocalLogger) fromContext(ctx context.Context) Logger {
+func (l LocalLogger) logger(ctx context.Context) Logger {
 	return Logger{
 		adapter: l.adapter,
 		ctx:     ctx,
@@ -50,9 +50,9 @@ func (l LocalLogger) fromContext(ctx context.Context) Logger {
 
 // WithError creates a new Logger with error.
 func (l LocalLogger) WithError(ctx context.Context, err error) Logger {
-	return l.fromContext(ctx).WithError(err)
+	return l.logger(ctx).WithError(err)
 }
 
 func (l LocalLogger) WithSkippedCallerFrame(ctx context.Context) Logger {
-	return l.fromContext(ctx).WithSkippedCallerFrame()
+	return l.logger(ctx).WithSkippedCallerFrame()
 }
