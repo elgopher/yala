@@ -36,7 +36,7 @@ func StdoutAdapter() Adapter {
 }
 
 type WriterPrinter struct {
-	io.Writer
+	Writer io.Writer
 }
 
 func (p WriterPrinter) Println(args ...interface{}) {
