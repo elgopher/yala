@@ -13,13 +13,14 @@ func Adapter(b *testing.B, adapter logger.Adapter) {
 	ctx := context.Background()
 
 	b.Run("global logger info", func(b *testing.B) {
-		logger.SetAdapter(adapter)
+		var global logger.Global
+		global.SetAdapter(adapter)
 
 		b.ReportAllocs()
 		b.ResetTimer()
 
 		for i := 0; i < b.N; i++ {
-			logger.Info(ctx, "msg")
+			global.Info(ctx, "msg")
 		}
 	})
 

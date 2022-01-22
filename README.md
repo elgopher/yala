@@ -25,28 +25,55 @@ go get github.com/jacekolszak/yala
 
 ## How to use
 
-### Set logger implementation (globally)
+### Choose logger - global or local?
+
+Global logger can be accessed from everywhere in your library and can be reconfigured anytime. Local logger is a logger
+initialized only once and used locally, for example inside the function.
+
+### Use global logger
 
 ```go
+package lib // this is your package, part of module/library etc.
+
 import (
-	"github.com/jacekolszak/yala/adapter/printer"
+	"context"
+
 	"github.com/jacekolszak/yala/logger"
 )
-...
-logger.SetAdapter(printer.StdoutAdapter()) // will use fmt.Println
+
+var Logger logger.Global // define global logger, no need to initialize (by default nothing is logged)
+
+func Function(ctx context.Context) {
+	Logger.Debug(ctx, "Debug message")
+	Logger.With(ctx, "field_name", "value").Info("Message with field")
+	Logger.WithError(ctx, err).Error("Message with error")
+}
 ```
 
-### Log message from anywhere
+#### Specify adapter - a real logger implementation.
 
 ```go
-logger.Debug(ctx, "Debug message")
-logger.With(ctx, "field_name", "value").Info("Message with field")
-logger.WithError(ctx, err).Error("Message with error")
+package main
+
+import (
+  "context"
+
+  "github.com/jacekolszak/yala/adapter/printer"
+  "lib"
+)
+
+func main() {
+  adapter := printer.StdoutAdapter() // will use fmt.Println
+  lib.Logger.SetAdapter(adapter)     // set the adapter
+
+  ctx := context.Background()
+  lib.Function(ctx)
+}
 ```
 
 ### Why context.Context is a parameter?
 
-`context.Context` can very useful in transiting request-scoped tags or even entire logger. logger.Adapter implementation might use them
+`context.Context` can very useful in transiting request-scoped tags or even entire logger. A `logger.Adapter` implementation might use them
 making possible to log messages instrumented with tags. Thanks to that your library can trully participate in the incoming request. 
 
 ### Why global state?
@@ -61,6 +88,10 @@ func NewLibrary(adapter logger.Adapter) YourLib {
     // create a new local logger which provides similar API to the global logger
     localLogger := logger.Local(adapter)         
     return YourLib{localLogger: localLogger}
+}
+
+type YourLib struct {
+	localLogger logger.LocalLogger
 }
 
 func (l YourLib) Method(ctx context.Context) {

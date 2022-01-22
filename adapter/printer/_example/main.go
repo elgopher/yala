@@ -17,20 +17,20 @@ func main() {
 	ctx := context.Background()
 
 	// log using fmt.Println
-	logger.SetAdapter(printer.StdoutAdapter())
+	yalaLogger := logger.Local(printer.StdoutAdapter())
 
-	logger.Debug(ctx, "Hello fmt")
-	logger.With(ctx, "field_name", "field_value").Info("Some info")
-	logger.With(ctx, "parameter", "some value").Warn("Deprecated configuration parameter. It will be removed.")
-	logger.WithError(ctx, ErrSome).Error("Some error")
+	yalaLogger.Debug(ctx, "Hello fmt")
+	yalaLogger.With(ctx, "field_name", "field_value").Info("Some info")
+	yalaLogger.With(ctx, "parameter", "some value").Warn("Deprecated configuration parameter. It will be removed.")
+	yalaLogger.WithError(ctx, ErrSome).Error("Some error")
 
 	// log using standard log package
 	standardLog := log.New(os.Stdout, "", log.LstdFlags)
 	adapter := printer.Adapter{Printer: standardLog}
-	logger.SetAdapter(adapter)
+	yalaLogger = logger.Local(adapter)
 
-	logger.Debug(ctx, "Hello standard log")
-	logger.With(ctx, "f1", "v1").With("f2", "f2").Info("Some info")
-	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
-	logger.WithError(ctx, ErrSome).Error("Some error")
+	yalaLogger.Debug(ctx, "Hello standard log")
+	yalaLogger.With(ctx, "f1", "v1").With("f2", "f2").Info("Some info")
+	yalaLogger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
+	yalaLogger.WithError(ctx, ErrSome).Error("Some error")
 }

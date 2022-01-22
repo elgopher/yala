@@ -10,13 +10,16 @@ func BenchmarkInfo(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 
+	var global logger.Global
+
 	for i := 0; i < b.N; i++ {
-		logger.Info(ctx, "msg") // 30ns, 0 allocs
+		global.Info(ctx, "msg") // 30ns, 0 allocs
 	}
 }
 
 func BenchmarkLogger_Info(b *testing.B) {
-	loggerWithField := logger.With(ctx, "k", "v")
+	var global logger.Global
+	loggerWithField := global.With(ctx, "k", "v")
 
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -30,8 +33,10 @@ func BenchmarkWith(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 
+	var global logger.Global
+
 	for i := 0; i < b.N; i++ {
-		_ = logger.With(ctx, "k", "v") // 55ns, 1 alloc
+		_ = global.With(ctx, "k", "v") // 55ns, 1 alloc
 	}
 }
 
@@ -39,7 +44,9 @@ func BenchmarkWithError(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 
+	var global logger.Global
+
 	for i := 0; i < b.N; i++ {
-		_ = logger.WithError(ctx, ErrSome) // 15ns, 0 allocs
+		_ = global.WithError(ctx, ErrSome) // 15ns, 0 allocs
 	}
 }

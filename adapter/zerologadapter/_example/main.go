@@ -18,10 +18,10 @@ func main() {
 
 	l := zerolog.New(os.Stdout)                  // create zerolog logger
 	adapter := zerologadapter.Adapter{Logger: l} // create logger.Adapter for zerolog
-	logger.SetAdapter(adapter)                   // set it globally
+	yalaLogger := logger.Local(adapter)          // Create yala logger
 
-	logger.Debug(ctx, "Hello zerolog")
-	logger.With(ctx, "field_name", "field_value").Info("Some info")
-	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
-	logger.WithError(ctx, ErrSome).Error("Some error")
+	yalaLogger.Debug(ctx, "Hello zerolog")
+	yalaLogger.With(ctx, "field_name", "field_value").Info("Some info")
+	yalaLogger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
+	yalaLogger.WithError(ctx, ErrSome).Error("Some error")
 }

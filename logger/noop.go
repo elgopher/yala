@@ -3,6 +3,7 @@ package logger
 import (
 	"context"
 	"fmt"
+	"runtime"
 	"sync"
 )
 
@@ -10,14 +11,16 @@ type noopLogger struct{}
 
 func (n noopLogger) Log(context.Context, Entry) {}
 
-var once sync.Once
-
-type initialGlobalNoopLogger struct{}
+type initialGlobalNoopLogger struct {
+	once sync.Once
+}
 
 func (g *initialGlobalNoopLogger) Log(_ context.Context, entry Entry) {
 	if entry.Level == WarnLevel || entry.Level == ErrorLevel {
-		once.Do(func() {
-			fmt.Printf("github.com/jacekolszak/yala/logger cannot log message with level %s. Please set the global logging adapter. For example: logger.SetAdapter(printer.StdoutAdapter()) to log all messages to stdout.\n", entry.Level) // nolint
+		g.once.Do(func() {
+			const framesToSkip = 7
+			_, file, line, _ := runtime.Caller(framesToSkip)
+			fmt.Printf("%s:%d cannot log message with level %s. Please configure the global logger.\n", file, line, entry.Level) // nolint
 		})
 	}
 }

@@ -31,17 +31,17 @@ func main() {
 
 		return zapadapter.Adapter{Logger: defaultZapLogger}
 	})
-	// set it globally
-	logger.SetAdapter(adapter)
+	// create local logger
+	yalaLogger := logger.Local(adapter)
 
 	contextLogger := defaultZapLogger.With(zap.String("tag", "value"))
 	// bind zap logger to ctx, so all messages will be logged with tag
 	ctx = context.WithValue(ctx, contextLoggerKey, contextLogger)
 
-	logger.Debug(ctx, "Hello zap from ctx")
-	logger.With(ctx, "field_name", "field_value").Info("Some info")
-	logger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
-	logger.WithError(ctx, ErrSome).Error("Some error")
+	yalaLogger.Debug(ctx, "Hello zap from ctx")
+	yalaLogger.With(ctx, "field_name", "field_value").Info("Some info")
+	yalaLogger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
+	yalaLogger.WithError(ctx, ErrSome).Error("Some error")
 }
 
 func newZapLogger() *zap.Logger {
