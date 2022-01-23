@@ -7,15 +7,15 @@ import (
 	"sync"
 )
 
-type noopLogger struct{}
+type noopAdapter struct{}
 
-func (n noopLogger) Log(context.Context, Entry) {}
+func (n noopAdapter) Log(context.Context, Entry) {}
 
-type initialGlobalNoopLogger struct {
+type initialGlobalNoopAdapter struct {
 	once sync.Once
 }
 
-func (g *initialGlobalNoopLogger) Log(_ context.Context, entry Entry) {
+func (g *initialGlobalNoopAdapter) Log(_ context.Context, entry Entry) {
 	if entry.Level == WarnLevel || entry.Level == ErrorLevel {
 		g.once.Do(func() {
 			framesToSkip := 3

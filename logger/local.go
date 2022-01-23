@@ -16,7 +16,7 @@ type LocalLogger struct {
 // Local creates a new LocalLogger.
 func Local(adapter Adapter) LocalLogger {
 	if adapter == nil {
-		adapter = noopLogger{}
+		adapter = noopAdapter{}
 	}
 
 	return LocalLogger{

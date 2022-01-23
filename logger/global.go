@@ -23,7 +23,7 @@ type Global struct {
 // from the central place (such as main.go or any other package setting up the entire application).
 func (g *Global) SetAdapter(adapter Adapter) {
 	if adapter == nil {
-		adapter = noopLogger{}
+		adapter = noopAdapter{}
 	}
 
 	g.logger.Store(LocalLogger{adapter: adapter})
@@ -32,7 +32,7 @@ func (g *Global) SetAdapter(adapter Adapter) {
 func (g *Global) getLogger() LocalLogger {
 	logger, ok := g.logger.Load().(LocalLogger)
 	if !ok {
-		g.logger.Store(LocalLogger{adapter: &initialGlobalNoopLogger{}})
+		g.logger.Store(LocalLogger{adapter: &initialGlobalNoopAdapter{}})
 
 		return g.getLogger()
 	}
