@@ -1,4 +1,5 @@
-// Package logger provides API for logging messages, to be used by code which is not aware what logging library is used.
+// Package logger provides structured logging abstraction or facade, to be used by code which is not aware what logging
+// library is used by end user.
 //
 // Each message logged has a level, which was modeled after http://tools.ietf.org/html/rfc5424 severity levels:
 //
