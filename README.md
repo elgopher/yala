@@ -44,7 +44,8 @@ import (
 	"github.com/jacekolszak/yala/logger"
 )
 
-var Logger logger.Global // define global logger, no need to initialize (by default nothing is logged)
+// define global logger, no need to initialize it (by default nothing is logged)
+var Logger logger.Global
 
 var ErrSome = errors.New("ErrSome")
 
@@ -91,9 +92,9 @@ logger.Adapter into your library:
 ```go
 // your library code:
 func NewLibrary(adapter logger.Adapter) YourLib {
-    // create a new local logger which provides similar API to the global logger
-    localLogger := logger.Local(adapter)         
-    return YourLib{localLogger: localLogger}
+	// create a new local logger which provides similar API to the global logger
+	localLogger := logger.Local(adapter)         
+	return YourLib{localLogger: localLogger}
 }
 
 type YourLib struct {
@@ -101,8 +102,9 @@ type YourLib struct {
 }
 
 func (l YourLib) Method(ctx context.Context) {
-    l.localLogger.Debug(ctx, "message from local logger")
+	l.localLogger.Debug(ctx, "message from local logger")
 }
+
 
 // end user code
 adapter := printer.StdoutAdapter()
