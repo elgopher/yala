@@ -19,7 +19,8 @@ type Global struct {
 
 // SetAdapter updates adapter implementation. By default, nothing is logged.
 //
-// It can be run anytime.
+// It can be run anytime. Please note though that this method is meant to be used by end user, configuring logging
+// from the central place (such as main.go or any other package setting up the entire application).
 func (g *Global) SetAdapter(adapter Adapter) {
 	if adapter == nil {
 		adapter = noopLogger{}
