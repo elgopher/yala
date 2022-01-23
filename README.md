@@ -4,7 +4,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/jacekolszak/yala.svg)](https://pkg.go.dev/github.com/jacekolszak/yala)
 <img src="logo.png" align="right" width="200px">
 
-Tiny **structured logging** abstraction with adapters for most popular logging Go libraries and easy way to roll your own.
+Tiny **structured logging** abstraction or facade with adapters for most popular Go logging libraries and an easy way to create a new adapter.
 
 ## Supported logging implementations
 
@@ -13,10 +13,10 @@ Tiny **structured logging** abstraction with adapters for most popular logging G
 ## When to use?
 
 * If you are a module/package/library author
-* And you want to participate in a caller logging system (log messages using the logger provided by the consumer)
+* And you want to participate in the end user logging system (log messages using the logger provided by the end user)
 * And you don't want to add dependency to any specific logging library to your code
 * And you don't want to manually inject logger to every possible place where you want to log something (function, struct etc.)
-* If you need nice and elegant API with a bunch of useful functions, but at the same time you don't want your clients spend hours on writing their own logging adapter.
+* If you need nice and elegant API with a bunch of useful functions, but at the same time you don't want your end users spend hours on writing their own logging adapter.
 
 ## Installation
 
@@ -67,6 +67,7 @@ import (
 	"lib"
 )
 
+// End user decides what library to plug in.
 func main() {
 	adapter := printer.StdoutAdapter() // will use fmt.Println
 	lib.Logger.SetAdapter(adapter)     // set the adapter
@@ -103,7 +104,7 @@ func (l YourLib) Method(ctx context.Context) {
     l.localLogger.Debug(ctx, "message from local logger")
 }
 
-// client code
+// end user code
 adapter := printer.StdoutAdapter()
 lib := NewLibrary(adapter)
 ```
@@ -137,12 +138,12 @@ func (MyAdapter) Log(context.Context, logger.Entry) {
 ### Difference between logger.Logger and logger.Adapter
 
 * logger.Logger is a struct for logging messages (optionally with fields and error). It is used by packages in your module.
-* logger.Adapter is an abstraction which should be implemented by adapters. Some adapters are already implemented (such as logrusadapter) and new adapter can be easily implemented too.
+* logger.Adapter is an abstraction which should be implemented by adapters. Some adapters are already implemented (such as logrusadapter) and new adapters can be easily implemented too.
 * so, why two abstractions? Simply because the smaller the Adapter interface, the easier it is to implement it. On the other hand, from library perspective, more methods means API which is easier to use. 
 
 ### Why just don't create my own abstraction instead of using yala?
 
-Yes, you can also create your own. Very often it just an interface with a single method, like this:
+Yes, you can also create your own. Very often it is just an interface with a single method, like this:
 
 ```go
 type ImaginaryLogger interface {
