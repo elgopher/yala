@@ -1,7 +1,7 @@
 # YALA - Yet Another Logging Abstraction for Go
 
-[![Go](https://github.com/jacekolszak/yala/actions/workflows/go.yml/badge.svg)](https://github.com/jacekolszak/yala/actions/workflows/go.yml)
-[![Go Reference](https://pkg.go.dev/badge/github.com/jacekolszak/yala.svg)](https://pkg.go.dev/github.com/jacekolszak/yala)
+[![Go](https://github.com/elgopher/yala/actions/workflows/go.yml/badge.svg)](https://github.com/elgopher/yala/actions/workflows/go.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/elgopher/yala.svg)](https://pkg.go.dev/github.com/elgopher/yala)
 <img src="logo.png" align="right" width="200px">
 
 Tiny **structured logging** abstraction or facade with adapters for most popular Go logging libraries and an easy way to create a new adapter.
@@ -22,7 +22,7 @@ Tiny **structured logging** abstraction or facade with adapters for most popular
 
 ```shell
 # Add yala to your Go module:
-go get github.com/jacekolszak/yala        
+go get github.com/elgopher/yala        
 ```
 
 ## How to use
@@ -41,7 +41,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/logger"
 )
 
 // define global logger, no need to initialize it (by default nothing is logged)
@@ -64,7 +64,7 @@ package main
 import (
 	"context"
 
-	"github.com/jacekolszak/yala/adapter/printer"
+	"github.com/elgopher/yala/adapter/printer"
 	"lib"
 )
 
@@ -168,6 +168,6 @@ But there are limitations for such solution:
 ### YALA limitations
 
 * even though your package will be independent of any specific logging implementation, you still have to import 
-  `github.com/jacekolszak/yala/logger`. This package is relatively small though, compared to real logging libraries
+  `github.com/elgopher/yala/logger`. This package is relatively small though, compared to real logging libraries
   (about ~200 lines of production code) and **it does not import any external libraries**.
 * yala is not optimized for **extreme** performance, because this would hurt the developer experience and readability of the created code. Any intermediary API ads overhead - global synchronized variables, wrapper code and even polymorphism slow down the execution a bit. The overhead varies, but it is usually a matter of tens of nanoseconds per call. 

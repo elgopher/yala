@@ -3,8 +3,8 @@ package glogadapter_test
 import (
 	"testing"
 
-	"github.com/jacekolszak/yala/adapter/glogadapter"
-	"github.com/jacekolszak/yala/adapter/internal/benchmark"
+	"github.com/elgopher/yala/adapter/glogadapter"
+	"github.com/elgopher/yala/adapter/internal/benchmark"
 )
 
 func BenchmarkGlog(b *testing.B) {

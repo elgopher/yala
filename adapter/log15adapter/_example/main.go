@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
+	"github.com/elgopher/yala/adapter/log15adapter"
+	"github.com/elgopher/yala/logger"
 	"github.com/inconshreveable/log15"
-	"github.com/jacekolszak/yala/adapter/log15adapter"
-	"github.com/jacekolszak/yala/logger"
 )
 
 var ErrSome = errors.New("some error")

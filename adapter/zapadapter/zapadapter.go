@@ -3,7 +3,7 @@ package zapadapter
 import (
 	"context"
 
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/logger"
 	"go.uber.org/zap"
 )
 

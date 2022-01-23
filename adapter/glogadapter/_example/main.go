@@ -5,8 +5,8 @@ import (
 	"errors"
 	"flag"
 
-	"github.com/jacekolszak/yala/adapter/glogadapter"
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/adapter/glogadapter"
+	"github.com/elgopher/yala/logger"
 )
 
 var ErrSome = errors.New("ErrSome")

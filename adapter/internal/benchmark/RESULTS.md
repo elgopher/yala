@@ -3,7 +3,7 @@
 Please do not compare the results between different adapters, because they are testing different things. Results here
 are useful for performance regression testing. 
 
-* pkg: `github.com/jacekolszak/yala/adapter`
+* pkg: `github.com/elgopher/yala/adapter`
 * cpu: Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz
 
 ```

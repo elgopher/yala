@@ -4,9 +4,9 @@ import (
 	"context"
 	"strings"
 
+	"github.com/elgopher/yala/adapter/logfmt"
+	"github.com/elgopher/yala/logger"
 	"github.com/golang/glog"
-	"github.com/jacekolszak/yala/adapter/logfmt"
-	"github.com/jacekolszak/yala/logger"
 )
 
 // Adapter is a logger.Adapter implementation, which is using `glog` package (https://github.com/golang/glog).

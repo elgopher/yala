@@ -5,8 +5,8 @@ import (
 	"errors"
 	"os"
 
-	"github.com/jacekolszak/yala/adapter/zerologadapter"
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/adapter/zerologadapter"
+	"github.com/elgopher/yala/logger"
 	"github.com/rs/zerolog"
 )
 

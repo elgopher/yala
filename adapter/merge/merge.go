@@ -6,7 +6,7 @@ package merge
 import (
 	"context"
 
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/logger"
 )
 
 type Func func(ctx context.Context, entry logger.Entry) logger.Entry

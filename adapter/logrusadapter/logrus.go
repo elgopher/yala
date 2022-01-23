@@ -3,7 +3,7 @@ package logrusadapter
 import (
 	"context"
 
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/logger"
 	"github.com/sirupsen/logrus"
 )
 

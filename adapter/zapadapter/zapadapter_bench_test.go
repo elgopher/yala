@@ -4,8 +4,8 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/jacekolszak/yala/adapter/internal/benchmark"
-	"github.com/jacekolszak/yala/adapter/zapadapter"
+	"github.com/elgopher/yala/adapter/internal/benchmark"
+	"github.com/elgopher/yala/adapter/zapadapter"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
 )

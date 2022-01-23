@@ -3,8 +3,8 @@ package log15adapter
 import (
 	"context"
 
+	"github.com/elgopher/yala/logger"
 	"github.com/inconshreveable/log15"
-	"github.com/jacekolszak/yala/logger"
 )
 
 // Adapter is a logger.Adapter implementation, which is using `log15` package

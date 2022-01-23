@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/jacekolszak/yala/adapter/zapadapter"
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/adapter/zapadapter"
+	"github.com/elgopher/yala/logger"
 	"github.com/stretchr/testify/assert"
 )
 

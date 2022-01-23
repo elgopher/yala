@@ -3,8 +3,8 @@ package printer_test
 import (
 	"testing"
 
-	"github.com/jacekolszak/yala/adapter/internal/benchmark"
-	"github.com/jacekolszak/yala/adapter/printer"
+	"github.com/elgopher/yala/adapter/internal/benchmark"
+	"github.com/elgopher/yala/adapter/printer"
 )
 
 func BenchmarkPrinter(b *testing.B) {

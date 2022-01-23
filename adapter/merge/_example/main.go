@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 
-	"github.com/jacekolszak/yala/adapter/merge"
-	"github.com/jacekolszak/yala/adapter/printer"
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/adapter/merge"
+	"github.com/elgopher/yala/adapter/printer"
+	"github.com/elgopher/yala/logger"
 )
 
 const tag = "tag"
