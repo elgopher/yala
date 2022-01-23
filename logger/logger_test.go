@@ -88,6 +88,13 @@ func TestLocalLogger(t *testing.T) {
 		localLogger.Info(ctx, message)
 	})
 
+	t.Run("using zero value should not panic", func(t *testing.T) {
+		var localLogger logger.LocalLogger
+		assert.NotPanics(t, func() {
+			localLogger.Info(ctx, message)
+		})
+	})
+
 	t.Run("should log message using adapter", func(t *testing.T) {
 		type functionUnderTest func(l logger.LocalLogger, ctx context.Context, msg string)
 		tests := map[logger.Level]functionUnderTest{
@@ -110,7 +117,7 @@ func TestLocalLogger(t *testing.T) {
 					logger.Entry{
 						Level:               lvl,
 						Message:             message,
-						SkippedCallerFrames: 2,
+						SkippedCallerFrames: 3,
 					},
 				)
 			})

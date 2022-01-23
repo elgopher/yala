@@ -4,7 +4,7 @@ import (
 	"context"
 )
 
-const localLoggerSkippedCallerFrames = 2
+const localLoggerSkippedCallerFrames = 3
 
 // LocalLogger is an immutable struct to log messages or create new loggers with fields or error.
 //
@@ -25,19 +25,27 @@ func Local(adapter Adapter) LocalLogger {
 }
 
 func (l LocalLogger) Debug(ctx context.Context, msg string) {
-	l.adapter.Log(ctx, Entry{Level: DebugLevel, Message: msg, SkippedCallerFrames: localLoggerSkippedCallerFrames})
+	l.log(ctx, DebugLevel, msg)
+}
+
+func (l LocalLogger) log(ctx context.Context, lvl Level, msg string) {
+	if l.adapter == nil {
+		return
+	}
+
+	l.adapter.Log(ctx, Entry{Level: lvl, Message: msg, SkippedCallerFrames: localLoggerSkippedCallerFrames})
 }
 
 func (l LocalLogger) Info(ctx context.Context, msg string) {
-	l.adapter.Log(ctx, Entry{Level: InfoLevel, Message: msg, SkippedCallerFrames: localLoggerSkippedCallerFrames})
+	l.log(ctx, InfoLevel, msg)
 }
 
 func (l LocalLogger) Warn(ctx context.Context, msg string) {
-	l.adapter.Log(ctx, Entry{Level: WarnLevel, Message: msg, SkippedCallerFrames: localLoggerSkippedCallerFrames})
+	l.log(ctx, WarnLevel, msg)
 }
 
 func (l LocalLogger) Error(ctx context.Context, msg string) {
-	l.adapter.Log(ctx, Entry{Level: ErrorLevel, Message: msg, SkippedCallerFrames: localLoggerSkippedCallerFrames})
+	l.log(ctx, ErrorLevel, msg)
 }
 
 // With creates a new Logger with field.
