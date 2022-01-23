@@ -1,7 +1,7 @@
 # YALA - Yet Another Logging Abstraction for Go
 
 [![Go](https://github.com/jacekolszak/yala/actions/workflows/go.yml/badge.svg)](https://github.com/jacekolszak/yala/actions/workflows/go.yml)
-
+[![Go Reference](https://pkg.go.dev/badge/github.com/jacekolszak/yala.svg)](https://pkg.go.dev/github.com/jacekolszak/yala)
 
 Tiny **structured logging** abstraction with adapters for most popular logging Go libraries and easy way to roll your own.
 
