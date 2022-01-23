@@ -3,7 +3,7 @@ package logger_test
 import (
 	"testing"
 
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/logger"
 )
 
 func BenchmarkInfo(b *testing.B) {

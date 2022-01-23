@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
+	"github.com/elgopher/yala/adapter/log15adapter"
+	"github.com/elgopher/yala/logger"
 	"github.com/inconshreveable/log15"
-	"github.com/jacekolszak/yala/adapter/log15adapter"
-	"github.com/jacekolszak/yala/logger"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

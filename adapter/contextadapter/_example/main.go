@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"github.com/jacekolszak/yala/adapter/contextadapter"
-	"github.com/jacekolszak/yala/adapter/zapadapter"
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/adapter/contextadapter"
+	"github.com/elgopher/yala/adapter/zapadapter"
+	"github.com/elgopher/yala/logger"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )

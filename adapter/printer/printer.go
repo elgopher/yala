@@ -7,8 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/jacekolszak/yala/adapter/logfmt"
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/adapter/logfmt"
+	"github.com/elgopher/yala/logger"
 )
 
 // Adapter is a logger.Adapter implementation, which is using Printer interface. This interface is implemented for

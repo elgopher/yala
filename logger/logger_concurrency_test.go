@@ -5,7 +5,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/logger"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/jacekolszak/yala/adapter/printer"
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/adapter/printer"
+	"github.com/elgopher/yala/logger"
 )
 
 var ErrSome = errors.New("ErrSome")

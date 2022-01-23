@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/logger"
 )
 
 func WriteField(builder *strings.Builder, f logger.Field) {

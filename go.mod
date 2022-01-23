@@ -1,4 +1,4 @@
-module github.com/jacekolszak/yala
+module github.com/elgopher/yala
 
 go 1.17
 

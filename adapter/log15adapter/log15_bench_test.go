@@ -3,9 +3,9 @@ package log15adapter_test
 import (
 	"testing"
 
+	"github.com/elgopher/yala/adapter/internal/benchmark"
+	"github.com/elgopher/yala/adapter/log15adapter"
 	"github.com/inconshreveable/log15"
-	"github.com/jacekolszak/yala/adapter/internal/benchmark"
-	"github.com/jacekolszak/yala/adapter/log15adapter"
 )
 
 func BenchmarkLog15(b *testing.B) {

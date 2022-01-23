@@ -5,7 +5,7 @@ package contextadapter
 import (
 	"context"
 
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/logger"
 )
 
 func New(contextKey interface{}, adapterFromContextLogger func(loggerOrNil interface{}) logger.Adapter) logger.Adapter { // nolint

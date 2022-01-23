@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jacekolszak/yala/adapter/logfmt"
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/adapter/logfmt"
+	"github.com/elgopher/yala/logger"
 	"github.com/stretchr/testify/assert"
 )
 

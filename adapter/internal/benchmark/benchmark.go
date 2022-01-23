@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/jacekolszak/yala/logger"
+	"github.com/elgopher/yala/logger"
 )
 
 func Adapter(b *testing.B, adapter logger.Adapter) {

@@ -8,7 +8,7 @@ import (
 // Global is a logger shared globally. You can use it to define global logger for your package:
 //
 //		package yourpackage
-//		import "github.com/jacekolszak/yala/logger"
+//		import "github.com/elgopher/yala/logger"
 //		var Logger logger.Global // define global logger, no need to initialize (by default nothing is logged)
 //
 //

@@ -3,8 +3,8 @@ package logrusadapter_test
 import (
 	"testing"
 
-	"github.com/jacekolszak/yala/adapter/internal/benchmark"
-	"github.com/jacekolszak/yala/adapter/logrusadapter"
+	"github.com/elgopher/yala/adapter/internal/benchmark"
+	"github.com/elgopher/yala/adapter/logrusadapter"
 	"github.com/sirupsen/logrus"
 )
 
