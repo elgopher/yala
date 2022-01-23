@@ -12,7 +12,7 @@ Tiny **structured logging** abstraction or facade with adapters for most popular
 
 ## When to use?
 
-* If you are a module/package/library author
+* If you are a package/module/library author
 * And you want to participate in the end user logging system (log messages using the logger provided by the end user)
 * And you don't want to add dependency to any specific logging library to your code
 * And you don't want to manually inject logger to every possible place where you want to log something (function, struct etc.)
@@ -153,8 +153,8 @@ type ImaginaryLogger interface {
 
 But there are limitations for such solution:
 
-* such interface alone is not very easy to use in your module/library/package
-* someone who is using your module is supposed to write his own adapter of this interface (or you can provide adapters which
+* such interface alone is not very easy to use in your package/module/library
+* someone who is using your package is supposed to write his own adapter of this interface (or you can provide adapters which
   of course takes your valuable time)
 * it is not obvious how logging API should look like
 
@@ -165,7 +165,7 @@ But there are limitations for such solution:
 
 ### YALA limitations
 
-* even though your module will be independent of any specific logging implementation, you still have to import 
+* even though your package will be independent of any specific logging implementation, you still have to import 
   `github.com/jacekolszak/yala/logger`. This package is relatively small though, compared to real logging libraries
   (about ~200 lines of production code) and **it does not import any external libraries**.
 * yala is not optimized for **extreme** performance, because this would hurt the developer experience and readability of the created code. Any intermediary API ads overhead - global synchronized variables, wrapper code and even polymorphism slow down the execution a bit. The overhead varies, but it is usually a matter of tens of nanoseconds per call. 
