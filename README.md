@@ -135,11 +135,11 @@ func (MyAdapter) Log(context.Context, logger.Entry) {
 }
 ```
 
-### Difference between logger.Logger and logger.Adapter
+### Difference between Logger and Adapter
 
-* logger.Logger is a struct for logging messages (optionally with fields and error). It is used by packages in your module.
-* logger.Adapter is an abstraction which should be implemented by adapters. Some adapters are already implemented (such as logrusadapter) and new adapters can be easily implemented too.
-* so, why two abstractions? Simply because the smaller the Adapter interface, the easier it is to implement it. On the other hand, from library perspective, more methods means API which is easier to use. 
+* Logger is used by package/module/library author
+* Adapter is an interface to be implemented by adapters. They use real logging libraries under the hood.
+* So, why two abstractions? Simply because the smaller the Adapter interface, the easier it is to implement it. On the other hand, from library perspective, more methods means API which is easier to use. 
 
 ### Why just don't create my own abstraction instead of using yala?
 
