@@ -158,12 +158,14 @@ But there are limitations for such solution:
   of course takes your valuable time)
 * it is not obvious how logging API should look like
 
+### But yala is just another API. Why it is unique?
+
+* yala is designed for the ease of use. And by that I mean ease of use for anyone - developer who logs messages, developer writing adapter and end user configuring the adapter
+* yala is using `context.Context` in each method call, making possible to use sophisticated request-scoped logging
+
 ### YALA limitations
 
 * even though your module will be independent of any specific logging implementation, you still have to import 
   `github.com/jacekolszak/yala/logger`. This package is relatively small though, compared to real logging libraries
   (about ~200 lines of production code) and **it does not import any external libraries**.
-* yala is optimized for the ease of use (both for the developer who logs messages and for the developer writing
-  adapter). It is not optimized for *extreme* performance, because this would hurt the user experience and readability of the
-  created code. Any intermediary API ads overhead - global synchronized variables, wrapper code and even polymorphism slow down 
-  the execution a bit. The overhead varies, but it is usually a matter of tens of nanoseconds per call. 
+* yala is not optimized for **extreme** performance, because this would hurt the developer experience and readability of the created code. Any intermediary API ads overhead - global synchronized variables, wrapper code and even polymorphism slow down the execution a bit. The overhead varies, but it is usually a matter of tens of nanoseconds per call. 
