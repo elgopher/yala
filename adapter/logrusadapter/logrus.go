@@ -17,19 +17,6 @@ func (a Adapter) Log(ctx context.Context, entry logger.Entry) {
 		return
 	}
 
-	lvl := logrus.InfoLevel
-
-	switch entry.Level {
-	case logger.DebugLevel:
-		lvl = logrus.DebugLevel
-	case logger.InfoLevel:
-		lvl = logrus.InfoLevel
-	case logger.WarnLevel:
-		lvl = logrus.WarnLevel
-	case logger.ErrorLevel:
-		lvl = logrus.ErrorLevel
-	}
-
 	logrusEntry := a.Entry
 
 	for _, f := range entry.Fields {
@@ -40,5 +27,20 @@ func (a Adapter) Log(ctx context.Context, entry logger.Entry) {
 		logrusEntry = logrusEntry.WithError(entry.Error)
 	}
 
-	logrusEntry.Log(lvl, entry.Message)
+	logrusEntry.Log(logrusLevel(entry), entry.Message)
+}
+
+func logrusLevel(entry logger.Entry) logrus.Level {
+	switch entry.Level {
+	case logger.DebugLevel:
+		return logrus.DebugLevel
+	case logger.InfoLevel:
+		return logrus.InfoLevel
+	case logger.WarnLevel:
+		return logrus.WarnLevel
+	case logger.ErrorLevel:
+		return logrus.ErrorLevel
+	default:
+		return logrus.InfoLevel
+	}
 }
