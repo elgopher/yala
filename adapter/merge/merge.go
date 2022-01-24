@@ -1,3 +1,6 @@
+// (c) 2022 Jacek Olszak
+// This code is licensed under MIT license (see LICENSE for details)
+
 // Package merge provides logger.Adapter implementation which merges each logger.Entry with context.Context using
 // provided function. It can be used for adding tags stored in the context.Context, adding custom fields or modifying
 // messages.
