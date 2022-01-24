@@ -46,14 +46,17 @@ import (
 )
 
 // define global logger, no need to initialize it (by default nothing is logged)
-var Logger logger.Global
+var logger logger.Global
 
-var ErrSome = errors.New("ErrSome")
+// Provide a public function for setting adapter
+func SetLoggerAdapter(adapter logger.Adapter) {
+	logger.SetAdapter(adapter)
+}
 
 func Function(ctx context.Context) {
-	Logger.Debug(ctx, "Debug message")
-	Logger.With(ctx, "field_name", "value").Info("Message with field")
-	Logger.WithError(ctx, ErrSome).Error("Message with error")
+	logger.Debug(ctx, "Debug message")
+	logger.With(ctx, "field_name", "value").Info("Message with field")
+	logger.WithError(ctx, errors.New("some")).Error("Message with error")
 }
 ```
 
@@ -72,7 +75,7 @@ import (
 // End user decides what library to plug in.
 func main() {
 	adapter := printer.StdoutAdapter() // will use fmt.Println
-	lib.Logger.SetAdapter(adapter)     // set the adapter
+	lib.SetLoggerAdapter(adapter)
 
 	ctx := context.Background()
 	lib.Function(ctx)
