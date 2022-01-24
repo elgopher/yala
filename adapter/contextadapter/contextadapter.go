@@ -1,3 +1,6 @@
+// (c) 2022 Jacek Olszak
+// This code is licensed under MIT license (see LICENSE for details)
+
 // Package contextadapter provides logger.Adapter implementation which lookups logger in the context.Context and wrap
 // it inside adapter. It is useful when your app is using context.Context to store logger instance.
 package contextadapter

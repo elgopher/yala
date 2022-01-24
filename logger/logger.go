@@ -1,3 +1,6 @@
+// (c) 2022 Jacek Olszak
+// This code is licensed under MIT license (see LICENSE for details)
+
 // Package logger provides structured logging abstraction or facade, to be used by code which is not aware what logging
 // library is used by end user.
 //
