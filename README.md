@@ -2,6 +2,7 @@
 
 [![Go](https://github.com/elgopher/yala/actions/workflows/go.yml/badge.svg)](https://github.com/elgopher/yala/actions/workflows/go.yml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/elgopher/yala.svg)](https://pkg.go.dev/github.com/elgopher/yala)
+[![Go Report Card](https://goreportcard.com/badge/github.com/elgopher/yala)](https://goreportcard.com/report/github.com/elgopher/yala)
 <img src="logo.png" align="right" width="30%">
 
 Tiny **structured logging** abstraction or facade with adapters for most popular Go logging libraries and an easy way to create a new adapter.
