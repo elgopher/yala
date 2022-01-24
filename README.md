@@ -162,7 +162,7 @@ But there are limitations for such solution:
 
 ### But yala is just another API. Why it is unique?
 
-* yala is designed for the ease of use. And by that I mean ease of use for anyone - developer who logs messages, developer writing adapter and end user configuring the adapter
+* yala is designed for the ease of use. And by that I mean ease of use for anyone - developer logging messages, developer writing adapter and end user configuring the adapter
 * yala is using `context.Context` in each method call, making possible to use sophisticated request-scoped logging
 
 ### YALA limitations
