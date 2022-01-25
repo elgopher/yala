@@ -39,5 +39,6 @@ func (a AddFieldFromContextAdapter) Log(ctx context.Context, entry logger.Entry)
 			Value: ctx.Value(tag),
 		},
 	)
+	newEntry.SkippedCallerFrames++ // each middleware adapter must additionally skip one frame
 	a.Adapter.Log(ctx, newEntry)
 }
