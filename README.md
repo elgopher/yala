@@ -46,17 +46,17 @@ import (
 )
 
 // define global logger, no need to initialize it (by default nothing is logged)
-var logger logger.Global
+var log logger.Global
 
 // Provide a public function for setting adapter
-func SetLoggerAdapter(adapter logger.Adapter) {
-	logger.SetAdapter(adapter)
+func SetLogAdapter(adapter logger.Adapter) {
+	log.SetAdapter(adapter)
 }
 
 func Function(ctx context.Context) {
-	logger.Debug(ctx, "Debug message")
-	logger.With(ctx, "field_name", "value").Info("Message with field")
-	logger.WithError(ctx, errors.New("some")).Error("Message with error")
+	log.Debug(ctx, "Debug message")
+	log.With(ctx, "field_name", "value").Info("Message with field")
+	log.WithError(ctx, errors.New("some")).Error("Message with error")
 }
 ```
 
