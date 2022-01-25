@@ -53,7 +53,7 @@ func (a ZapContextAdapter) Log(ctx context.Context, entry logger.Entry) {
 		adapter = zapadapter.Adapter{Logger: zapLogger}
 	}
 
-	entry.SkippedCallerFrames++
+	entry.SkippedCallerFrames++ // each middleware adapter must additionally skip one frame
 
 	adapter.Log(ctx, entry)
 }

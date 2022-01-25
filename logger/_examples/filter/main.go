@@ -38,5 +38,6 @@ func (a FilterOutMessages) Log(ctx context.Context, entry logger.Entry) {
 		return
 	}
 
+	entry.SkippedCallerFrames++ // each middleware adapter must additionally skip one frame
 	a.Adapter.Log(ctx, entry)
 }
