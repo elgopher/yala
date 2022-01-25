@@ -21,6 +21,9 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
 
+      - name: Build
+        run: make build
+
       - name: Test
         run: make test
 

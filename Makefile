@@ -5,3 +5,7 @@ lint:
 .PHONY: test
 test:
 	go test -race -v ./...
+
+.PHONY: build
+build:
+	go build ./...
