@@ -126,7 +126,7 @@ lib := NewLibrary(adapter)
 
 #### Advanced examples
 
-* [Add field to each message taken from context.Context](adapter/merge/_example/main.go)
+* [Add field to each message taken from context.Context](logger/_examples/tags/main.go)
 * [Zap logger passed over context.Context](adapter/contextadapter/_example/main.go)
 
 ### Writing your own adapter
