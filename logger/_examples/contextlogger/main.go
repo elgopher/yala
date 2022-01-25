@@ -2,9 +2,7 @@ package main
 
 import (
 	"context"
-	"errors"
 
-	"github.com/elgopher/yala/adapter/contextadapter"
 	"github.com/elgopher/yala/adapter/zapadapter"
 	"github.com/elgopher/yala/logger"
 	"go.uber.org/zap"
@@ -15,33 +13,21 @@ type key string
 
 const contextLoggerKey key = "contextLogger"
 
-var ErrSome = errors.New("ErrSome")
-
 // This advanced example shows how to make use of zap logger passed in the context.Context
 func main() {
 	ctx := context.Background()
 
 	defaultZapLogger := newZapLogger()
-
 	// this adapter will look for zap logger in the context and will wrap it with zapadapter.Adapter
-	adapter := contextadapter.New(contextLoggerKey, func(loggerOrNil interface{}) logger.Adapter {
-		if zapLogger, ok := loggerOrNil.(*zap.Logger); ok {
-			return zapadapter.Adapter{Logger: zapLogger}
-		}
-
-		return zapadapter.Adapter{Logger: defaultZapLogger}
-	})
+	adapter := ZapContextAdapter{DefaultZapLogger: defaultZapLogger}
 	// create local logger
-	yalaLogger := logger.Local(adapter)
+	log := logger.Local(adapter)
 
 	contextLogger := defaultZapLogger.With(zap.String("tag", "value"))
 	// bind zap logger to ctx, so all messages will be logged with tag
 	ctx = context.WithValue(ctx, contextLoggerKey, contextLogger)
 
-	yalaLogger.Debug(ctx, "Hello zap from ctx")
-	yalaLogger.With(ctx, "field_name", "field_value").Info("Some info")
-	yalaLogger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
-	yalaLogger.WithError(ctx, ErrSome).Error("Some error")
+	log.Debug(ctx, "Hello zap from context.Context") // Hello zap from context.Context   {"tag": "value"}
 }
 
 func newZapLogger() *zap.Logger {
@@ -53,4 +39,21 @@ func newZapLogger() *zap.Logger {
 		panic(err)
 	}
 	return zapLogger
+}
+
+type ZapContextAdapter struct {
+	DefaultZapLogger *zap.Logger
+}
+
+func (a ZapContextAdapter) Log(ctx context.Context, entry logger.Entry) {
+	adapter := zapadapter.Adapter{Logger: a.DefaultZapLogger}
+
+	contextLogger := ctx.Value(contextLoggerKey)
+	if zapLogger, ok := contextLogger.(*zap.Logger); ok {
+		adapter = zapadapter.Adapter{Logger: zapLogger}
+	}
+
+	entry.SkippedCallerFrames++
+
+	adapter.Log(ctx, entry)
 }
