@@ -126,6 +126,7 @@ lib := NewLibrary(adapter)
 
 #### Advanced examples
 
+* [Filter out messages starting with given prefix](logger/_examples/filter/main.go)
 * [Add field to each message taken from context.Context](logger/_examples/tags/main.go)
 * [Zap logger passed over context.Context](adapter/contextadapter/_example/main.go)
 
