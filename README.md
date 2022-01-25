@@ -5,9 +5,9 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/elgopher/yala)](https://goreportcard.com/report/github.com/elgopher/yala)
 <img src="logo.png" align="right" width="30%">
 
-Tiny **structured logging** abstraction or facade with adapters for most popular Go logging libraries and an easy way to create a new adapter.
+Tiny **structured logging** abstraction or facade for various logging libraries, allowing the end user to plug in the desired logging library in `main.go`.
 
-## Supported logging implementations
+## Supported logging libraries (via adapters)
 
 [logrus](adapter/logrusadapter), [zap](adapter/zapadapter), [zerolog](adapter/zerologadapter), [glog](adapter/glogadapter), [log15](adapter/log15adapter) and [standard fmt and log packages](adapter/printer)
 
@@ -15,9 +15,9 @@ Tiny **structured logging** abstraction or facade with adapters for most popular
 
 * If you are a package/module/library author
 * And you want to participate in the end user logging system (log messages using the logger provided by the end user)
-* And you don't want to add dependency to any specific logging library to your code
-* And you don't want to manually inject logger to every possible place where you want to log something (function, struct etc.)
-* If you need nice and elegant API with a bunch of useful functions, but at the same time you don't want your end users spend hours on writing their own logging adapter.
+* You don't want to add dependency to any specific logging library to your code
+* You don't want to manually inject logger to every possible place where you want to log something (such as function, struct etc.)
+* If you need a nice and elegant API with a bunch of useful functions, but at the same time you don't want your end users to spend hours on writing their own logging adapter.
 
 ## Installation
 
