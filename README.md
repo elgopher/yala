@@ -75,7 +75,7 @@ import (
 // End user decides what library to plug in.
 func main() {
 	adapter := printer.StdoutAdapter() // will use fmt.Println
-	lib.SetLoggerAdapter(adapter)
+	lib.SetLogAdapter(adapter)
 
 	ctx := context.Background()
 	lib.Function(ctx)
