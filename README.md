@@ -115,7 +115,7 @@ adapter := printer.StdoutAdapter()
 lib := NewLibrary(adapter)
 ```
 
-### More examples
+### How to use adapters
 
 * [Logrus](adapter/logrusadapter/_example/main.go)
 * [fmt.Println and standard log package](adapter/printer/_example/main.go)
@@ -124,7 +124,7 @@ lib := NewLibrary(adapter)
 * [glog](adapter/glogadapter/_example/main.go)
 * [Log15](adapter/log15adapter/_example/main.go)
 
-#### Advanced examples
+### Advanced recipies
 
 * [Filter out messages starting with given prefix](logger/_examples/filter/main.go)
 * [Add field to each message taken from context.Context](logger/_examples/tags/main.go)
