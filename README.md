@@ -48,7 +48,7 @@ import (
 // define global logger, no need to initialize it (by default nothing is logged)
 var log logger.Global
 
-// Provide a public function for setting adapter
+// Provide a public function for setting adapter. It will be called in main.go
 func SetLogAdapter(adapter logger.Adapter) {
 	log.SetAdapter(adapter)
 }
