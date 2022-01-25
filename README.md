@@ -115,7 +115,7 @@ adapter := printer.StdoutAdapter()
 lib := NewLibrary(adapter)
 ```
 
-### How to use adapters
+### How to use existing adapters
 
 * [Logrus](adapter/logrusadapter/_example/main.go)
 * [fmt.Println and standard log package](adapter/printer/_example/main.go)
@@ -123,12 +123,6 @@ lib := NewLibrary(adapter)
 * [Zerolog](adapter/zerologadapter/_example/main.go)
 * [glog](adapter/glogadapter/_example/main.go)
 * [Log15](adapter/log15adapter/_example/main.go)
-
-### Advanced recipies
-
-* [Filter out messages starting with given prefix](logger/_examples/filter/main.go)
-* [Add field to each message taken from context.Context](logger/_examples/tags/main.go)
-* [Zap logger passed over context.Context](adapter/contextadapter/_example/main.go)
 
 ### Writing your own adapter
 
@@ -147,6 +141,12 @@ func (MyAdapter) Log(context.Context, logger.Entry) {
 * Logger is used by package/module/library author
 * Adapter is an interface to be implemented by adapters. They use real logging libraries under the hood.
 * So, why two abstractions? Simply because the smaller the Adapter interface, the easier it is to implement it. On the other hand, from library perspective, more methods means API which is easier to use. 
+
+### Advanced recipes
+
+* [Filter out messages starting with given prefix](logger/_examples/filter/main.go)
+* [Add field to each message taken from context.Context](logger/_examples/tags/main.go)
+* [Zap logger passed over context.Context](adapter/contextadapter/_example/main.go)
 
 ### Why just don't create my own abstraction instead of using yala?
 
