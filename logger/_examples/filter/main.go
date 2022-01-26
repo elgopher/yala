@@ -14,8 +14,8 @@ func main() {
 
 	// creates an adapter which filter out messages
 	filterAdapter := FilterOutMessages{
-		Prefix:  "example:",
-		Adapter: adapter,
+		Prefix:      "example:",
+		NextAdapter: adapter,
 	}
 	l := logger.Local(filterAdapter)
 
@@ -29,8 +29,8 @@ func main() {
 // FilterOutMessages is a middleware (decorator) which filters out entries
 // with message starting with prefix
 type FilterOutMessages struct {
-	Prefix  string
-	Adapter logger.Adapter
+	Prefix      string
+	NextAdapter logger.Adapter
 }
 
 func (a FilterOutMessages) Log(ctx context.Context, entry logger.Entry) {
@@ -39,5 +39,5 @@ func (a FilterOutMessages) Log(ctx context.Context, entry logger.Entry) {
 	}
 
 	entry.SkippedCallerFrames++ // each middleware adapter must additionally skip one frame
-	a.Adapter.Log(ctx, entry)
+	a.NextAdapter.Log(ctx, entry)
 }
