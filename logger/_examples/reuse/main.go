@@ -11,7 +11,7 @@ import (
 func main() {
 	ctx := context.Background()
 
-	log := logger.Local(printer.StdoutAdapter())
+	log := logger.Local{Adapter: printer.StdoutAdapter()}
 
 	// requestLogger will log all messages with at least two fields: request_id and user
 	requestLogger := log.With(ctx, "request_id", "123").With("user", "elgopher")
