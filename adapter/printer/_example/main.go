@@ -17,7 +17,7 @@ func main() {
 	ctx := context.Background()
 
 	// log using fmt.Println
-	yalaLogger := logger.Local(printer.StdoutAdapter())
+	yalaLogger := logger.Local{Adapter: printer.StdoutAdapter()}
 
 	yalaLogger.Debug(ctx, "Hello fmt")
 	yalaLogger.With(ctx, "field_name", "field_value").Info("Some info")
@@ -27,7 +27,7 @@ func main() {
 	// log using standard log package
 	standardLog := log.New(os.Stdout, "", log.LstdFlags)
 	adapter := printer.Adapter{Printer: standardLog}
-	yalaLogger = logger.Local(adapter)
+	yalaLogger = logger.Local{Adapter: adapter}
 
 	yalaLogger.Debug(ctx, "Hello standard log")
 	yalaLogger.With(ctx, "f1", "v1").With("f2", "f2").Info("Some info")

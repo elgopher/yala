@@ -22,12 +22,12 @@ func main() {
 		Entry: entry, // inject logrus
 	}
 	// Create yala logger
-	yalaLogger := logger.Local(adapter)
+	log := logger.Local{Adapter: adapter}
 
-	yalaLogger.Debug(ctx, "Hello logrus ")
-	yalaLogger.With(ctx, "field_name", "field_value").With("another", "ccc").Info("Some info")
-	yalaLogger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
-	yalaLogger.WithError(ctx, ErrSome).Error("Some error")
+	log.Debug(ctx, "Hello logrus ")
+	log.With(ctx, "field_name", "field_value").With("another", "ccc").Info("Some info")
+	log.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
+	log.WithError(ctx, ErrSome).Error("Some error")
 }
 
 func newLogrusEntry() *logrus.Entry {

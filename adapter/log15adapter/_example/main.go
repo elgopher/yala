@@ -17,10 +17,10 @@ func main() {
 
 	l := log15.New()                           // create log15 logger
 	adapter := log15adapter.Adapter{Logger: l} // create logger.Adapter for log15
-	yalaLogger := logger.Local(adapter)        // create yala logger
+	log := logger.Local{Adapter: adapter}      // create yala logger
 
-	yalaLogger.Debug(ctx, "Hello log15")
-	yalaLogger.With(ctx, "field_name", "field_value").Info("Some info")
-	yalaLogger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
-	yalaLogger.WithError(ctx, ErrSome).Error("Some error")
+	log.Debug(ctx, "Hello log15")
+	log.With(ctx, "field_name", "field_value").Info("Some info")
+	log.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
+	log.WithError(ctx, ErrSome).Error("Some error")
 }
