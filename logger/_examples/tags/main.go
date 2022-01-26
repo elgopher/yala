@@ -14,7 +14,7 @@ func main() {
 	adapter := printer.StdoutAdapter()
 
 	// creates an adapter which adds field from context to each logged message.
-	addFieldAdapter := AddFieldFromContextAdapter{Adapter: adapter}
+	addFieldAdapter := AddFieldFromContextAdapter{NextAdapter: adapter}
 	l := logger.Local(addFieldAdapter)
 
 	ctx := context.Background()
@@ -28,7 +28,7 @@ func main() {
 // AddFieldFromContextAdapter is a middleware (decorator) which adds
 // a new field to logger.Entry from the tag stored in the context.
 type AddFieldFromContextAdapter struct {
-	Adapter logger.Adapter
+	NextAdapter logger.Adapter
 }
 
 func (a AddFieldFromContextAdapter) Log(ctx context.Context, entry logger.Entry) {
@@ -40,5 +40,5 @@ func (a AddFieldFromContextAdapter) Log(ctx context.Context, entry logger.Entry)
 		},
 	)
 	newEntry.SkippedCallerFrames++ // each middleware adapter must additionally skip one frame
-	a.Adapter.Log(ctx, newEntry)
+	a.NextAdapter.Log(ctx, newEntry)
 }
