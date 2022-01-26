@@ -12,7 +12,7 @@ import (
 func main() {
 	adapter := printer.StdoutAdapter()
 
-	// creates an adapter which filter out messages
+	// creates an adapter which filters out messages
 	filterAdapter := FilterOutMessages{
 		Prefix:      "example:",
 		NextAdapter: adapter,
