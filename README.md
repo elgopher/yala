@@ -144,6 +144,10 @@ func (MyAdapter) Log(context.Context, logger.Entry) {
 * Adapter is an interface to be implemented by adapters. They use real logging libraries under the hood.
 * So, why two abstractions? Simply because the smaller the Adapter interface, the easier it is to implement it. On the other hand, from library perspective, more methods means API which is easier to use. 
 
+### More examples
+
+* [How to reuse logger](logger/_examples/reuse/main.go)
+
 ### Advanced recipes
 
 * [Filter out messages starting with given prefix](logger/_examples/filter/main.go)
