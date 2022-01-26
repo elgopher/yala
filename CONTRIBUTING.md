@@ -8,4 +8,3 @@ Yala uses GitHub to manage reviews of pull requests:
 ## What is missing or partially done?
 
 - documentation - go docs for packages and public functions, readme
-- adapters for other logging libraries 
