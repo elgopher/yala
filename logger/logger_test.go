@@ -87,24 +87,24 @@ func TestGlobalLogging(t *testing.T) {
 
 func TestLocalLogger(t *testing.T) {
 	t.Run("passing nil adapter should disable logger", func(t *testing.T) {
-		localLogger := logger.Local(nil)
+		localLogger := logger.Local{Adapter: nil}
 		localLogger.Info(ctx, message)
 	})
 
 	t.Run("using zero value should not panic", func(t *testing.T) {
-		var localLogger logger.LocalLogger
+		var localLogger logger.Local
 		assert.NotPanics(t, func() {
 			localLogger.Info(ctx, message)
 		})
 	})
 
 	t.Run("should log message using adapter", func(t *testing.T) {
-		type functionUnderTest func(l logger.LocalLogger, ctx context.Context, msg string)
+		type functionUnderTest func(l logger.Local, ctx context.Context, msg string)
 		tests := map[logger.Level]functionUnderTest{
-			logger.DebugLevel: logger.LocalLogger.Debug,
-			logger.InfoLevel:  logger.LocalLogger.Info,
-			logger.WarnLevel:  logger.LocalLogger.Warn,
-			logger.ErrorLevel: logger.LocalLogger.Error,
+			logger.DebugLevel: logger.Local.Debug,
+			logger.InfoLevel:  logger.Local.Info,
+			logger.WarnLevel:  logger.Local.Warn,
+			logger.ErrorLevel: logger.Local.Error,
 		}
 
 		for lvl, log := range tests {
@@ -112,7 +112,7 @@ func TestLocalLogger(t *testing.T) {
 
 			t.Run(testName, func(t *testing.T) {
 				adapter := &adapterMock{}
-				localLogger := logger.Local(adapter)
+				localLogger := logger.Local{Adapter: adapter}
 				// when
 				log(localLogger, context.Background(), message)
 				// then
@@ -139,7 +139,7 @@ func TestWith(t *testing.T) {
 			return global.With(ctx, field.Key, field.Value)
 		},
 		"local": func(adapter logger.Adapter, field logger.Field) logger.Logger {
-			return logger.Local(adapter).With(ctx, field.Key, field.Value)
+			return logger.Local{Adapter: adapter}.With(ctx, field.Key, field.Value)
 		},
 	}
 
@@ -199,7 +199,7 @@ func TestWithError(t *testing.T) {
 			return global.WithError(ctx, err)
 		},
 		"local": func(adapter logger.Adapter, err error) logger.Logger {
-			return logger.Local(adapter).WithError(ctx, err)
+			return logger.Local{Adapter: adapter}.WithError(ctx, err)
 		},
 	}
 	for name, newLogger := range loggersWithError {

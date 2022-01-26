@@ -28,7 +28,7 @@ func Adapter(b *testing.B, adapter logger.Adapter) {
 	})
 
 	b.Run("local logger info", func(b *testing.B) {
-		localLogger := logger.Local(adapter)
+		localLogger := logger.Local{Adapter: adapter}
 
 		b.ReportAllocs()
 		b.ResetTimer()

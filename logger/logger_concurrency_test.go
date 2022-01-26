@@ -42,7 +42,7 @@ func TestConcurrency(t *testing.T) {
 
 	t.Run("local log functions", func(t *testing.T) {
 		adapter := &concurrencySafeAdapter{}
-		localLogger := logger.Local(adapter)
+		localLogger := logger.Local{Adapter: adapter}
 
 		var wg sync.WaitGroup
 
