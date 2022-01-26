@@ -6,6 +6,7 @@ package logfmt_test
 import (
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/elgopher/yala/adapter/logfmt"
 	"github.com/elgopher/yala/logger"
@@ -57,6 +58,56 @@ func TestWriteField(t *testing.T) {
 			`"quoted with spaces"`: {
 				field:    field("k", `"quoted with spaces"`),
 				expected: `k="\"quoted with spaces\""`,
+			},
+			"int value": {
+				field:    field("k", 1),
+				expected: "k=1",
+			},
+			"float value": {
+				field:    field("k", 2.1),
+				expected: "k=2.1",
+			},
+			"time value": {
+				field:    field("k", time.Time{}),
+				expected: `k="0001-01-01 00:00:00 +0000 UTC"`,
+			},
+			"slice": {
+				field:    field("k", []string{"a"}),
+				expected: `k=[a]`,
+			},
+			"slice with two values": {
+				field:    field("k", []string{"a", "b"}),
+				expected: `k="[a b]"`,
+			},
+			"map": {
+				field:    field("k", map[string]string{"a": "b"}),
+				expected: `k=map[a:b]`,
+			},
+			"map with two values": {
+				field:    field("k", map[string]string{"a": "b", "b": "c"}),
+				expected: `k="map[a:b b:c]"`,
+			},
+			"struct value": {
+				field: field("k",
+					struct {
+						Property string
+					}{
+						Property: "a",
+					},
+				),
+				expected: "k={Property:a}",
+			},
+			"struct value with two properties": {
+				field: field("k",
+					struct {
+						Property1 string
+						Property2 string
+					}{
+						Property1: "a",
+						Property2: "b",
+					},
+				),
+				expected: `k="{Property1:a Property2:b}"`,
 			},
 		}
 		for name, test := range tests {
