@@ -30,7 +30,7 @@ func writeValue(builder *strings.Builder, value interface{}) {
 		return
 	}
 
-	valueStr := fmt.Sprintf("%s", value)
+	valueStr := fmt.Sprintf("%+v", value)
 
 	if strings.ContainsRune(valueStr, '\\') {
 		valueStr = strings.ReplaceAll(valueStr, `\`, `\\`)
