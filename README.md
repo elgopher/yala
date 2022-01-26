@@ -99,12 +99,12 @@ logger.Adapter into your library:
 // your library code:
 func NewLibrary(adapter logger.Adapter) YourLib {
 	// create a new local logger which provides similar API to the global logger
-	localLogger := logger.Local(adapter)         
+	localLogger := logger.Local{Adapter: adapter}     
 	return YourLib{localLogger: localLogger}
 }
 
 type YourLib struct {
-	localLogger logger.LocalLogger
+	localLogger logger.Local
 }
 
 func (l YourLib) Method(ctx context.Context) {
