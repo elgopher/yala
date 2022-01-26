@@ -154,7 +154,7 @@ func (MyAdapter) Log(context.Context, logger.Entry) {
 * [Add field to each message taken from context.Context](logger/_examples/tags/main.go)
 * [Zap logger passed over context.Context](logger/_examples/contextlogger/main.go)
 
-### Why just don't create my own abstraction instead of using yala?
+## Why just don't create my own abstraction instead of using yala?
 
 Yes, you can also create your own. Very often it is just an interface with a single method, like this:
 
@@ -171,12 +171,12 @@ But there are limitations for such solution:
   of course takes your valuable time)
 * it is not obvious how logging API should look like
 
-### But yala is just another API. Why it is unique?
+## But yala is just another API. Why it is unique?
 
 * yala is designed for the ease of use. And by that I mean ease of use for everyone - developer logging messages, developer writing adapter and end user configuring the adapter
 * yala is using `context.Context` in each method call, making possible to use sophisticated request-scoped logging
 
-### YALA limitations
+## YALA limitations
 
 * even though your package will be independent of any specific logging implementation, you still have to import 
   `github.com/elgopher/yala/logger`. This package is relatively small though, compared to real logging libraries
