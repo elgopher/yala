@@ -35,7 +35,7 @@ func (g *Global) SetAdapter(adapter Adapter) {
 func (g *Global) getLogger() LocalLogger {
 	logger, ok := g.logger.Load().(LocalLogger)
 	if !ok {
-		g.logger.Store(LocalLogger{adapter: &initialGlobalNoopAdapter{}})
+		g.logger.CompareAndSwap(nil, LocalLogger{adapter: &initialGlobalNoopAdapter{}})
 
 		return g.getLogger()
 	}
