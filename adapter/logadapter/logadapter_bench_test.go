@@ -11,7 +11,7 @@ import (
 	"github.com/elgopher/yala/adapter/printer"
 )
 
-func BenchmarkPrinter(b *testing.B) {
+func BenchmarkLog(b *testing.B) {
 	standardLog := log.New(benchmark.DiscardWriter{}, "", log.LstdFlags)
 	adapter := printer.Adapter{Printer: standardLog}
 	benchmark.Adapter(b, adapter)
