@@ -97,7 +97,7 @@ type stringPrinter struct {
 	io.StringWriter
 }
 
-func (p stringPrinter) Println(i ...interface{}) {
-	s := fmt.Sprintln(i...)
+func (p stringPrinter) Println(_ int, msg string) {
+	s := fmt.Sprintln(msg)
 	_, _ = p.WriteString(s)
 }

@@ -26,10 +26,10 @@ type WriterPrinter struct {
 	Writer io.Writer
 }
 
-func (p WriterPrinter) Println(args ...interface{}) {
+func (p WriterPrinter) Println(skipCallerFrames int, msg string) {
 	if p.Writer == nil {
 		return
 	}
 
-	_, _ = fmt.Fprintln(p.Writer, args...)
+	_, _ = fmt.Fprintln(p.Writer, msg)
 }
