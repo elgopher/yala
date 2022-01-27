@@ -16,9 +16,13 @@ var ErrSome = errors.New("ErrSome")
 func main() {
 	ctx := context.Background()
 
-	l := zerolog.New(os.Stdout)                  // create zerolog logger
-	adapter := zerologadapter.Adapter{Logger: l} // create logger.Adapter for zerolog
-	log := logger.Local{Adapter: adapter}        // Create yala logger
+	l := zerolog.New(os.Stdout) // create zerolog logger
+	// create logger.Adapter for zerolog
+	adapter := zerologadapter.Adapter{
+		Logger:       l,
+		ReportCaller: true, // reports file and line number as fields. Useful, but very slow
+	}
+	log := logger.Local{Adapter: adapter} // Create yala logger
 
 	log.Debug(ctx, "Hello zerolog")
 	log.With(ctx, "field_name", "field_value").Info("Some info")

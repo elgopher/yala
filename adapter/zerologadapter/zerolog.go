@@ -5,6 +5,7 @@ package zerologadapter
 
 import (
 	"context"
+	"runtime"
 	"time"
 
 	"github.com/elgopher/yala/logger"
@@ -14,6 +15,8 @@ import (
 // Adapter is a logger.Adapter implementation, which is using `zerolog` module (https://github.com/rs/zerolog).
 type Adapter struct {
 	Logger zerolog.Logger
+	// ReportCaller adds file and line fields which have caller information. Useful, but very slow.
+	ReportCaller bool
 }
 
 func (l Adapter) Log(ctx context.Context, entry logger.Entry) {
@@ -25,6 +28,13 @@ func (l Adapter) Log(ctx context.Context, entry logger.Entry) {
 
 	if entry.Error != nil {
 		event = event.Err(entry.Error)
+	}
+
+	if l.ReportCaller {
+		if _, file, line, ok := runtime.Caller(entry.SkippedCallerFrames); ok {
+			event = eventWithField(event, logger.Field{Key: "file", Value: file})
+			event = eventWithField(event, logger.Field{Key: "line", Value: line})
+		}
 	}
 
 	event.Msg(entry.Message)
