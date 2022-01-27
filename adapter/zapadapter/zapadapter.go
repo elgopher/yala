@@ -26,22 +26,24 @@ func (a Adapter) Log(_ context.Context, entry logger.Entry) {
 		zapLogger = zapLogger.With(zap.Error(entry.Error))
 	}
 
-	for _, f := range entry.Fields {
-		zapLogger = zapLogger.With(zap.Any(f.Key, f.Value))
+	fields := make([]zap.Field, len(entry.Fields))
+
+	for i, f := range entry.Fields {
+		fields[i] = zap.Any(f.Key, f.Value)
 	}
 
 	zapLogger = zapLogger.WithOptions(zap.AddCallerSkip(entry.SkippedCallerFrames))
 
 	switch entry.Level {
 	case logger.DebugLevel:
-		zapLogger.Debug(entry.Message)
+		zapLogger.Debug(entry.Message, fields...)
 	case logger.InfoLevel:
-		zapLogger.Info(entry.Message)
+		zapLogger.Info(entry.Message, fields...)
 	case logger.WarnLevel:
-		zapLogger.Warn(entry.Message)
+		zapLogger.Warn(entry.Message, fields...)
 	case logger.ErrorLevel:
-		zapLogger.Error(entry.Message)
+		zapLogger.Error(entry.Message, fields...)
 	default:
-		zapLogger.Info(entry.Message)
+		zapLogger.Info(entry.Message, fields...)
 	}
 }
