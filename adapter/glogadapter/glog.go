@@ -32,17 +32,18 @@ func (a Adapter) Log(_ context.Context, entry logger.Entry) {
 
 	fieldsAndErrorString := fieldsAndError.String()
 	message := entry.Message
+	depth := entry.SkippedCallerFrames
 
 	switch entry.Level {
 	case logger.DebugLevel:
-		glog.Infoln(message, fieldsAndErrorString)
+		glog.InfoDepth(depth, message, fieldsAndErrorString)
 	case logger.InfoLevel:
-		glog.Infoln(message, fieldsAndErrorString)
+		glog.InfoDepth(depth, message, fieldsAndErrorString)
 	case logger.WarnLevel:
-		glog.Warningln(message, fieldsAndErrorString)
+		glog.WarningDepth(depth, message, fieldsAndErrorString)
 	case logger.ErrorLevel:
-		glog.Errorln(message, fieldsAndErrorString)
+		glog.ErrorDepth(depth, message, fieldsAndErrorString)
 	default:
-		glog.Infoln(message, fieldsAndErrorString)
+		glog.InfoDepth(depth, message, fieldsAndErrorString)
 	}
 }
