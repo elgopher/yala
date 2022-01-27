@@ -8,11 +8,11 @@ import (
 	"testing"
 
 	"github.com/elgopher/yala/adapter/internal/benchmark"
-	"github.com/elgopher/yala/adapter/printer"
+	"github.com/elgopher/yala/adapter/logadapter"
 )
 
 func BenchmarkLog(b *testing.B) {
 	standardLog := log.New(benchmark.DiscardWriter{}, "", log.LstdFlags)
-	adapter := printer.Adapter{Printer: standardLog}
+	adapter := logadapter.Adapter(standardLog)
 	benchmark.Adapter(b, adapter)
 }

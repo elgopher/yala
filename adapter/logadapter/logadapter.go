@@ -8,5 +8,13 @@ import (
 )
 
 func Adapter(l *log.Logger) logger.Adapter { // nolint
-	return printer.Adapter{Printer: l}
+	return printer.Adapter{Printer: printerLogger{l}}
+}
+
+type printerLogger struct {
+	*log.Logger
+}
+
+func (p printerLogger) Println(skipCallerFrames int, msg string) {
+	_ = p.Logger.Output(skipCallerFrames+1, msg)
 }

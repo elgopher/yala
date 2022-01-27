@@ -17,7 +17,7 @@ func main() {
 	ctx := context.Background()
 
 	// log using standard log package
-	standardLog := log.New(os.Stdout, "", log.LstdFlags)
+	standardLog := log.New(os.Stdout, "", log.LstdFlags|log.Lshortfile)
 	adapter := logadapter.Adapter(standardLog)
 	yalaLogger := logger.Local{Adapter: adapter}
 

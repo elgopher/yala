@@ -14,7 +14,7 @@ func TestWriterPrinter_Println(t *testing.T) {
 	t.Run("should not panic when Writer is nil", func(t *testing.T) {
 		p := console.WriterPrinter{Writer: nil}
 		assert.NotPanics(t, func() {
-			p.Println("")
+			p.Println(0, "")
 		})
 	})
 }

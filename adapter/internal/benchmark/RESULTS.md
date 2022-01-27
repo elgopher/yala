@@ -6,14 +6,14 @@ are useful for performance regression testing.
 * cpu: Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz
 
 ```
-BenchmarkConsole/global_logger_info-8         	 8403124	       140.6 ns/op	      40 B/op	       3 allocs/op
-BenchmarkConsole/local_logger_info-8          	 9990122	       123.8 ns/op	      40 B/op	       3 allocs/op
-BenchmarkConsole/time/local_logger_with_field-8         	 1761192	       691.3 ns/op	     200 B/op	       8 allocs/op
-BenchmarkConsole/string/local_logger_with_field-8       	 4456893	       297.5 ns/op	      96 B/op	       6 allocs/op
-BenchmarkConsole/int/local_logger_with_field-8          	 4396735	       279.8 ns/op	      88 B/op	       5 allocs/op
-BenchmarkConsole/int64/local_logger_with_field-8        	 4330046	       277.9 ns/op	      96 B/op	       6 allocs/op
-BenchmarkConsole/float64/local_logger_with_field-8      	 3428498	       357.2 ns/op	      96 B/op	       6 allocs/op
-BenchmarkConsole/float32/local_logger_with_field-8      	 3494066	       345.2 ns/op	      96 B/op	       6 allocs/op
+BenchmarkConsole/global_logger_info-8         	 9950290	       118.6 ns/op	      24 B/op	       2 allocs/op
+BenchmarkConsole/local_logger_info-8          	12217653	        98.95 ns/op	      24 B/op	       2 allocs/op
+BenchmarkConsole/string/local_logger_with_field-8         	 4732758	       263.1 ns/op	      80 B/op	       5 allocs/op
+BenchmarkConsole/int/local_logger_with_field-8            	 4716872	       249.8 ns/op	      72 B/op	       4 allocs/op
+BenchmarkConsole/int64/local_logger_with_field-8          	 4554200	       260.3 ns/op	      80 B/op	       5 allocs/op
+BenchmarkConsole/float64/local_logger_with_field-8        	 3592687	       333.5 ns/op	      80 B/op	       5 allocs/op
+BenchmarkConsole/float32/local_logger_with_field-8        	 3695378	       324.5 ns/op	      80 B/op	       5 allocs/op
+BenchmarkConsole/time/local_logger_with_field-8           	 1791531	       659.0 ns/op	     184 B/op	       7 allocs/op
 BenchmarkGlog/global_logger_info-8         	 1000000	      1131 ns/op	     232 B/op	       3 allocs/op
 BenchmarkGlog/local_logger_info-8          	 1000000	      1012 ns/op	     232 B/op	       3 allocs/op
 BenchmarkGlog/int64/local_logger_with_field-8         	  932733	      1293 ns/op	     296 B/op	       7 allocs/op

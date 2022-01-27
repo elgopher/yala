@@ -22,7 +22,7 @@ type Adapter struct {
 }
 
 type Printer interface {
-	Println(...interface{})
+	Println(skipCallerFrames int, msg string)
 }
 
 func (f Adapter) Log(ctx context.Context, entry logger.Entry) {
@@ -46,5 +46,5 @@ func (f Adapter) Log(ctx context.Context, entry logger.Entry) {
 		logfmt.WriteField(&builder, logger.Field{Key: "error", Value: entry.Error})
 	}
 
-	f.Printer.Println(builder.String())
+	f.Printer.Println(entry.SkippedCallerFrames+1, builder.String())
 }
