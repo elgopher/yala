@@ -13,3 +13,4 @@ build: $(SRC)
 	for main in $(SRC) ; do \
 		go build $$main ; \
 	done
+	rm main
