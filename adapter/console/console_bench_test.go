@@ -11,7 +11,7 @@ import (
 	"github.com/elgopher/yala/adapter/printer"
 )
 
-func BenchmarkPrinter(b *testing.B) {
+func BenchmarkConsole(b *testing.B) {
 	adapter := printer.Adapter{
 		Printer: console.WriterPrinter{
 			Writer: benchmark.DiscardWriter{},
