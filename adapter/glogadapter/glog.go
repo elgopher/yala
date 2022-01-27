@@ -15,24 +15,7 @@ import (
 // Adapter is a logger.Adapter implementation, which is using `glog` package (https://github.com/golang/glog).
 type Adapter struct{}
 
-type log func(args ...interface{})
-
 func (a Adapter) Log(_ context.Context, entry logger.Entry) {
-	var logMessage log
-
-	switch entry.Level {
-	case logger.DebugLevel:
-		logMessage = glog.Infoln
-	case logger.InfoLevel:
-		logMessage = glog.Infoln
-	case logger.WarnLevel:
-		logMessage = glog.Warningln
-	case logger.ErrorLevel:
-		logMessage = glog.Errorln
-	default:
-		logMessage = glog.Infoln
-	}
-
 	var fieldsAndError strings.Builder
 
 	if len(entry.Fields) > 0 {
@@ -47,5 +30,19 @@ func (a Adapter) Log(_ context.Context, entry logger.Entry) {
 		logfmt.WriteField(&fieldsAndError, logger.Field{Key: "error", Value: entry.Error})
 	}
 
-	logMessage(entry.Message, fieldsAndError.String())
+	fieldsAndErrorString := fieldsAndError.String()
+	message := entry.Message
+
+	switch entry.Level {
+	case logger.DebugLevel:
+		glog.Infoln(message, fieldsAndErrorString)
+	case logger.InfoLevel:
+		glog.Infoln(message, fieldsAndErrorString)
+	case logger.WarnLevel:
+		glog.Warningln(message, fieldsAndErrorString)
+	case logger.ErrorLevel:
+		glog.Errorln(message, fieldsAndErrorString)
+	default:
+		glog.Infoln(message, fieldsAndErrorString)
+	}
 }
