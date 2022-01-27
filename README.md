@@ -153,6 +153,7 @@ func (MyAdapter) Log(context.Context, logger.Entry) {
 ### Advanced recipes
 
 * [Filter out messages starting with given prefix](logger/_examples/filter/main.go)
+* [Filter messages by level](logger/_examples/levelfilter/main.go)
 * [Add field to each message taken from context.Context](logger/_examples/tags/main.go)
 * [Zap logger passed over context.Context](logger/_examples/contextlogger/main.go)
 
