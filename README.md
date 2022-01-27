@@ -52,7 +52,7 @@ import (
 var log logger.Global
 
 // Provide a public function for setting adapter. It will be called in main.go
-func SetLogAdapter(adapter logger.Adapter) {
+func SetLoggerAdapter(adapter logger.Adapter) {
 	log.SetAdapter(adapter)
 }
 
@@ -78,7 +78,7 @@ import (
 // End user decides what library to plug in.
 func main() {
 	adapter := console.StdoutAdapter() // will print messages to console
-	lib.SetLogAdapter(adapter)
+	lib.SetLoggerAdapter(adapter)
 
 	ctx := context.Background()
 	lib.Function(ctx)
