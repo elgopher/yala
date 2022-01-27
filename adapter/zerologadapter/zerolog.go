@@ -5,6 +5,7 @@ package zerologadapter
 
 import (
 	"context"
+	"time"
 
 	"github.com/elgopher/yala/logger"
 	"github.com/rs/zerolog"
@@ -19,7 +20,7 @@ func (l Adapter) Log(ctx context.Context, entry logger.Entry) {
 	event := l.Logger.WithLevel(convertLevel(entry.Level))
 
 	for _, field := range entry.Fields {
-		event = event.Interface(field.Key, field.Value)
+		event = eventWithField(event, field)
 	}
 
 	if entry.Error != nil {
@@ -42,4 +43,25 @@ func convertLevel(level logger.Level) zerolog.Level {
 	default:
 		return zerolog.InfoLevel
 	}
+}
+
+func eventWithField(event *zerolog.Event, field logger.Field) *zerolog.Event {
+	switch value := field.Value.(type) {
+	case string:
+		event = event.Str(field.Key, value)
+	case int:
+		event = event.Int(field.Key, value)
+	case int64:
+		event = event.Int64(field.Key, value)
+	case float64:
+		event = event.Float64(field.Key, value)
+	case float32:
+		event = event.Float32(field.Key, value)
+	case time.Time:
+		event = event.Time(field.Key, value)
+	default:
+		event = event.Interface(field.Key, field.Value)
+	}
+
+	return event
 }
