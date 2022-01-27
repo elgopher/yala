@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 
-	"github.com/elgopher/yala/adapter/printer"
+	"github.com/elgopher/yala/adapter/console"
 	"github.com/elgopher/yala/logger"
 )
 
@@ -11,7 +11,7 @@ import (
 func main() {
 	ctx := context.Background()
 
-	log := logger.Local{Adapter: printer.StdoutAdapter()}
+	log := logger.Local{Adapter: console.StdoutAdapter()}
 
 	// requestLogger will log all messages with at least two fields: request_id and user
 	requestLogger := log.With(ctx, "request_id", "123").With("user", "elgopher")
