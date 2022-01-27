@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 
-	"github.com/elgopher/yala/adapter/printer"
+	"github.com/elgopher/yala/adapter/console"
 	"github.com/elgopher/yala/logger"
 )
 
@@ -11,7 +11,7 @@ const tag = "tag"
 
 // This advanced example shows how to log messages with additional field taken from context.Context
 func main() {
-	adapter := printer.StdoutAdapter()
+	adapter := console.StdoutAdapter()
 
 	// creates an adapter which adds field from context to each logged message.
 	addFieldAdapter := AddFieldFromContextAdapter{NextAdapter: adapter}

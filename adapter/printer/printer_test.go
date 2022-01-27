@@ -5,6 +5,8 @@ package printer_test
 
 import (
 	"context"
+	"fmt"
+	"io"
 	"strings"
 	"testing"
 
@@ -65,14 +67,12 @@ func TestAdapter_Log(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			var builder strings.Builder
-			adapter := printer.Adapter{
-				Printer: printer.WriterPrinter{Writer: &builder},
-			}
+			var actual strings.Builder
+			adapter := printer.Adapter{Printer: stringPrinter{&actual}}
 			// when
 			adapter.Log(ctx, test.entry)
 			// then
-			assert.Equal(t, test.expectedMessage, builder.String())
+			assert.Equal(t, test.expectedMessage, actual.String())
 		})
 	}
 
@@ -87,17 +87,17 @@ func TestAdapter_Log(t *testing.T) {
 	})
 }
 
-func TestWriterPrinter_Println(t *testing.T) {
-	t.Run("should not panic when Writer is nil", func(t *testing.T) {
-		p := printer.WriterPrinter{Writer: nil}
-		assert.NotPanics(t, func() {
-			p.Println("")
-		})
-	})
-}
-
 type stringError string
 
 func (e stringError) Error() string {
 	return string(e)
+}
+
+type stringPrinter struct {
+	io.StringWriter
+}
+
+func (p stringPrinter) Println(i ...interface{}) {
+	s := fmt.Sprintln(i...)
+	_, _ = p.WriteString(s)
 }

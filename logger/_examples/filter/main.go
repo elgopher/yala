@@ -4,13 +4,13 @@ import (
 	"context"
 	"strings"
 
-	"github.com/elgopher/yala/adapter/printer"
+	"github.com/elgopher/yala/adapter/console"
 	"github.com/elgopher/yala/logger"
 )
 
 // This advanced example shows how to filter out messages starting with given prefix
 func main() {
-	adapter := printer.StdoutAdapter()
+	adapter := console.StdoutAdapter()
 
 	// creates an adapter which filters out messages
 	filterAdapter := FilterOutMessages{

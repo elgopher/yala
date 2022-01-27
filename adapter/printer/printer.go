@@ -5,9 +5,6 @@ package printer
 
 import (
 	"context"
-	"fmt"
-	"io"
-	"os"
 	"strings"
 
 	"github.com/elgopher/yala/adapter/logfmt"
@@ -26,28 +23,6 @@ type Adapter struct {
 
 type Printer interface {
 	Println(...interface{})
-}
-
-// StderrAdapter returns a logger.Adapter implementation which prints log messages to stderr using `fmt` package.
-func StderrAdapter() Adapter {
-	return Adapter{Printer: WriterPrinter{os.Stderr}}
-}
-
-// StdoutAdapter returns a logger.Adapter implementation which prints log messages to stdout using `fmt` package.
-func StdoutAdapter() Adapter {
-	return Adapter{Printer: WriterPrinter{os.Stdout}}
-}
-
-type WriterPrinter struct {
-	Writer io.Writer
-}
-
-func (p WriterPrinter) Println(args ...interface{}) {
-	if p.Writer == nil {
-		return
-	}
-
-	_, _ = fmt.Fprintln(p.Writer, args...)
 }
 
 func (f Adapter) Log(ctx context.Context, entry logger.Entry) {

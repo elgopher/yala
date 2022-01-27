@@ -10,7 +10,7 @@ Tiny **structured logging** abstraction or facade for various logging libraries,
 
 ## Supported logging libraries (via adapters)
 
-[logrus](adapter/logrusadapter), [zap](adapter/zapadapter), [zerolog](adapter/zerologadapter), [glog](adapter/glogadapter), [log15](adapter/log15adapter) and [standard fmt and log packages](adapter/printer)
+[logrus](adapter/logrusadapter), [zap](adapter/zapadapter), [zerolog](adapter/zerologadapter), [glog](adapter/glogadapter), [log15](adapter/log15adapter), [standard log](adapter/logadapter) and [console](adapter/console)
 
 ## When to use?
 
@@ -71,13 +71,13 @@ package main
 import (
 	"context"
 
-	"github.com/elgopher/yala/adapter/printer"
+	"github.com/elgopher/yala/adapter/console"
 	"lib"
 )
 
 // End user decides what library to plug in.
 func main() {
-	adapter := printer.StdoutAdapter() // will use fmt.Println
+	adapter := console.StdoutAdapter() // will print messages to console
 	lib.SetLogAdapter(adapter)
 
 	ctx := context.Background()
@@ -114,14 +114,15 @@ func (l YourLib) Method(ctx context.Context) {
 
 
 // end user code
-adapter := printer.StdoutAdapter()
+adapter := console.StdoutAdapter()
 lib := NewLibrary(adapter)
 ```
 
 ### How to use existing adapters
 
 * [Logrus](adapter/logrusadapter/_example/main.go)
-* [fmt.Println and standard log package](adapter/printer/_example/main.go)
+* [standard log package](adapter/logadapter/_example/main.go)
+* [print logs to console using simplified adapter](adapter/console/_example/main.go)
 * [Zap](adapter/zapadapter/_example/main.go)
 * [Zerolog](adapter/zerologadapter/_example/main.go)
 * [glog](adapter/glogadapter/_example/main.go)
