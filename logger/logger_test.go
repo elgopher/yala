@@ -291,5 +291,6 @@ func TestLevel_String(t *testing.T) {
 		assert.Equal(t, "INFO", logger.InfoLevel.String())
 		assert.Equal(t, "WARN", logger.WarnLevel.String())
 		assert.Equal(t, "ERROR", logger.ErrorLevel.String())
+		assert.Equal(t, "10", logger.Level(10).String())
 	})
 }
