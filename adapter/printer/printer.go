@@ -11,8 +11,7 @@ import (
 	"github.com/elgopher/yala/logger"
 )
 
-// Adapter is a logger.Adapter implementation, which is using Printer interface. This interface is implemented for
-// example by log.Logger from the Go standard library.
+// Adapter is a logger.Adapter implementation, which is using Printer interface.
 //
 // This adapter prints fields and error in logfmt format. For example:
 //
