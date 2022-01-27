@@ -65,7 +65,7 @@ func TestGlobalLogging(t *testing.T) {
 		}
 
 		for lvl, log := range tests {
-			testName := string(lvl)
+			testName := lvl.String()
 
 			t.Run(testName, func(t *testing.T) {
 				adapter := &adapterMock{}
@@ -108,7 +108,7 @@ func TestLocalLogger(t *testing.T) {
 		}
 
 		for lvl, log := range tests {
-			testName := string(lvl)
+			testName := lvl.String()
 
 			t.Run(testName, func(t *testing.T) {
 				adapter := &adapterMock{}
@@ -253,5 +253,43 @@ func TestEntry_With(t *testing.T) {
 		assert.Equal(t, entry.Fields[0], field1)
 		assert.Equal(t, newEntry.Fields[0], field1)
 		assert.Equal(t, newEntry.Fields[1], field2)
+	})
+}
+
+func TestLevel_MoreSevereThan(t *testing.T) {
+	t.Run("should return true", func(t *testing.T) {
+		assert.True(t, logger.InfoLevel.MoreSevereThan(logger.DebugLevel))
+		assert.True(t, logger.WarnLevel.MoreSevereThan(logger.DebugLevel))
+		assert.True(t, logger.ErrorLevel.MoreSevereThan(logger.DebugLevel))
+
+		assert.True(t, logger.WarnLevel.MoreSevereThan(logger.InfoLevel))
+		assert.True(t, logger.ErrorLevel.MoreSevereThan(logger.InfoLevel))
+
+		assert.True(t, logger.ErrorLevel.MoreSevereThan(logger.WarnLevel))
+	})
+
+	t.Run("should return false", func(t *testing.T) {
+		assert.False(t, logger.DebugLevel.MoreSevereThan(logger.DebugLevel))
+
+		assert.False(t, logger.DebugLevel.MoreSevereThan(logger.InfoLevel))
+		assert.False(t, logger.InfoLevel.MoreSevereThan(logger.InfoLevel))
+
+		assert.False(t, logger.DebugLevel.MoreSevereThan(logger.WarnLevel))
+		assert.False(t, logger.InfoLevel.MoreSevereThan(logger.WarnLevel))
+		assert.False(t, logger.WarnLevel.MoreSevereThan(logger.WarnLevel))
+
+		assert.False(t, logger.DebugLevel.MoreSevereThan(logger.ErrorLevel))
+		assert.False(t, logger.InfoLevel.MoreSevereThan(logger.ErrorLevel))
+		assert.False(t, logger.WarnLevel.MoreSevereThan(logger.ErrorLevel))
+		assert.False(t, logger.ErrorLevel.MoreSevereThan(logger.ErrorLevel))
+	})
+}
+
+func TestLevel_String(t *testing.T) {
+	t.Run("should convert to string", func(t *testing.T) {
+		assert.Equal(t, "DEBUG", logger.DebugLevel.String())
+		assert.Equal(t, "INFO", logger.InfoLevel.String())
+		assert.Equal(t, "WARN", logger.WarnLevel.String())
+		assert.Equal(t, "ERROR", logger.ErrorLevel.String())
 	})
 }

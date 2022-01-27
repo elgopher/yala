@@ -5,6 +5,7 @@ package logger
 
 import (
 	"context"
+	"strconv"
 )
 
 // Adapter is an interface to be implemented by logger adapters.
@@ -32,14 +33,33 @@ func (e Entry) With(field Field) Entry {
 	return e
 }
 
-type Level string
+type Level int8
 
 const (
-	DebugLevel Level = "DEBUG"
-	InfoLevel  Level = "INFO"
-	WarnLevel  Level = "WARN"
-	ErrorLevel Level = "ERROR"
+	DebugLevel Level = iota - 1
+	InfoLevel
+	WarnLevel
+	ErrorLevel
 )
+
+func (l Level) String() string {
+	switch l {
+	case DebugLevel:
+		return "DEBUG"
+	case InfoLevel:
+		return "INFO"
+	case WarnLevel:
+		return "WARN"
+	case ErrorLevel:
+		return "ERROR"
+	default:
+		return strconv.Itoa(int(l))
+	}
+}
+
+func (l Level) MoreSevereThan(other Level) bool {
+	return l > other
+}
 
 type Field struct {
 	Key   string

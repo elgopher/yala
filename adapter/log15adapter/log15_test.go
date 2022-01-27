@@ -29,7 +29,7 @@ func TestAdapter_Log(t *testing.T) {
 		}
 
 		for level, log15level := range tests {
-			t.Run(string(level), func(t *testing.T) {
+			t.Run(level.String(), func(t *testing.T) {
 				log15Logger := log15.New()
 				handler := &handlerMock{}
 				log15Logger.SetHandler(handler)

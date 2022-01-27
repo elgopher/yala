@@ -31,7 +31,7 @@ func (f Adapter) Log(ctx context.Context, entry logger.Entry) {
 
 	var builder strings.Builder
 
-	builder.WriteString(string(entry.Level))
+	builder.WriteString(entry.Level.String())
 	builder.WriteByte(' ')
 	builder.WriteString(entry.Message)
 
