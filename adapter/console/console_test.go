@@ -49,4 +49,18 @@ func TestStdoutAdapter(t *testing.T) {
 		adapter := console.StdoutAdapter()
 		require.NotNil(t, adapter)
 	})
+
+	t.Run("should log message", func(t *testing.T) {
+		stdout := fake.UseFakeStdout(t)
+		defer stdout.Release()
+
+		adapter := console.StdoutAdapter()
+		// when
+		adapter.Log(context.Background(), logger.Entry{
+			Level:   logger.InfoLevel,
+			Message: "message",
+		})
+		// then
+		assert.Equal(t, "INFO message\n", stdout.FirstLine(t))
+	})
 }
