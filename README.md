@@ -4,7 +4,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/elgopher/yala.svg)](https://pkg.go.dev/github.com/elgopher/yala)
 [![Go Report Card](https://goreportcard.com/badge/github.com/elgopher/yala)](https://goreportcard.com/report/github.com/elgopher/yala)
 [![codecov](https://codecov.io/gh/elgopher/yala/branch/master/graph/badge.svg)](https://codecov.io/gh/elgopher/yala)
-[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 <img src="logo.png" align="right" width="30%">
 
 Tiny **structured logging** abstraction or facade for various logging libraries, allowing the end user to plug in the desired logging library in `main.go`.
