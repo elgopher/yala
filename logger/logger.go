@@ -46,18 +46,22 @@ func (l Logger) WithSkippedCallerFrame() Logger {
 	return l
 }
 
+// Debug logs a message at DebugLevel.
 func (l Logger) Debug(ctx context.Context, msg string) {
 	l.log(ctx, DebugLevel, msg)
 }
 
+// Info logs a message at InfoLevel.
 func (l Logger) Info(ctx context.Context, msg string) {
 	l.log(ctx, InfoLevel, msg)
 }
 
+// Warn logs a message at WarnLevel.
 func (l Logger) Warn(ctx context.Context, msg string) {
 	l.log(ctx, WarnLevel, msg)
 }
 
+// Error logs a message at ErrorLevel.
 func (l Logger) Error(ctx context.Context, msg string) {
 	l.log(ctx, ErrorLevel, msg)
 }

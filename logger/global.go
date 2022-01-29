@@ -46,7 +46,7 @@ func (g *Global) getLogger() Local {
 	return logger
 }
 
-// Debug logs message using globally configured logger.Adapter.
+// Debug logs a message at DebugLevel.
 func (g *Global) Debug(ctx context.Context, msg string) {
 	g.loggerWithSkippedCallerFrame().Debug(ctx, msg)
 }
@@ -55,17 +55,17 @@ func (g *Global) loggerWithSkippedCallerFrame() Logger {
 	return g.getLogger().WithSkippedCallerFrame()
 }
 
-// Info logs message using globally configured logger.Adapter.
+// Info logs a message at InfoLevel.
 func (g *Global) Info(ctx context.Context, msg string) {
 	g.loggerWithSkippedCallerFrame().Info(ctx, msg)
 }
 
-// Warn logs message using globally configured logger.Adapter.
+// Warn logs a message at WarnLevel.
 func (g *Global) Warn(ctx context.Context, msg string) {
 	g.loggerWithSkippedCallerFrame().Warn(ctx, msg)
 }
 
-// Error logs message using globally configured logger.Adapter.
+// Error logs a message at ErrorLevel.
 func (g *Global) Error(ctx context.Context, msg string) {
 	g.loggerWithSkippedCallerFrame().Error(ctx, msg)
 }

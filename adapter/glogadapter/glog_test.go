@@ -27,7 +27,7 @@ func TestAdapter_Log(t *testing.T) {
 			Message: message,
 		})
 		// then
-		msg := unmarshalLine(t, stderr.FirstLine(t))
+		msg := unmarshalLine(t, stderr.String(t))
 		const expectedPrefix = "glog_test.go:"
 		assert.Truef(t,
 			strings.HasPrefix(msg.caller, expectedPrefix),
@@ -45,7 +45,7 @@ func TestAdapter_Log(t *testing.T) {
 			Message: message,
 		})
 		// then
-		msg := unmarshalLine(t, stderr.FirstLine(t))
+		msg := unmarshalLine(t, stderr.String(t))
 		assert.Equal(t, "E", msg.level)
 		assert.Equal(t, message, msg.message)
 	})
@@ -65,7 +65,7 @@ func TestAdapter_Log(t *testing.T) {
 		})
 		adapter.Log(context.Background(), entry)
 		// then
-		msg := unmarshalLine(t, stderr.FirstLine(t))
+		msg := unmarshalLine(t, stderr.String(t))
 		assert.Equal(t, "k=v", msg.fields)
 		assert.Equal(t, message, msg.message)
 	})

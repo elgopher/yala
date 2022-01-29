@@ -16,6 +16,7 @@ type Local struct {
 	Adapter Adapter
 }
 
+// Debug logs a message at DebugLevel.
 func (l Local) Debug(ctx context.Context, msg string) {
 	l.log(ctx, DebugLevel, msg)
 }
@@ -28,14 +29,17 @@ func (l Local) log(ctx context.Context, lvl Level, msg string) {
 	l.Adapter.Log(ctx, Entry{Level: lvl, Message: msg, SkippedCallerFrames: localLoggerSkippedCallerFrames})
 }
 
+// Info logs a message at InfoLevel.
 func (l Local) Info(ctx context.Context, msg string) {
 	l.log(ctx, InfoLevel, msg)
 }
 
+// Warn logs a message at WarnLevel.
 func (l Local) Warn(ctx context.Context, msg string) {
 	l.log(ctx, WarnLevel, msg)
 }
 
+// Error logs a message at ErrorLevel.
 func (l Local) Error(ctx context.Context, msg string) {
 	l.log(ctx, ErrorLevel, msg)
 }

@@ -5,10 +5,11 @@ import (
 	"testing"
 )
 
-func UseFakeStdout(t *testing.T) Std {
+// UseFakeStdout swaps stdout with fake one.
+func UseFakeStdout(t *testing.T) SwappedFile {
 	t.Helper()
 
-	return useStd(t,
+	return swap(t,
 		func() *os.File {
 			return os.Stdout
 		},

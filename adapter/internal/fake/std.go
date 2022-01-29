@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func useStd(t *testing.T, get func() *os.File, set func(*os.File)) Std {
+func swap(t *testing.T, get func() *os.File, set func(*os.File)) SwappedFile {
 	t.Helper()
 
 	prev := get()
@@ -17,24 +17,26 @@ func useStd(t *testing.T, get func() *os.File, set func(*os.File)) Std {
 
 	set(tmpFile)
 
-	return Std{
-		prev:    prev,
-		current: tmpFile,
-		set:     set,
+	return SwappedFile{
+		original: prev,
+		current:  tmpFile,
+		set:      set,
 	}
 }
 
-type Std struct {
-	prev    *os.File
-	current *os.File
-	set     func(file *os.File)
+type SwappedFile struct {
+	original *os.File
+	current  *os.File
+	set      func(file *os.File)
 }
 
-func (f Std) Release() {
-	f.set(f.prev)
+// Release brings back the original file.
+func (f SwappedFile) Release() {
+	f.set(f.original)
 }
 
-func (f Std) FirstLine(t *testing.T) string {
+// String returns the entire contents of current file.
+func (f SwappedFile) String(t *testing.T) string {
 	t.Helper()
 
 	line, err := ioutil.ReadFile(f.current.Name())

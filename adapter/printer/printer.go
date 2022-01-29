@@ -20,7 +20,9 @@ type Adapter struct {
 	Printer Printer
 }
 
+// Printer is someone who can print lines.
 type Printer interface {
+	// Println prints line. It can use skipCallerFrames to print information about caller.
 	Println(skipCallerFrames int, msg string)
 }
 
