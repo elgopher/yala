@@ -1,6 +1,7 @@
 package logadapter
 
 import (
+	"context"
 	"log"
 
 	"github.com/elgopher/yala/adapter/printer"
@@ -8,6 +9,10 @@ import (
 )
 
 func Adapter(l *log.Logger) logger.Adapter { // nolint
+	if l == nil {
+		return noopAdapter{}
+	}
+
 	return printer.Adapter{Printer: printerLogger{l}}
 }
 
@@ -18,3 +23,7 @@ type printerLogger struct {
 func (p printerLogger) Println(skipCallerFrames int, msg string) {
 	_ = p.Logger.Output(skipCallerFrames+2, msg) // nolint
 }
+
+type noopAdapter struct{}
+
+func (n noopAdapter) Log(context.Context, logger.Entry) {}
