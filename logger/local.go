@@ -41,22 +41,21 @@ func (l Local) Error(ctx context.Context, msg string) {
 }
 
 // With creates a new Logger with field.
-func (l Local) With(ctx context.Context, key string, value interface{}) Logger {
-	return l.logger(ctx).With(key, value)
+func (l Local) With(key string, value interface{}) Logger {
+	return l.logger().With(key, value)
 }
 
-func (l Local) logger(ctx context.Context) Logger {
+func (l Local) logger() Logger {
 	return Logger{
 		adapter: l.Adapter,
-		ctx:     ctx,
 	}
 }
 
 // WithError creates a new Logger with error.
-func (l Local) WithError(ctx context.Context, err error) Logger {
-	return l.logger(ctx).WithError(err)
+func (l Local) WithError(err error) Logger {
+	return l.logger().WithError(err)
 }
 
-func (l Local) WithSkippedCallerFrame(ctx context.Context) Logger {
-	return l.logger(ctx).WithSkippedCallerFrame()
+func (l Local) WithSkippedCallerFrame() Logger {
+	return l.logger().WithSkippedCallerFrame()
 }

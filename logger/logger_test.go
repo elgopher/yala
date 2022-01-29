@@ -20,7 +20,7 @@ var ErrAnother = errors.New("another error")
 
 var ctx = context.Background()
 
-type loggerMethod func(l logger.Logger, msg string)
+type loggerMethod func(l logger.Logger, ctx context.Context, msg string)
 
 var loggerMethods = map[string]loggerMethod{
 	"Debug": logger.Logger.Debug,
@@ -44,12 +44,12 @@ func TestGlobalLogging(t *testing.T) {
 
 		t.Run("With", func(t *testing.T) {
 			var global logger.Global
-			global.With(ctx, "k", "v").Warn(message)
+			global.With("k", "v").Warn(ctx, message)
 		})
 
 		t.Run("WithError", func(t *testing.T) {
 			var global logger.Global
-			global.WithError(ctx, ErrSome).Warn(message)
+			global.WithError(ErrSome).Warn(ctx, message)
 		})
 	})
 
@@ -136,10 +136,10 @@ func TestWith(t *testing.T) {
 			var global logger.Global
 			global.SetAdapter(adapter)
 
-			return global.With(ctx, field.Key, field.Value)
+			return global.With(field.Key, field.Value)
 		},
 		"local": func(adapter logger.Adapter, field logger.Field) logger.Logger {
-			return logger.Local{Adapter: adapter}.With(ctx, field.Key, field.Value)
+			return logger.Local{Adapter: adapter}.With(field.Key, field.Value)
 		},
 	}
 
@@ -154,7 +154,7 @@ func TestWith(t *testing.T) {
 						adapter := &adapterMock{}
 						l := newLogger(adapter, field1)
 						// when
-						logMessage(l, message)
+						logMessage(l, ctx, message)
 						// then
 						expectedFields := []logger.Field{field1}
 						adapter.HasExactlyOneEntryWithFields(t, expectedFields)
@@ -164,7 +164,7 @@ func TestWith(t *testing.T) {
 						adapter := &adapterMock{}
 						l := newLogger(adapter, field1).With(field2.Key, field2.Value)
 						// when
-						logMessage(l, message)
+						logMessage(l, ctx, message)
 						// then
 						expectedFields := []logger.Field{field1, field2}
 						adapter.HasExactlyOneEntryWithFields(t, expectedFields)
@@ -178,8 +178,8 @@ func TestWith(t *testing.T) {
 				// when
 				loggerWithBothFields := loggerWithField1.With(field2.Key, field2.Value)
 				// then
-				loggerWithField1.Info(message)
-				loggerWithBothFields.Info(message)
+				loggerWithField1.Info(ctx, message)
+				loggerWithBothFields.Info(ctx, message)
 				require.Len(t, adapter.entries, 2)
 				assert.Equal(t, adapter.entries[0].Fields, []logger.Field{field1})
 				assert.Equal(t, adapter.entries[1].Fields, []logger.Field{field1, field2})
@@ -196,10 +196,10 @@ func TestWithError(t *testing.T) {
 			var global logger.Global
 			global.SetAdapter(adapter)
 
-			return global.WithError(ctx, err)
+			return global.WithError(err)
 		},
 		"local": func(adapter logger.Adapter, err error) logger.Logger {
-			return logger.Local{Adapter: adapter}.WithError(ctx, err)
+			return logger.Local{Adapter: adapter}.WithError(err)
 		},
 	}
 	for name, newLogger := range loggersWithError {
@@ -210,7 +210,7 @@ func TestWithError(t *testing.T) {
 						adapter := &adapterMock{}
 						l := newLogger(adapter, ErrSome)
 						// when
-						logMessage(l, message)
+						logMessage(l, ctx, message)
 						// then
 						adapter.HasExactlyOneEntryWithError(t, ErrSome)
 					})
@@ -223,8 +223,8 @@ func TestWithError(t *testing.T) {
 				// when
 				loggerWithAnotherError := loggerWithSomeError.WithError(ErrAnother)
 				// then
-				loggerWithSomeError.Error(message)
-				loggerWithAnotherError.Error(message)
+				loggerWithSomeError.Error(ctx, message)
+				loggerWithAnotherError.Error(ctx, message)
 				require.Len(t, adapter.entries, 2)
 				assert.Same(t, adapter.entries[0].Error, ErrSome)
 				assert.Same(t, adapter.entries[1].Error, ErrAnother)

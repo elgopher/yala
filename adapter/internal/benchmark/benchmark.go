@@ -57,7 +57,7 @@ func Adapter(b *testing.B, adapter logger.Adapter) {
 				b.ResetTimer()
 
 				for i := 0; i < b.N; i++ {
-					localLogger.With(ctx, "a", fieldValue).Info("msg")
+					localLogger.With("a", fieldValue).Info(ctx, "msg")
 				}
 			})
 		})

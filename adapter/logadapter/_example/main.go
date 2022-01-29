@@ -22,7 +22,7 @@ func main() {
 	yalaLogger := logger.Local{Adapter: adapter}
 
 	yalaLogger.Debug(ctx, "Hello standard log")
-	yalaLogger.With(ctx, "f1", "v1").With("f2", "f2").Info("Some info")
-	yalaLogger.With(ctx, "parameter", "some").Warn("Deprecated configuration parameter. It will be removed.")
-	yalaLogger.WithError(ctx, ErrSome).Error("Some error")
+	yalaLogger.With("f1", "v1").With("f2", "f2").Info(ctx, "Some info")
+	yalaLogger.With("parameter", "some").Warn(ctx, "Deprecated configuration parameter. It will be removed.")
+	yalaLogger.WithError(ErrSome).Error(ctx, "Some error")
 }
