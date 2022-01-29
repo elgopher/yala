@@ -4,6 +4,13 @@ issues:
     - path: _test\.go
       linters:
         - funlen
+        - maligned
+        - gomnd
+    - path: adapter/internal/adaptertest
+      linters:
+        - funlen
+        - maligned
+        - gomnd
 
 linters:
   enable:
