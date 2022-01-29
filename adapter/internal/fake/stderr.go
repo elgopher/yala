@@ -1,4 +1,4 @@
-package glogadapter_test
+package fake
 
 import (
 	"io/ioutil"
@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func useFakeStderr(t *testing.T) fakeStderr {
+func UseFakeStderr(t *testing.T) Stderr {
 	t.Helper()
 
 	prevStderr := os.Stderr
@@ -17,22 +17,22 @@ func useFakeStderr(t *testing.T) fakeStderr {
 
 	os.Stderr = tmpFile
 
-	return fakeStderr{
+	return Stderr{
 		prevStderr:    prevStderr,
 		currentStderr: tmpFile,
 	}
 }
 
-type fakeStderr struct {
+type Stderr struct {
 	prevStderr    *os.File
 	currentStderr *os.File
 }
 
-func (f fakeStderr) Release() {
+func (f Stderr) Release() {
 	os.Stderr = f.prevStderr
 }
 
-func (f fakeStderr) FirstLine(t *testing.T) string {
+func (f Stderr) FirstLine(t *testing.T) string {
 	t.Helper()
 
 	line, err := ioutil.ReadFile(f.currentStderr.Name())
