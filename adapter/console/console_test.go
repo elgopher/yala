@@ -4,9 +4,12 @@
 package console_test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/elgopher/yala/adapter/console"
+	"github.com/elgopher/yala/adapter/internal/fake"
+	"github.com/elgopher/yala/logger"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -24,6 +27,20 @@ func TestStderrAdapter(t *testing.T) {
 	t.Run("should return adapter", func(t *testing.T) {
 		adapter := console.StderrAdapter()
 		require.NotNil(t, adapter)
+	})
+
+	t.Run("should log message", func(t *testing.T) {
+		stderr := fake.UseFakeStderr(t)
+		defer stderr.Release()
+
+		adapter := console.StderrAdapter()
+		// when
+		adapter.Log(context.Background(), logger.Entry{
+			Level:   logger.InfoLevel,
+			Message: "message",
+		})
+		// then
+		assert.Equal(t, "INFO message\n", stderr.FirstLine(t))
 	})
 }
 
