@@ -5,15 +5,15 @@ import (
 	"testing"
 )
 
-func UseFakeStderr(t *testing.T) Std {
+func UseFakeStdout(t *testing.T) Std {
 	t.Helper()
 
 	return useStd(t,
 		func() *os.File {
-			return os.Stderr
+			return os.Stdout
 		},
 		func(f *os.File) {
-			os.Stderr = f
+			os.Stdout = f
 		},
 	)
 }
