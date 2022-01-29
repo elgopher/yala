@@ -36,14 +36,14 @@ func (a Adapter) Log(_ context.Context, entry logger.Entry) {
 
 	switch entry.Level {
 	case logger.DebugLevel:
-		glog.InfoDepth(depth, message, fieldsAndErrorString)
+		glog.InfoDepth(depth, message, " ", fieldsAndErrorString)
 	case logger.InfoLevel:
-		glog.InfoDepth(depth, message, fieldsAndErrorString)
+		glog.InfoDepth(depth, message, " ", fieldsAndErrorString)
 	case logger.WarnLevel:
-		glog.WarningDepth(depth, message, fieldsAndErrorString)
+		glog.WarningDepth(depth, message, " ", fieldsAndErrorString)
 	case logger.ErrorLevel:
-		glog.ErrorDepth(depth, message, fieldsAndErrorString)
+		glog.ErrorDepth(depth, message, " ", fieldsAndErrorString)
 	default:
-		glog.InfoDepth(depth, message, fieldsAndErrorString)
+		glog.InfoDepth(depth, message, " ", fieldsAndErrorString)
 	}
 }
