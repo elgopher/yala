@@ -40,7 +40,7 @@ func TestStderrAdapter(t *testing.T) {
 			Message: "message",
 		})
 		// then
-		assert.Equal(t, "INFO message\n", stderr.FirstLine(t))
+		assert.Equal(t, "INFO message\n", stderr.String(t))
 	})
 }
 
@@ -61,6 +61,6 @@ func TestStdoutAdapter(t *testing.T) {
 			Message: "message",
 		})
 		// then
-		assert.Equal(t, "INFO message\n", stdout.FirstLine(t))
+		assert.Equal(t, "INFO message\n", stdout.String(t))
 	})
 }

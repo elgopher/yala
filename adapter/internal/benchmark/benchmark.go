@@ -11,6 +11,7 @@ import (
 	"github.com/elgopher/yala/logger"
 )
 
+// Adapter runs benchmarks on any implementation of logger.Adapter.
 func Adapter(b *testing.B, adapter logger.Adapter) {
 	b.Helper()
 

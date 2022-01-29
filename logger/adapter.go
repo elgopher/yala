@@ -13,6 +13,7 @@ type Adapter interface {
 	Log(context.Context, Entry)
 }
 
+// Entry is a logging entry created by logger and passed to adapter.
 type Entry struct {
 	Level   Level
 	Message string
@@ -33,12 +34,18 @@ func (e Entry) With(field Field) Entry {
 	return e
 }
 
+// Level is a severity level of message. Use Level.MoreSevereThan to compare two levels.
 type Level int8
 
 const (
+	// DebugLevel level is usually enabled only when debugging (disabled in production). Very verbose logging.
 	DebugLevel Level = iota - 1
+	// InfoLevel is used for informational messages, for confirmation that the program is working as expected.
 	InfoLevel
+	// WarnLevel is used for non-critical entries that deserve eyes.
 	WarnLevel
+	// ErrorLevel is used for errors that should definitely be noted. If an application is running smoothly,
+	// it shouldn't generate any error-level logs.
 	ErrorLevel
 )
 
@@ -57,10 +64,12 @@ func (l Level) String() string {
 	}
 }
 
+// MoreSevereThan returns true if level is more severe than the argument.
 func (l Level) MoreSevereThan(other Level) bool {
 	return l > other
 }
 
+// Field contains key-value pair.
 type Field struct {
 	Key   string
 	Value interface{}

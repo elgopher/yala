@@ -5,10 +5,11 @@ import (
 	"testing"
 )
 
-func UseFakeStderr(t *testing.T) Std {
+// UseFakeStderr swaps stderr with fake one.
+func UseFakeStderr(t *testing.T) SwappedFile {
 	t.Helper()
 
-	return useStd(t,
+	return swap(t,
 		func() *os.File {
 			return os.Stderr
 		},

@@ -15,11 +15,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// Subject is configuration of logger.Adapter under test.
 type Subject struct {
-	NewAdapter       func(io.Writer) logger.Adapter
+	// NewAdapter creates a new logger.Adapter instance
+	NewAdapter func(io.Writer) logger.Adapter
+	// UnmarshalMessage unmarshalls message as a string to Message struct
 	UnmarshalMessage func(t *testing.T, line string) Message
 }
 
+// Message is a representation of the logged message.
 type Message struct {
 	Level   logger.Level
 	Message string
@@ -38,6 +42,7 @@ type InterfaceField struct {
 	NestedField string
 }
 
+// Run runs tests common to all logger.Adapter implementations.
 func Run(t *testing.T, subject Subject) { // nolint
 	ctx := context.Background()
 
