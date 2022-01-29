@@ -189,4 +189,26 @@ func Run(t *testing.T, subject Subject) { // nolint
 		assert.Equal(t, stringFieldValue, out.StringField)
 		assert.Equal(t, intFieldValue, out.IntField)
 	})
+
+	t.Run("should log with field and error", func(t *testing.T) {
+		var builder strings.Builder
+		adapter := subject.NewAdapter(&builder)
+		const (
+			stringFieldValue = "string"
+			err              = "err"
+		)
+		entryWithFieldAndError := entry.With(
+			logger.Field{
+				Key:   "StringField",
+				Value: stringFieldValue,
+			},
+		)
+		entryWithFieldAndError.Error = errors.New(err) // nolint
+		// when
+		adapter.Log(ctx, entryWithFieldAndError)
+		// then
+		out := subject.UnmarshalMessage(t, builder.String())
+		assert.Equal(t, stringFieldValue, out.StringField)
+		assert.Equal(t, err, out.Error)
+	})
 }
