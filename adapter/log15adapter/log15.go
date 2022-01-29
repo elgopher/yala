@@ -16,6 +16,7 @@ type Adapter struct {
 	Logger log15.Logger
 }
 
+// Log logs the entry using log15 package.
 func (a Adapter) Log(ctx context.Context, entry logger.Entry) {
 	if a.Logger == nil {
 		return

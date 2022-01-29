@@ -60,6 +60,8 @@ func (l Local) WithError(err error) Logger {
 	return l.logger().WithError(err)
 }
 
+// WithSkippedCallerFrame creates a new Logger with one more skipped caller frame. This function is handy when you
+// want to write your own logging helpers.
 func (l Local) WithSkippedCallerFrame() Logger {
 	return l.logger().WithSkippedCallerFrame()
 }

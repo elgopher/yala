@@ -15,6 +15,7 @@ import (
 // Adapter is a logger.Adapter implementation, which is using `glog` package (https://github.com/golang/glog).
 type Adapter struct{}
 
+// Log logs the entry using glog package.
 func (a Adapter) Log(_ context.Context, entry logger.Entry) {
 	var fieldsAndError strings.Builder
 

@@ -11,10 +11,11 @@ import (
 	"github.com/elgopher/yala/logger"
 )
 
-func WriteField(builder *strings.Builder, f logger.Field) {
-	builder.WriteString(f.Key)
+// WriteField converts the field to logfmt format (key=value) and appends it to the builder.
+func WriteField(builder *strings.Builder, field logger.Field) {
+	builder.WriteString(field.Key)
 	builder.WriteByte('=')
-	writeValue(builder, f.Value)
+	writeValue(builder, field.Value)
 }
 
 func writeValue(builder *strings.Builder, value interface{}) {
@@ -57,6 +58,7 @@ func writeValue(builder *strings.Builder, value interface{}) {
 	}
 }
 
+// WriteFields writes multiple fields separated with spaces.
 func WriteFields(builder *strings.Builder, fields []logger.Field) {
 	for i, f := range fields {
 		WriteField(builder, f)

@@ -26,6 +26,7 @@ type Printer interface {
 	Println(skipCallerFrames int, msg string)
 }
 
+// Log logs the entry using Printer. Message is formatted using logfmt.
 func (f Adapter) Log(ctx context.Context, entry logger.Entry) {
 	if f.Printer == nil {
 		return

@@ -31,6 +31,8 @@ func (l Logger) WithError(err error) Logger {
 	return l
 }
 
+// WithSkippedCallerFrame creates a new Logger with one more skipped caller frame. This function is handy when you
+// want to write your own logging helpers.
 func (l Logger) WithSkippedCallerFrame() Logger {
 	l.entry.SkippedCallerFrames++
 
