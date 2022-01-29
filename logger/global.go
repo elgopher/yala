@@ -12,8 +12,11 @@ import (
 //
 //		package yourpackage
 //		import "github.com/elgopher/yala/logger"
-//		var Logger logger.Global // define global logger, no need to initialize (by default nothing is logged)
+//		var log logger.Global // define global logger, no need to initialize (by default nothing is logged)
 //
+//		func SetLoggerAdapter(adapter logger.Adapter) {
+//			log.SetAdapter(adapter)
+//		}
 //
 // It is safe to use it concurrently.
 type Global struct {
@@ -45,34 +48,34 @@ func (g *Global) getLogger() Local {
 
 // Debug logs message using globally configured logger.Adapter.
 func (g *Global) Debug(ctx context.Context, msg string) {
-	g.loggerWithSkippedCallerFrame(ctx).Debug(msg)
+	g.loggerWithSkippedCallerFrame().Debug(ctx, msg)
 }
 
-func (g *Global) loggerWithSkippedCallerFrame(ctx context.Context) Logger {
-	return g.getLogger().WithSkippedCallerFrame(ctx)
+func (g *Global) loggerWithSkippedCallerFrame() Logger {
+	return g.getLogger().WithSkippedCallerFrame()
 }
 
 // Info logs message using globally configured logger.Adapter.
 func (g *Global) Info(ctx context.Context, msg string) {
-	g.loggerWithSkippedCallerFrame(ctx).Info(msg)
+	g.loggerWithSkippedCallerFrame().Info(ctx, msg)
 }
 
 // Warn logs message using globally configured logger.Adapter.
 func (g *Global) Warn(ctx context.Context, msg string) {
-	g.loggerWithSkippedCallerFrame(ctx).Warn(msg)
+	g.loggerWithSkippedCallerFrame().Warn(ctx, msg)
 }
 
 // Error logs message using globally configured logger.Adapter.
 func (g *Global) Error(ctx context.Context, msg string) {
-	g.loggerWithSkippedCallerFrame(ctx).Error(msg)
+	g.loggerWithSkippedCallerFrame().Error(ctx, msg)
 }
 
 // With creates a new Logger with field and using globally configured logger.Adapter.
-func (g *Global) With(ctx context.Context, key string, value interface{}) Logger {
-	return g.getLogger().With(ctx, key, value)
+func (g *Global) With(key string, value interface{}) Logger {
+	return g.getLogger().With(key, value)
 }
 
 // WithError creates a new Logger with error and using globally configured logger.Adapter.
-func (g *Global) WithError(ctx context.Context, err error) Logger {
-	return g.getLogger().WithError(ctx, err)
+func (g *Global) WithError(err error) Logger {
+	return g.getLogger().WithError(err)
 }

@@ -24,7 +24,6 @@ import (
 type Logger struct {
 	entry   Entry
 	adapter Adapter
-	ctx     context.Context
 }
 
 // With creates a new Logger with field.
@@ -47,27 +46,27 @@ func (l Logger) WithSkippedCallerFrame() Logger {
 	return l
 }
 
-func (l Logger) Debug(msg string) {
-	l.log(DebugLevel, msg)
+func (l Logger) Debug(ctx context.Context, msg string) {
+	l.log(ctx, DebugLevel, msg)
 }
 
-func (l Logger) Info(msg string) {
-	l.log(InfoLevel, msg)
+func (l Logger) Info(ctx context.Context, msg string) {
+	l.log(ctx, InfoLevel, msg)
 }
 
-func (l Logger) Warn(msg string) {
-	l.log(WarnLevel, msg)
+func (l Logger) Warn(ctx context.Context, msg string) {
+	l.log(ctx, WarnLevel, msg)
 }
 
-func (l Logger) Error(msg string) {
-	l.log(ErrorLevel, msg)
+func (l Logger) Error(ctx context.Context, msg string) {
+	l.log(ctx, ErrorLevel, msg)
 }
 
-func (l Logger) log(level Level, msg string) {
+func (l Logger) log(ctx context.Context, level Level, msg string) {
 	e := l.entry
 	e.Level = level
 	e.Message = msg
 	e.SkippedCallerFrames += 3
 
-	l.adapter.Log(l.ctx, e)
+	l.adapter.Log(ctx, e)
 }

@@ -22,7 +22,7 @@ func main() {
 	ctx = context.WithValue(ctx, tag, "value")
 
 	l.Info(ctx, "tagged message")                // INFO tagged message tag=value
-	l.With(ctx, "k", "v").Info("tagged message") // INFO tagged message k=v tag=value
+	l.With("k", "v").Info(ctx, "tagged message") // INFO tagged message k=v tag=value
 }
 
 // AddFieldFromContextAdapter is a middleware (decorator) which adds

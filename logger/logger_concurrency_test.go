@@ -29,8 +29,8 @@ func TestConcurrency(t *testing.T) {
 				global.Info(ctx, message)
 				global.Warn(ctx, message)
 				global.Error(ctx, message)
-				global.With(ctx, "k", "v").Info(message)
-				global.WithError(ctx, ErrSome).Error(message)
+				global.With("k", "v").Info(ctx, message)
+				global.WithError(ErrSome).Error(ctx, message)
 				waitGroup.Done()
 			}()
 		}
@@ -55,8 +55,8 @@ func TestConcurrency(t *testing.T) {
 				localLogger.Info(ctx, message)
 				localLogger.Warn(ctx, message)
 				localLogger.Error(ctx, message)
-				localLogger.With(ctx, "k", "v").Info(message)
-				localLogger.WithError(ctx, ErrSome).Error(message)
+				localLogger.With("k", "v").Info(ctx, message)
+				localLogger.WithError(ErrSome).Error(ctx, message)
 				waitGroup.Done()
 			}()
 		}
