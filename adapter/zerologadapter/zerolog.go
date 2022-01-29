@@ -16,6 +16,7 @@ type Adapter struct {
 	Logger zerolog.Logger
 }
 
+// Log logs the entry using zerolog module.
 func (l Adapter) Log(ctx context.Context, entry logger.Entry) {
 	event := l.Logger.WithLevel(convertLevel(entry.Level))
 

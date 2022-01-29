@@ -49,6 +49,7 @@ const (
 	ErrorLevel
 )
 
+// String converts the Level to a string. For example InfoLevel becomes "INFO".
 func (l Level) String() string {
 	switch l {
 	case DebugLevel:

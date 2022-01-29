@@ -24,6 +24,7 @@ func swap(t *testing.T, get func() *os.File, set func(*os.File)) SwappedFile {
 	}
 }
 
+// SwappedFile is a temporary swapped file.
 type SwappedFile struct {
 	original *os.File
 	current  *os.File

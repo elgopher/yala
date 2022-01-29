@@ -15,6 +15,7 @@ type Adapter struct {
 	Logger *zap.Logger
 }
 
+// Log logs the entry using zap module.
 func (a Adapter) Log(_ context.Context, entry logger.Entry) {
 	if a.Logger == nil {
 		return

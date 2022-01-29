@@ -15,6 +15,7 @@ type Adapter struct {
 	Entry *logrus.Entry
 }
 
+// Log logs the entry using logrus module.
 func (a Adapter) Log(ctx context.Context, entry logger.Entry) {
 	if a.Entry == nil {
 		return
