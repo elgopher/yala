@@ -11,13 +11,22 @@ import (
 
 func BenchmarkInfo(b *testing.B) {
 	b.ReportAllocs()
-	b.ResetTimer()
 
 	var global logger.Global
 
 	for i := 0; i < b.N; i++ {
-		global.Info(ctx, "msg") // 30ns, 0 allocs
+		global.Info(ctx, "msg") // 27.5ns, 0 allocs
 	}
+}
+
+func BenchmarkParallelInfo(b *testing.B) {
+	var global logger.Global
+
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			global.Info(ctx, "msg") // 3.6 ns/op (8 goroutines, 8 cores)
+		}
+	})
 }
 
 func BenchmarkLogger_Info(b *testing.B) {
@@ -34,7 +43,6 @@ func BenchmarkLogger_Info(b *testing.B) {
 
 func BenchmarkWith(b *testing.B) {
 	b.ReportAllocs()
-	b.ResetTimer()
 
 	var global logger.Global
 
@@ -45,7 +53,6 @@ func BenchmarkWith(b *testing.B) {
 
 func BenchmarkWithError(b *testing.B) {
 	b.ReportAllocs()
-	b.ResetTimer()
 
 	var global logger.Global
 

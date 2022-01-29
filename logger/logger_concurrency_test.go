@@ -18,10 +18,10 @@ func TestConcurrency(t *testing.T) {
 		var global logger.Global
 		global.SetAdapter(adapter)
 
-		var wg sync.WaitGroup
+		var waitGroup sync.WaitGroup
 
 		for i := 0; i < 1000; i++ {
-			wg.Add(1)
+			waitGroup.Add(1)
 
 			go func() {
 				// when
@@ -31,11 +31,11 @@ func TestConcurrency(t *testing.T) {
 				global.Error(ctx, message)
 				global.With(ctx, "k", "v").Info(message)
 				global.WithError(ctx, ErrSome).Error(message)
-				wg.Done()
+				waitGroup.Done()
 			}()
 		}
 
-		wg.Wait()
+		waitGroup.Wait()
 		// then
 		assert.Equal(t, adapter.Count(), 6000)
 	})
@@ -44,10 +44,10 @@ func TestConcurrency(t *testing.T) {
 		adapter := &concurrencySafeAdapter{}
 		localLogger := logger.Local{Adapter: adapter}
 
-		var wg sync.WaitGroup
+		var waitGroup sync.WaitGroup
 
 		for i := 0; i < 1000; i++ {
-			wg.Add(1)
+			waitGroup.Add(1)
 
 			go func() {
 				// when
@@ -57,11 +57,11 @@ func TestConcurrency(t *testing.T) {
 				localLogger.Error(ctx, message)
 				localLogger.With(ctx, "k", "v").Info(message)
 				localLogger.WithError(ctx, ErrSome).Error(message)
-				wg.Done()
+				waitGroup.Done()
 			}()
 		}
 
-		wg.Wait()
+		waitGroup.Wait()
 		// then
 		assert.Equal(t, adapter.Count(), 6000)
 	})
