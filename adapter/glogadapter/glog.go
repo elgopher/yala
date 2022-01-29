@@ -32,7 +32,7 @@ func (a Adapter) Log(_ context.Context, entry logger.Entry) {
 
 	fieldsAndErrorString := fieldsAndError.String()
 	message := entry.Message
-	depth := entry.SkippedCallerFrames
+	depth := entry.SkippedCallerFrames + 1
 
 	switch entry.Level {
 	case logger.DebugLevel:

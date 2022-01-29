@@ -16,5 +16,5 @@ type printerLogger struct {
 }
 
 func (p printerLogger) Println(skipCallerFrames int, msg string) {
-	_ = p.Logger.Output(skipCallerFrames+1, msg)
+	_ = p.Logger.Output(skipCallerFrames+2, msg) // nolint
 }

@@ -32,7 +32,7 @@ func (a Adapter) Log(_ context.Context, entry logger.Entry) {
 		fields[i] = zap.Any(f.Key, f.Value)
 	}
 
-	zapLogger = zapLogger.WithOptions(zap.AddCallerSkip(entry.SkippedCallerFrames))
+	zapLogger = zapLogger.WithOptions(zap.AddCallerSkip(entry.SkippedCallerFrames + 1))
 
 	switch entry.Level {
 	case logger.DebugLevel:

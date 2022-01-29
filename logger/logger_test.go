@@ -77,7 +77,7 @@ func TestGlobalLogging(t *testing.T) {
 					logger.Entry{
 						Level:               lvl,
 						Message:             message,
-						SkippedCallerFrames: 4,
+						SkippedCallerFrames: 3,
 					},
 				)
 			})
@@ -120,7 +120,7 @@ func TestLocalLogger(t *testing.T) {
 					logger.Entry{
 						Level:               lvl,
 						Message:             message,
-						SkippedCallerFrames: 3,
+						SkippedCallerFrames: 2,
 					},
 				)
 			})
