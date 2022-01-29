@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/elgopher/yala/adapter/glogadapter"
+	"github.com/elgopher/yala/adapter/internal/fake"
 	"github.com/elgopher/yala/logger"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -16,7 +17,7 @@ func TestAdapter_Log(t *testing.T) {
 	const message = "message"
 
 	t.Run("should log caller", func(t *testing.T) {
-		stderr := useFakeStderr(t)
+		stderr := fake.UseFakeStderr(t)
 		defer stderr.Release()
 
 		adapter := glogadapter.Adapter{}
@@ -34,7 +35,7 @@ func TestAdapter_Log(t *testing.T) {
 	})
 
 	t.Run("should log message", func(t *testing.T) {
-		stderr := useFakeStderr(t)
+		stderr := fake.UseFakeStderr(t)
 		defer stderr.Release()
 
 		adapter := glogadapter.Adapter{}
@@ -50,7 +51,7 @@ func TestAdapter_Log(t *testing.T) {
 	})
 
 	t.Run("should log message with field", func(t *testing.T) {
-		stderr := useFakeStderr(t)
+		stderr := fake.UseFakeStderr(t)
 		defer stderr.Release()
 
 		adapter := glogadapter.Adapter{}
