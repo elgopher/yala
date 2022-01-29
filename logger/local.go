@@ -7,7 +7,7 @@ import (
 	"context"
 )
 
-const localLoggerSkippedCallerFrames = 3
+const localLoggerSkippedCallerFrames = 2
 
 // Local is an immutable struct to log messages or create new loggers with fields or error.
 //

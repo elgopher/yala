@@ -66,7 +66,7 @@ func (l Logger) log(ctx context.Context, level Level, msg string) {
 	e := l.entry
 	e.Level = level
 	e.Message = msg
-	e.SkippedCallerFrames += 3
+	e.SkippedCallerFrames += 2
 
 	l.adapter.Log(ctx, e)
 }
