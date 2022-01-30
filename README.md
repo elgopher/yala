@@ -5,7 +5,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/elgopher/yala)](https://goreportcard.com/report/github.com/elgopher/yala)
 [![codecov](https://codecov.io/gh/elgopher/yala/branch/master/graph/badge.svg)](https://codecov.io/gh/elgopher/yala)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-<img src="logo.png" align="right" width="30%">
+<img src="docs/logo.png" align="right" width="30%">
 
 Tiny **structured logging** abstraction or facade for various logging libraries, allowing the end user to plug in the desired logging library in `main.go`.
 
@@ -146,6 +146,10 @@ func (MyAdapter) Log(context.Context, logger.Entry) {
 * Logger is used by package/module/library author
 * Adapter is an interface to be implemented by adapters. They use real logging libraries under the hood.
 * So, why two abstractions? Simply because the smaller the Adapter interface, the easier it is to implement it. On the other hand, from library perspective, more methods means API which is easier to use. 
+* Here is the architecture from the package perspective:
+
+<img src="docs/architecture.svg" width="100%">
+
 
 ### More examples
 
