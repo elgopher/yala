@@ -170,10 +170,20 @@ type ImaginaryLogger interface {
 
 But there are limitations for such solution:
 
-* such interface alone is not very easy to use in your package/module/library
-* someone who is using your package is supposed to write his own adapter of this interface (or you can provide adapters which
-  of course takes your valuable time)
-* it is not obvious how logging API should look like
+* such interface alone is not very easy to use in your package/module/library. You just have to write way too much boilerplate code.
+* someone who is using your package is supposed to write implementation of this interface (or you can provide prebuilt implementation for various logging libraries). In both cases this cost time and effort.
+* it is not obvious how logging API should look like. Someone would argue that is better to have a much more complicated interface like this:
+```go
+type AnotherImaginaryLogger interface {
+	With(field string, value interface{}) AnotherImaginaryLogger
+	WithError(err error) AnotherImaginaryLogger
+	Info(context.Context, string)
+	Debug(context.Context, string)
+	Warn(context.Context, string)
+	Error(context.Context, string)
+}
+```
+Unfortunately such interface is much harder to implement, than interface with a single method.
 
 ## But yala is just another API. Why it is unique?
 
