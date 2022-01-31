@@ -112,3 +112,15 @@ func (g *Global) WithError(err error) *Global {
 		rootAdapter: g.adapterValue(),
 	}
 }
+
+// WithSkippedCallerFrame creates a new child logger with one more skipped caller frame. This function is handy when you
+// want to write your own logging helpers.
+func (g *Global) WithSkippedCallerFrame() *Global {
+	newEntry := g.entry
+	newEntry.SkippedCallerFrames++
+
+	return &Global{
+		entry:       newEntry,
+		rootAdapter: g.adapterValue(),
+	}
+}
