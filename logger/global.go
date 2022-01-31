@@ -39,13 +39,7 @@ func (g *Global) SetAdapter(adapter Adapter) {
 		adapter = noopAdapter{}
 	}
 
-	if g.rootAdapter != nil {
-		g.rootAdapter.Store(adapterWrapper{Adapter: adapter})
-
-		return
-	}
-
-	g.adapter.Store(adapterWrapper{Adapter: adapter})
+	g.adapterValue().Store(adapterWrapper{Adapter: adapter})
 }
 
 func (g *Global) getAdapter() Adapter { // nolint:ireturn
