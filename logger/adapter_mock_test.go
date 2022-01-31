@@ -43,3 +43,11 @@ func (a *adapterMock) HasExactlyOneEntryWithError(t *testing.T, expected error) 
 	actual := a.entries[0].Error
 	assert.Equal(t, expected, actual)
 }
+
+func (a *adapterMock) HasExactlyOneEntryWithSkippedCallerFrames(t *testing.T, expected int) {
+	t.Helper()
+
+	require.Len(t, a.entries, 1)
+	actual := a.entries[0].SkippedCallerFrames
+	assert.Equal(t, expected, actual)
+}

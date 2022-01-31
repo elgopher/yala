@@ -372,3 +372,84 @@ func TestLevel_String(t *testing.T) {
 		assert.Equal(t, "10", logger.Level(10).String())
 	})
 }
+
+func TestWithSkippedCallerFrame(t *testing.T) {
+	tests := map[string]struct {
+		newLogger    func(logger.Adapter) anyLogger
+		skipOneFrame func(anyLogger, logger.Adapter) anyLogger
+	}{
+		"normal": {
+			newLogger: func(adapter logger.Adapter) anyLogger {
+				return logger.WithAdapter(adapter)
+			},
+			skipOneFrame: func(l anyLogger, adapter logger.Adapter) anyLogger {
+				return l.(logger.Logger).WithSkippedCallerFrame() // nolint:forcetypeassert // no generics still in Go
+			},
+		},
+		"global": {
+			newLogger: func(adapter logger.Adapter) anyLogger {
+				var global logger.Global
+				global.SetAdapter(adapter)
+
+				return &global
+			},
+			skipOneFrame: func(l anyLogger, adapter logger.Adapter) anyLogger {
+				return l.(*logger.Global).WithSkippedCallerFrame() // nolint:forcetypeassert // no generics still in Go
+			},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			defaultFrames := defaultSkippedCallerFrames(test.newLogger)
+
+			t.Run("should skip one caller frame", func(t *testing.T) {
+				adapter := &adapterMock{}
+				log := test.newLogger(adapter)
+				// when
+				log = test.skipOneFrame(log, adapter)
+				// then
+				require.NotNil(t, log)
+				log.Info(ctx, message)
+				adapter.HasExactlyOneEntryWithSkippedCallerFrames(t, defaultFrames+1)
+			})
+
+			t.Run("should skip two frames", func(t *testing.T) {
+				adapter := &adapterMock{}
+				log := test.newLogger(adapter)
+				// when
+				log = test.skipOneFrame(log, adapter)
+				log = test.skipOneFrame(log, adapter)
+				// then
+				require.NotNil(t, log)
+				log.Info(ctx, message)
+				adapter.HasExactlyOneEntryWithSkippedCallerFrames(t, defaultFrames+2)
+			})
+
+			t.Run("each created logger should be a copy", func(t *testing.T) {
+				adapter := &adapterMock{}
+				log := test.newLogger(adapter)
+				// when
+				log1 := test.skipOneFrame(log, adapter)  // +1 frame
+				log2 := test.skipOneFrame(log1, adapter) // +2 frames
+				// then
+				require.NotNil(t, log1)
+				require.NotNil(t, log2)
+				log1.Info(ctx, message)
+				log2.Info(ctx, message)
+				// then
+				require.Len(t, adapter.entries, 2)
+				assert.Equal(t, defaultFrames+1, adapter.entries[0].SkippedCallerFrames)
+				assert.Equal(t, defaultFrames+2, adapter.entries[1].SkippedCallerFrames)
+			})
+		})
+	}
+}
+
+func defaultSkippedCallerFrames(newLogger func(logger.Adapter) anyLogger) int {
+	adapter := &adapterMock{}
+	log := newLogger(adapter)
+	log.Info(ctx, message)
+
+	return adapter.entries[0].SkippedCallerFrames
+}
