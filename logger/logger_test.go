@@ -180,7 +180,7 @@ func TestGlobal_With(t *testing.T) {
 				return logger.Local{Adapter: adapter}.With(field.Key, field.Value)
 			},
 			With: func(l anyLogger, k string, v interface{}) anyLogger {
-				return l.(logger.Logger).With(k, v) // nolint:forcetypeassert // no generics still in Go
+				return l.(logger.Local).With(k, v) // nolint:forcetypeassert // no generics still in Go
 			},
 		},
 	}
@@ -275,7 +275,7 @@ func TestGlobal_WithError(t *testing.T) {
 				return logger.Local{Adapter: adapter}.WithError(err)
 			},
 			WithError: func(l anyLogger, err error) anyLogger {
-				return l.(logger.Logger).WithError(err) // nolint:forcetypeassert // no generics still in Go
+				return l.(logger.Local).WithError(err) // nolint:forcetypeassert // no generics still in Go
 			},
 		},
 	}
