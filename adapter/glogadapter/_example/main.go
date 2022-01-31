@@ -16,8 +16,8 @@ func main() {
 	ctx := context.Background()
 
 	flag.Parse() // glog will pick command line options like -stderrthreshold=[INFO|WARNING|ERROR]
-	// create local logger
-	log := logger.Local{Adapter: glogadapter.Adapter{}}
+	// create yala logger
+	log := logger.WithAdapter(glogadapter.Adapter{})
 
 	log.Debug(ctx, "Hello glog ") // Debug will be logged as Info
 	log.With("field_name", "field_value").Info(ctx, "Some info")

@@ -7,21 +7,28 @@ import (
 	"context"
 )
 
-// Local is an immutable struct to log messages or create new loggers with fields or error.
+// Logger is an immutable logger to log messages or create new loggers with fields or error.
+//
+// You can't update the adapter once created.
 //
 // It is safe to use it concurrently.
-type Local struct {
-	Adapter Adapter
+type Logger struct {
+	adapter Adapter
 	entry   Entry
 }
 
+// WithAdapter creates a new Logger.
+func WithAdapter(adapter Adapter) Logger {
+	return Logger{adapter: adapter}
+}
+
 // Debug logs a message at DebugLevel.
-func (l Local) Debug(ctx context.Context, msg string) {
+func (l Logger) Debug(ctx context.Context, msg string) {
 	l.log(ctx, DebugLevel, msg)
 }
 
-func (l Local) log(ctx context.Context, lvl Level, msg string) {
-	if l.Adapter == nil {
+func (l Logger) log(ctx context.Context, lvl Level, msg string) {
+	if l.adapter == nil {
 		return
 	}
 
@@ -30,33 +37,33 @@ func (l Local) log(ctx context.Context, lvl Level, msg string) {
 	e.Message = msg
 	e.SkippedCallerFrames += 2
 
-	l.Adapter.Log(ctx, e)
+	l.adapter.Log(ctx, e)
 }
 
 // Info logs a message at InfoLevel.
-func (l Local) Info(ctx context.Context, msg string) {
+func (l Logger) Info(ctx context.Context, msg string) {
 	l.log(ctx, InfoLevel, msg)
 }
 
 // Warn logs a message at WarnLevel.
-func (l Local) Warn(ctx context.Context, msg string) {
+func (l Logger) Warn(ctx context.Context, msg string) {
 	l.log(ctx, WarnLevel, msg)
 }
 
 // Error logs a message at ErrorLevel.
-func (l Local) Error(ctx context.Context, msg string) {
+func (l Logger) Error(ctx context.Context, msg string) {
 	l.log(ctx, ErrorLevel, msg)
 }
 
 // With creates a new logger with field.
-func (l Local) With(key string, value interface{}) Local {
+func (l Logger) With(key string, value interface{}) Logger {
 	l.entry = l.entry.With(Field{key, value})
 
 	return l
 }
 
 // WithError creates a new logger with error.
-func (l Local) WithError(err error) Local {
+func (l Logger) WithError(err error) Logger {
 	l.entry.Error = err
 
 	return l
@@ -64,7 +71,7 @@ func (l Local) WithError(err error) Local {
 
 // WithSkippedCallerFrame creates a new logger with one more skipped caller frame. This function is handy when you
 // want to write your own logging helpers.
-func (l Local) WithSkippedCallerFrame() Local {
+func (l Logger) WithSkippedCallerFrame() Logger {
 	l.entry.SkippedCallerFrames++
 
 	return l

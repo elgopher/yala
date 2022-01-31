@@ -17,7 +17,7 @@ func main() {
 
 	l := log15.New()                           // create log15 logger
 	adapter := log15adapter.Adapter{Logger: l} // create logger.Adapter for log15
-	log := logger.Local{Adapter: adapter}      // create yala logger
+	log := logger.WithAdapter(adapter)         // create yala logger
 
 	log.Debug(ctx, "Hello log15")
 	log.With("field_name", "field_value").Info(ctx, "Some info")

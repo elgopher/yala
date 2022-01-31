@@ -17,7 +17,7 @@ func main() {
 		MinLevel:    logger.WarnLevel,
 		NextAdapter: adapter,
 	}
-	l := logger.Local{Adapter: filterAdapter}
+	l := logger.WithAdapter(filterAdapter)
 
 	ctx := context.Background()
 

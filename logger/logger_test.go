@@ -92,26 +92,26 @@ func TestGlobalLogging(t *testing.T) {
 	})
 }
 
-func TestLocalLogger(t *testing.T) {
+func TestNormalLogger(t *testing.T) {
 	t.Run("passing nil adapter should disable logger", func(t *testing.T) {
-		localLogger := logger.Local{Adapter: nil}
-		localLogger.Info(ctx, message)
+		log := logger.WithAdapter(nil)
+		log.Info(ctx, message)
 	})
 
 	t.Run("using zero value should not panic", func(t *testing.T) {
-		var localLogger logger.Local
+		var log logger.Logger
 		assert.NotPanics(t, func() {
-			localLogger.Info(ctx, message)
+			log.Info(ctx, message)
 		})
 	})
 
 	t.Run("should log message using adapter", func(t *testing.T) {
-		type functionUnderTest func(l logger.Local, ctx context.Context, msg string)
+		type functionUnderTest func(l logger.Logger, ctx context.Context, msg string)
 		tests := map[logger.Level]functionUnderTest{
-			logger.DebugLevel: logger.Local.Debug,
-			logger.InfoLevel:  logger.Local.Info,
-			logger.WarnLevel:  logger.Local.Warn,
-			logger.ErrorLevel: logger.Local.Error,
+			logger.DebugLevel: logger.Logger.Debug,
+			logger.InfoLevel:  logger.Logger.Info,
+			logger.WarnLevel:  logger.Logger.Warn,
+			logger.ErrorLevel: logger.Logger.Error,
 		}
 
 		for lvl, log := range tests {
@@ -119,9 +119,9 @@ func TestLocalLogger(t *testing.T) {
 
 			t.Run(testName, func(t *testing.T) {
 				adapter := &adapterMock{}
-				localLogger := logger.Local{Adapter: adapter}
+				normalLogger := logger.WithAdapter(adapter)
 				// when
-				log(localLogger, context.Background(), message)
+				log(normalLogger, context.Background(), message)
 				// then
 				adapter.HasExactlyOneEntry(t,
 					logger.Entry{
@@ -175,12 +175,12 @@ func TestGlobal_With(t *testing.T) {
 			},
 			With: globalWith,
 		},
-		"local": {
+		"normal": {
 			NewLoggerWithField: func(adapter logger.Adapter, field logger.Field) anyLogger {
-				return logger.Local{Adapter: adapter}.With(field.Key, field.Value)
+				return logger.WithAdapter(adapter).With(field.Key, field.Value)
 			},
 			With: func(l anyLogger, k string, v interface{}) anyLogger {
-				return l.(logger.Local).With(k, v) // nolint:forcetypeassert // no generics still in Go
+				return l.(logger.Logger).With(k, v) // nolint:forcetypeassert // no generics still in Go
 			},
 		},
 	}
@@ -270,12 +270,12 @@ func TestGlobal_WithError(t *testing.T) {
 			},
 			WithError: globalWithError,
 		},
-		"local": {
+		"normal": {
 			NewLoggerWithError: func(adapter logger.Adapter, err error) anyLogger {
-				return logger.Local{Adapter: adapter}.WithError(err)
+				return logger.WithAdapter(adapter).WithError(err)
 			},
 			WithError: func(l anyLogger, err error) anyLogger {
-				return l.(logger.Local).WithError(err) // nolint:forcetypeassert // no generics still in Go
+				return l.(logger.Logger).WithError(err) // nolint:forcetypeassert // no generics still in Go
 			},
 		},
 	}

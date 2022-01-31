@@ -22,7 +22,7 @@ func main() {
 		Entry: entry, // inject logrus
 	}
 	// Create yala logger
-	log := logger.Local{Adapter: adapter}
+	log := logger.WithAdapter(adapter)
 
 	log.Debug(ctx, "Hello logrus ")
 	log.With("field_name", "field_value").With("another", "ccc").Info(ctx, "Some info")
