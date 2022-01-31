@@ -40,9 +40,9 @@ func TestConcurrency(t *testing.T) {
 		assert.Equal(t, adapter.Count(), 6000)
 	})
 
-	t.Run("local log functions", func(t *testing.T) {
+	t.Run("normal log functions", func(t *testing.T) {
 		adapter := &concurrencySafeAdapter{}
-		localLogger := logger.Local{Adapter: adapter}
+		log := logger.WithAdapter(adapter)
 
 		var waitGroup sync.WaitGroup
 
@@ -51,12 +51,12 @@ func TestConcurrency(t *testing.T) {
 
 			go func() {
 				// when
-				localLogger.Debug(ctx, message)
-				localLogger.Info(ctx, message)
-				localLogger.Warn(ctx, message)
-				localLogger.Error(ctx, message)
-				localLogger.With("k", "v").Info(ctx, message)
-				localLogger.WithError(ErrSome).Error(ctx, message)
+				log.Debug(ctx, message)
+				log.Info(ctx, message)
+				log.Warn(ctx, message)
+				log.Error(ctx, message)
+				log.With("k", "v").Info(ctx, message)
+				log.WithError(ErrSome).Error(ctx, message)
 				waitGroup.Done()
 			}()
 		}

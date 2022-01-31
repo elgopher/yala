@@ -15,7 +15,7 @@ func main() {
 	ctx := context.Background()
 
 	// log to console, stdout
-	log := logger.Local{Adapter: console.StdoutAdapter()}
+	log := logger.WithAdapter(console.StdoutAdapter())
 
 	log.Debug(ctx, "Hello fmt")
 	log.With("field_name", "field_value").Info(ctx, "Some info")

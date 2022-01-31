@@ -20,8 +20,8 @@ func main() {
 	defaultZapLogger := newZapLogger()
 	// this adapter will look for zap logger in the context and will wrap it with zapadapter.Adapter
 	adapter := ZapContextAdapter{DefaultZapLogger: defaultZapLogger}
-	// create local logger
-	log := logger.Local{Adapter: adapter}
+	// create logger
+	log := logger.WithAdapter(adapter)
 
 	contextLogger := defaultZapLogger.With(zap.String("tag", "value"))
 	// bind zap logger to ctx, so all messages will be logged with tag

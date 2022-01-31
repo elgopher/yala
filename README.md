@@ -32,10 +32,10 @@ Please note that at least Go `1.17` is required.
 
 ## How to use
 
-### Choose logger - global or local?
+### Choose logger - global or normal?
 
-Global logger can be accessed from everywhere in your library and can be reconfigured anytime. Local logger is a logger
-initialized only once and used locally, for example inside the function.
+Global logger can be accessed from everywhere in your package and can be reconfigured anytime. Normal logger is an
+immutable logger, initialized only once. 
 
 ### Use global logger
 
@@ -91,26 +91,26 @@ func main() {
 `context.Context` can very useful in transiting request-scoped tags or even entire logger. A `logger.Adapter` implementation might use them
 making possible to log messages instrumented with tags. Thanks to that your library can trully participate in the incoming request. 
 
-### Use local logger
+### Use normal logger
 
 Logging is a special kind of dependency. It is used all over the place. Adding it as an explicit dependency to every
-function, struct etc. can be cumbersome. Still though, you have an option to use **local** logger by injecting
+function, struct etc. can be cumbersome. Still though, you have an option to use **normal** logger by injecting
 logger.Adapter into your library:
 
 ```go
 // your library code:
 func NewLibrary(adapter logger.Adapter) YourLib {
-	// create a new local logger which provides similar API to the global logger
-	localLogger := logger.Local{Adapter: adapter}     
-	return YourLib{localLogger: localLogger}
+	// create a new normal logger which provides similar API to the global logger
+	l := logger.WithAdapter(adapter)     
+	return YourLib{log: l}
 }
 
 type YourLib struct {
-	localLogger logger.Local
+	log logger.Logger
 }
 
 func (l YourLib) Method(ctx context.Context) {
-	l.localLogger.Debug(ctx, "message from local logger")
+	l.log.Debug(ctx, "message from normal logger")
 }
 
 

@@ -19,7 +19,7 @@ func main() {
 	// log using standard log package
 	standardLog := log.New(os.Stdout, "", log.LstdFlags|log.Lshortfile)
 	adapter := logadapter.Adapter(standardLog)
-	yalaLogger := logger.Local{Adapter: adapter}
+	yalaLogger := logger.WithAdapter(adapter)
 
 	yalaLogger.Debug(ctx, "Hello standard log")
 	yalaLogger.With("f1", "v1").With("f2", "f2").Info(ctx, "Some info")

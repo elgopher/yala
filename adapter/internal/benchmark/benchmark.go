@@ -29,14 +29,14 @@ func Adapter(b *testing.B, adapter logger.Adapter) {
 		}
 	})
 
-	b.Run("local logger info", func(b *testing.B) {
-		localLogger := logger.Local{Adapter: adapter}
+	b.Run("normal logger info", func(b *testing.B) {
+		log := logger.WithAdapter(adapter)
 
 		b.ReportAllocs()
 		b.ResetTimer()
 
 		for i := 0; i < b.N; i++ {
-			localLogger.Info(ctx, "msg")
+			log.Info(ctx, "msg")
 		}
 	})
 
@@ -51,14 +51,14 @@ func Adapter(b *testing.B, adapter logger.Adapter) {
 
 	for fieldType, fieldValue := range fields {
 		b.Run(fieldType, func(b *testing.B) {
-			b.Run("local logger with field", func(b *testing.B) {
-				localLogger := logger.Local{Adapter: adapter}
+			b.Run("normal logger with field", func(b *testing.B) {
+				log := logger.WithAdapter(adapter)
 
 				b.ReportAllocs()
 				b.ResetTimer()
 
 				for i := 0; i < b.N; i++ {
-					localLogger.With("a", fieldValue).Info(ctx, "msg")
+					log.With("a", fieldValue).Info(ctx, "msg")
 				}
 			})
 		})

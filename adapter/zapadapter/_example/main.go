@@ -18,7 +18,7 @@ func main() {
 
 	zapLogger := newZapLogger()
 	adapter := zapadapter.Adapter{Logger: zapLogger} // create logger.Adapter for zap
-	log := logger.Local{Adapter: adapter}            // Create yala logger
+	log := logger.WithAdapter(adapter)               // Create yala logger
 
 	log.Debug(ctx, "Hello zap")
 	log.With("field_name", "field_value").Info(ctx, "Some info")

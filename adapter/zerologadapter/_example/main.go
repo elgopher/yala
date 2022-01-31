@@ -18,7 +18,7 @@ func main() {
 
 	l := zerolog.New(os.Stdout)                  // create zerolog logger
 	adapter := zerologadapter.Adapter{Logger: l} // create logger.Adapter for zerolog
-	log := logger.Local{Adapter: adapter}        // Create yala logger
+	log := logger.WithAdapter(adapter)           // Create yala logger
 
 	log.Debug(ctx, "Hello zerolog")
 	log.With("field_name", "field_value").Info(ctx, "Some info")

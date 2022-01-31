@@ -17,7 +17,7 @@ func main() {
 		Prefix:      "example:",
 		NextAdapter: adapter,
 	}
-	l := logger.Local{Adapter: filterAdapter}
+	l := logger.WithAdapter(filterAdapter)
 
 	ctx := context.Background()
 

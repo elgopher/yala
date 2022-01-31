@@ -15,7 +15,7 @@ func main() {
 
 	// creates an adapter which adds field from context to each logged message.
 	addFieldAdapter := AddFieldFromContextAdapter{NextAdapter: adapter}
-	l := logger.Local{Adapter: addFieldAdapter}
+	l := logger.WithAdapter(addFieldAdapter)
 
 	ctx := context.Background()
 	// add tag to context
