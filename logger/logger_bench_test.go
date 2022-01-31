@@ -15,7 +15,7 @@ func BenchmarkInfo(b *testing.B) {
 	var global logger.Global
 
 	for i := 0; i < b.N; i++ {
-		global.Info(ctx, "msg") // 25ns, 0 allocs
+		global.Info(ctx, "msg") // 8ns, 0 allocs
 	}
 }
 
@@ -24,7 +24,7 @@ func BenchmarkParallelInfo(b *testing.B) {
 
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			global.Info(ctx, "msg") // 3.3 ns/op (8 goroutines, 8 cores)
+			global.Info(ctx, "msg") // 1 ns/op (8 goroutines, 8 cores)
 		}
 	})
 }
@@ -37,7 +37,7 @@ func BenchmarkLogger_Info(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		loggerWithField.Info(ctx, "msg") // 9.5ns, 0 allocs
+		loggerWithField.Info(ctx, "msg") // 8ns, 0 allocs
 	}
 }
 
@@ -47,7 +47,7 @@ func BenchmarkWith(b *testing.B) {
 	var global logger.Global
 
 	for i := 0; i < b.N; i++ {
-		_ = global.With("k", "v") // 50ns, 1 alloc
+		_ = global.With("k", "v") // 41ns, 1 alloc
 	}
 }
 
@@ -57,6 +57,6 @@ func BenchmarkWithError(b *testing.B) {
 	var global logger.Global
 
 	for i := 0; i < b.N; i++ {
-		_ = global.WithError(ErrSome) // 12ns, 0 allocs
+		_ = global.WithError(ErrSome) // 2.6ns, 0 allocs
 	}
 }
