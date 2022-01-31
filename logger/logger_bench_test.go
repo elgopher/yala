@@ -15,7 +15,7 @@ func BenchmarkInfo(b *testing.B) {
 	var global logger.Global
 
 	for i := 0; i < b.N; i++ {
-		global.Info(ctx, "msg") // 8ns, 0 allocs
+		global.Info(ctx, "msg") // 12ns, 0 allocs
 	}
 }
 
