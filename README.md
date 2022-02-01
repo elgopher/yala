@@ -160,6 +160,7 @@ func (MyAdapter) Log(context.Context, logger.Entry) {
 * [Filter out messages starting with given prefix](logger/_examples/filter/main.go)
 * [Filter messages by level](logger/_examples/levelfilter/main.go)
 * [Add field to each message taken from context.Context](logger/_examples/tags/main.go)
+* [Report caller information in each message](logger/_examples/caller/main.go)
 * [Zap logger passed over context.Context](logger/_examples/contextlogger/main.go)
 
 ## Why just don't create my own abstraction instead of using yala?
