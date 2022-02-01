@@ -1,6 +1,7 @@
 // (c) 2022 Jacek Olszak
 // This code is licensed under MIT license (see LICENSE for details)
 
+// Package glogadapter provides yala adapter which leverages glog package (https://github.com/golang/glog).
 package glogadapter
 
 import (

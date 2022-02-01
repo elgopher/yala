@@ -1,6 +1,7 @@
 // (c) 2022 Jacek Olszak
 // This code is licensed under MIT license (see LICENSE for details)
 
+// Package zapadapter provides yala adapter which leverages zap module (https://github.com/uber-go/zap).
 package zapadapter
 
 import (

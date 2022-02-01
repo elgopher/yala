@@ -1,6 +1,7 @@
 // (c) 2022 Jacek Olszak
 // This code is licensed under MIT license (see LICENSE for details)
 
+// Package zerologadapter provides yala adapter which leverages zerolog module (https://github.com/rs/zerolog).
 package zerologadapter
 
 import (

@@ -1,6 +1,14 @@
 // (c) 2022 Jacek Olszak
 // This code is licensed under MIT license (see LICENSE for details)
 
+// Package console provides yala adapters capable of logging using simplified console logger. This logger is meant
+// to be used for development purposes only. It does not provide any knobs and switches. If you need customization, then
+// please use real production-ready logger like zap, logrus or zerolog with appropriate adapter.
+//
+// The format of message produced by console adapters is:
+//
+//		LEVEL message key=value key=value error=error
+//
 package console
 
 import (
