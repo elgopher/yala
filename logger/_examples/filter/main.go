@@ -21,6 +21,8 @@ func main() {
 
 	ctx := context.Background()
 
+	// The chain of execution will look like this:
+	// l.Info() -> FilterOutMessages -> console adapter
 	l.Info(ctx, "message without prefix")
 	l.Info(ctx, "example: message which will be filtered out")
 	l.Info(ctx, "another message without prefix")

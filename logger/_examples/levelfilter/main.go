@@ -21,6 +21,8 @@ func main() {
 
 	ctx := context.Background()
 
+	// The chain of execution will look like this:
+	// l.Info() -> FilterByLevel -> console adapter
 	l.Info(ctx, "will be filtered out")
 	l.Warn(ctx, "will be logged")
 	l.Error(ctx, "this too will be logged")
