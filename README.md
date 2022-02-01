@@ -194,8 +194,8 @@ Unfortunately such interface is much harder to implement, than interface with a 
 
 * yala is designed for the ease of use. And by that I mean ease of use for everyone - developer logging messages, developer writing adapter and end user configuring the adapter:
   * two types of concurrency-safe loggers
-  * easy to implement one-method adapter interface
-  * full control over what is logged and how
+  * easy to implement, one-method adapter interface
+  * full control over what is logged, and how
 * yala is using `context.Context` in each method call, making possible to use sophisticated request-scoped logging
 
 ## YALA limitations
