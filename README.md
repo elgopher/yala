@@ -190,7 +190,7 @@ type AnotherImaginaryLogger interface {
 ```
 Unfortunately such interface is much harder to implement, than interface with a single method.
 
-## But yala is just another API. Why it is unique?
+## But yala is just another API. Why is it unique?
 
 * yala is designed for the ease of use. And by that I mean ease of use for everyone - developer logging messages, developer writing adapter and end user configuring the adapter:
   * two types of concurrency-safe loggers
@@ -203,4 +203,4 @@ Unfortunately such interface is much harder to implement, than interface with a 
 * even though your package will be independent of any specific logging implementation, you still have to import 
   `github.com/elgopher/yala/logger`. This package is relatively small though, compared to real logging libraries
   (about ~200 lines of production code) and **it does not import any external libraries**.
-* yala is not optimized for **extreme** performance, because this would hurt the developer experience and readability of the created code. Any intermediary API ads overhead - global synchronized variables, wrapper code and even polymorphism slow down the execution a bit. The overhead varies, but it is usually a matter of tens of nanoseconds per call. 
+* yala is not optimized for **extreme** high performance, because this would hurt the developer experience and readability of the created code. Any intermediary API ads overhead - global synchronized variables, wrapper code and even polymorphism slow down the execution a bit. The overhead varies, but it is usually a matter of tens of nanoseconds per call. 
