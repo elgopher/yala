@@ -1,6 +1,7 @@
 // (c) 2022 Jacek Olszak
 // This code is licensed under MIT license (see LICENSE for details)
 
+// Package logrusadapter provides yala adapter which leverages logrus module (https://github.com/sirupsen/logrus).
 package logrusadapter
 
 import (

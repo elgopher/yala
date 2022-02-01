@@ -1,6 +1,8 @@
 // (c) 2022 Jacek Olszak
 // This code is licensed under MIT license (see LICENSE for details)
 
+// Package logger provides tiny structured logging abstraction or facade for various logging libraries, allowing the end
+// user to plug in the desired logging library in main.go.
 package logger
 
 import (
