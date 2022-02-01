@@ -15,11 +15,11 @@ var ErrSome = errors.New("some error")
 func main() {
 	ctx := context.Background()
 
-	// First create a logrus logger entry. This is basically a Logger with some optional fields.
-	entry := newLogrusEntry()
-	// Then create a logger.Adapter
+	// First create a logrus logger.
+	l := newLogrusLogger()
+	// Then create a logger.Adapter.
 	adapter := logrusadapter.Adapter{
-		Entry: entry, // inject logrus
+		Logger: l, // you can also pass *logrus.Entry
 	}
 	// Create yala logger
 	log := logger.WithAdapter(adapter)
@@ -30,11 +30,11 @@ func main() {
 	log.WithError(ErrSome).Error(ctx, "Some error")
 }
 
-func newLogrusEntry() *logrus.Entry {
+func newLogrusLogger() *logrus.Logger {
 	l := logrus.New()
 	l.SetLevel(logrus.DebugLevel)
 	l.SetFormatter(&logrus.TextFormatter{
 		ForceColors: true,
 	})
-	return logrus.NewEntry(l)
+	return l
 }

@@ -23,8 +23,8 @@ const message = "message"
 func TestAdapter_Log(t *testing.T) {
 	ctx := context.Background()
 
-	t.Run("should not panic when entry is nil", func(t *testing.T) {
-		adapter := logrusadapter.Adapter{Entry: nil}
+	t.Run("should not panic when logger is nil", func(t *testing.T) {
+		adapter := logrusadapter.Adapter{Logger: nil}
 		assert.NotPanics(t, func() {
 			adapter.Log(ctx, logger.Entry{
 				Level:   logger.InfoLevel,
@@ -45,7 +45,7 @@ func newAdapter(writer io.Writer) logger.Adapter { // nolint
 	logrusLogger.SetOutput(writer)
 	logrusLogger.SetLevel(logrus.DebugLevel)
 
-	return logrusadapter.Adapter{Entry: logrus.NewEntry(logrusLogger)}
+	return logrusadapter.Adapter{Logger: logrusLogger}
 }
 
 var levelMapping = map[string]logger.Level{

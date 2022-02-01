@@ -13,26 +13,33 @@ import (
 
 // Adapter is a logger.Adapter implementation, which is using `logrus` module (https://github.com/sirupsen/logrus).
 type Adapter struct {
-	Entry *logrus.Entry
+	Logger LogrusLogger
+}
+
+// LogrusLogger is either *logrus.Logger or *logrus.Entry.
+type LogrusLogger interface {
+	WithField(key string, value interface{}) *logrus.Entry
+	WithError(err error) *logrus.Entry
+	Log(lvl logrus.Level, args ...interface{})
 }
 
 // Log logs the entry using logrus module.
 func (a Adapter) Log(ctx context.Context, entry logger.Entry) {
-	if a.Entry == nil {
+	if a.Logger == nil {
 		return
 	}
 
-	logrusEntry := a.Entry
+	logrusLogger := a.Logger
 
 	for _, f := range entry.Fields {
-		logrusEntry = logrusEntry.WithField(f.Key, f.Value)
+		logrusLogger = logrusLogger.WithField(f.Key, f.Value)
 	}
 
 	if entry.Error != nil {
-		logrusEntry = logrusEntry.WithError(entry.Error)
+		logrusLogger = logrusLogger.WithError(entry.Error)
 	}
 
-	logrusEntry.Log(logrusLevel(entry), entry.Message)
+	logrusLogger.Log(logrusLevel(entry), entry.Message)
 }
 
 func logrusLevel(entry logger.Entry) logrus.Level {

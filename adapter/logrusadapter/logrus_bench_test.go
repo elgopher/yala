@@ -14,9 +14,8 @@ import (
 func BenchmarkLogrus(b *testing.B) {
 	l := logrus.New()
 	l.SetOutput(benchmark.DiscardWriter{})
-	logrusEntry := logrus.NewEntry(l)
 
-	adapter := logrusadapter.Adapter{Entry: logrusEntry}
+	adapter := logrusadapter.Adapter{Logger: l}
 
 	benchmark.Adapter(b, adapter)
 }
