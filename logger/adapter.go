@@ -22,7 +22,7 @@ type Entry struct {
 	//
 	// Please do not update fields in the slice as other go-routines may still read them. To add a new field
 	// please use append built-in function. To remove a field, please create a new slice and copy remaining fields.
-	// To update field first remove it and then add a new one.
+	// To update fields you can rewrite entire slice.
 	//
 	// Fields can be nil.
 	Fields []Field
