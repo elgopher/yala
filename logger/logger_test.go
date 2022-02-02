@@ -135,7 +135,7 @@ func TestNormalLogger(t *testing.T) {
 	})
 }
 
-func TestGlobal_With(t *testing.T) {
+func TestWith(t *testing.T) {
 	globalWith := func(l anyLogger, k string, v interface{}) anyLogger {
 		return l.(*logger.Global).With(k, v) // nolint:forcetypeassert // no generics still in Go
 	}
@@ -230,7 +230,7 @@ func TestGlobal_With(t *testing.T) {
 	}
 }
 
-func TestGlobal_WithError(t *testing.T) {
+func TestWithError(t *testing.T) {
 	globalWithError := func(l anyLogger, err error) anyLogger {
 		return l.(*logger.Global).WithError(err) // nolint:forcetypeassert // no generics still in Go
 	}
