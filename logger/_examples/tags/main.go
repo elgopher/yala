@@ -15,16 +15,18 @@ func main() {
 
 	// creates an adapter which adds field from context to each logged message.
 	addFieldAdapter := AddFieldFromContextAdapter{NextAdapter: adapter}
-	l := logger.WithAdapter(addFieldAdapter)
+	log := logger.WithAdapter(addFieldAdapter)
 
 	ctx := context.Background()
 	// add tag to context
 	ctx = context.WithValue(ctx, tag, "value")
 
 	// The chain of execution will look like this:
-	// l.Info() -> AddFieldFromContextAdapter -> console adapter
-	l.Info(ctx, "tagged message")                // INFO tagged message tag=value
-	l.With("k", "v").Info(ctx, "tagged message") // INFO tagged message k=v tag=value
+	// log.Info() -> AddFieldFromContextAdapter -> console adapter
+	log.Info(ctx, "tagged message") // INFO tagged message tag=value
+
+	log.With("k", "v").
+		Info(ctx, "tagged message") // INFO tagged message k=v tag=value
 }
 
 // AddFieldFromContextAdapter is a middleware (decorator) which adds

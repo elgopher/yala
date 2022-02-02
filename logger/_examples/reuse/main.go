@@ -17,6 +17,11 @@ func main() {
 	requestLogger := log.With("request_id", "123").With("user", "elgopher")
 
 	requestLogger.Debug(ctx, "request started")
-	requestLogger.With("rows_updated", 3).With("table", "gophers").Debug(ctx, "sql update executed")
+
+	requestLogger.
+		With("rows_updated", 3).
+		With("table", "gophers").
+		Debug(ctx, "sql update executed")
+
 	requestLogger.Debug(ctx, "request finished")
 }

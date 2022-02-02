@@ -59,8 +59,12 @@ func SetLoggerAdapter(adapter logger.Adapter) {
 
 func Function(ctx context.Context) {
 	log.Debug(ctx, "Debug message")
-	log.With("field_name", "value").Info(ctx, "Message with field")
-	log.WithError(errors.New("some")).Error(ctx, "Message with error")
+	
+	log.With("field_name", "value").
+		Info(ctx, "Message with field")
+	
+	log.WithError(errors.New("some")).
+		Error(ctx, "Message with error")
 }
 ```
 

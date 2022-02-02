@@ -21,9 +21,15 @@ func main() {
 	log := logger.WithAdapter(adapter)               // Create yala logger
 
 	log.Debug(ctx, "Hello zap")
-	log.With("field_name", "field_value").Info(ctx, "Some info")
-	log.With("parameter", "some").Warn(ctx, "Deprecated configuration parameter. It will be removed.")
-	log.WithError(ErrSome).Error(ctx, "Some error")
+
+	log.With("field_name", "field_value").
+		Info(ctx, "Some info")
+
+	log.With("parameter", "some").
+		Warn(ctx, "Deprecated configuration parameter. It will be removed.")
+
+	log.WithError(ErrSome).
+		Error(ctx, "Some error")
 }
 
 func newZapLogger() *zap.Logger {

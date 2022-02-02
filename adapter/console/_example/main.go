@@ -18,7 +18,13 @@ func main() {
 	log := logger.WithAdapter(console.StdoutAdapter())
 
 	log.Debug(ctx, "Hello fmt")
-	log.With("field_name", "field_value").Info(ctx, "Some info")
-	log.With("parameter", "some value").Warn(ctx, "Deprecated configuration parameter. It will be removed.")
-	log.WithError(ErrSome).Error(ctx, "Some error")
+
+	log.With("field_name", "field_value").
+		Info(ctx, "Some info")
+
+	log.With("parameter", "some value").
+		Warn(ctx, "Deprecated configuration parameter. It will be removed.")
+
+	log.WithError(ErrSome).
+		Error(ctx, "Some error")
 }
