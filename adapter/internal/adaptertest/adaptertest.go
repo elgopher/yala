@@ -154,7 +154,8 @@ func Run(t *testing.T, subject Subject) { // nolint
 		for name, field := range fields {
 			var builder strings.Builder
 			adapter := subject.NewAdapter(&builder)
-			entryWithField := entry.With(
+			entryWithField := entry
+			entryWithField.Fields = append(entryWithField.Fields,
 				logger.Field{
 					Key:   name,
 					Value: field.value,
@@ -175,13 +176,14 @@ func Run(t *testing.T, subject Subject) { // nolint
 			stringFieldValue = "string"
 			intFieldValue    = 2
 		)
-		entryWithFields := entry.With(
+		entryWithFields := entry
+		entryWithFields.Fields = append(entryWithFields.Fields,
 			logger.Field{
 				Key:   "StringField",
 				Value: stringFieldValue,
 			},
 		)
-		entryWithFields = entryWithFields.With(
+		entryWithFields.Fields = append(entryWithFields.Fields,
 			logger.Field{
 				Key:   "IntField",
 				Value: intFieldValue,
@@ -202,7 +204,8 @@ func Run(t *testing.T, subject Subject) { // nolint
 			stringFieldValue = "string"
 			err              = "err"
 		)
-		entryWithFieldAndError := entry.With(
+		entryWithFieldAndError := entry
+		entryWithFieldAndError.Fields = append(entryWithFieldAndError.Fields,
 			logger.Field{
 				Key:   "StringField",
 				Value: stringFieldValue,

@@ -20,9 +20,9 @@ type Entry struct {
 
 	// Fields contains all accumulated fields, in the order they were appended.
 	//
-	// Please do not modify the slice directly as other go-routines may still read it.  To append a new field
-	// please use With method. It will create a new entry with copy of all fields, plus the new one. To remove a field,
-	// please create a new slice and copy remaining fields.
+	// Please do not update fields in the slice as other go-routines may still read them. To add a new field
+	// please use append built-in function. To remove a field, please create a new slice and copy remaining fields.
+	// To update field first remove it and then add a new one.
 	//
 	// Fields can be nil.
 	Fields []Field
@@ -30,17 +30,6 @@ type Entry struct {
 	Error error // Error can be nil
 	// SkippedCallerFrames can be used by logger.Adapter to extract caller information (file and line number)
 	SkippedCallerFrames int
-}
-
-// With creates a new entry with additional field.
-func (e Entry) With(field Field) Entry {
-	newLen := len(e.Fields) + 1
-	fields := make([]Field, newLen)
-	copy(fields, e.Fields)
-	e.Fields = fields
-	e.Fields[newLen-1] = field
-
-	return e
 }
 
 // Level is a severity level of message. Use Level.MoreSevereThan to compare two levels.
