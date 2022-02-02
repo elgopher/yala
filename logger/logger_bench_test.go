@@ -51,6 +51,16 @@ func BenchmarkWith(b *testing.B) {
 	}
 }
 
+func BenchmarkMultipleWith(b *testing.B) {
+	b.ReportAllocs()
+
+	var global logger.Global
+
+	for i := 0; i < b.N; i++ {
+		_ = global.With("k1", "v").With("k2", "v").With("k3", "v") // 235-315ns, 3 allocs
+	}
+}
+
 func BenchmarkWithError(b *testing.B) {
 	b.ReportAllocs()
 
