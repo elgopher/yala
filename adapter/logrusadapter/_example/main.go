@@ -25,9 +25,16 @@ func main() {
 	log := logger.WithAdapter(adapter)
 
 	log.Debug(ctx, "Hello logrus ")
-	log.With("field_name", "field_value").With("another", "ccc").Info(ctx, "Some info")
-	log.With("parameter", "some").Warn(ctx, "Deprecated configuration parameter. It will be removed.")
-	log.WithError(ErrSome).Error(ctx, "Some error")
+
+	log.With("field_name", "field_value").
+		With("another", "ccc").
+		Info(ctx, "Some info")
+
+	log.With("parameter", "some").
+		Warn(ctx, "Deprecated configuration parameter. It will be removed.")
+
+	log.WithError(ErrSome).
+		Error(ctx, "Some error")
 }
 
 func newLogrusLogger() *logrus.Logger {
