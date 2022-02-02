@@ -17,8 +17,17 @@ type Adapter interface {
 type Entry struct {
 	Level   Level
 	Message string
-	Fields  []Field // Fields can be nil
-	Error   error   // Error can be nil
+
+	// Fields contains all accumulated fields, in the order they were appended.
+	//
+	// Please do not modify the slice directly as other go-routines may still read it.  To append a new field
+	// please use With method. It will create a new entry with copy of all fields, plus the new one. To remove a field,
+	// please create a new slice and copy remaining fields.
+	//
+	// Fields can be nil.
+	Fields []Field
+
+	Error error // Error can be nil
 	// SkippedCallerFrames can be used by logger.Adapter to extract caller information (file and line number)
 	SkippedCallerFrames int
 }
