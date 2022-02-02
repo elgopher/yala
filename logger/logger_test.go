@@ -311,29 +311,6 @@ func TestGlobal_WithError(t *testing.T) {
 	}
 }
 
-func TestEntry_With(t *testing.T) {
-	field1 := logger.Field{Key: "k1", Value: "v1"}
-	field2 := logger.Field{Key: "k2", Value: "v2"}
-
-	t.Run("should add field to empty entry", func(t *testing.T) {
-		entry := logger.Entry{}
-		newEntry := entry.With(field1)
-		assert.Empty(t, entry.Fields)
-		require.Len(t, newEntry.Fields, 1)
-		assert.Equal(t, newEntry.Fields[0], field1)
-	})
-
-	t.Run("should add field to entry with one field", func(t *testing.T) {
-		entry := logger.Entry{}.With(field1)
-		newEntry := entry.With(field2)
-		require.Len(t, entry.Fields, 1)
-		require.Len(t, newEntry.Fields, 2)
-		assert.Equal(t, entry.Fields[0], field1)
-		assert.Equal(t, newEntry.Fields[0], field1)
-		assert.Equal(t, newEntry.Fields[1], field2)
-	})
-}
-
 func TestLevel_MoreSevereThan(t *testing.T) {
 	t.Run("should return true", func(t *testing.T) {
 		assert.True(t, logger.InfoLevel.MoreSevereThan(logger.DebugLevel))

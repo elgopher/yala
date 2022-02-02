@@ -59,7 +59,7 @@ func (l Logger) Error(ctx context.Context, msg string) {
 
 // With creates a new logger with field.
 func (l Logger) With(key string, value interface{}) Logger {
-	l.entry = l.entry.With(Field{key, value})
+	l.entry.Fields = append(l.entry.Fields, Field{Key: key, Value: value})
 
 	return l
 }
