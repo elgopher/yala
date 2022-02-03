@@ -94,8 +94,7 @@ func (g *Global) Error(ctx context.Context, msg string) {
 
 // With creates a new child logger with field.
 func (g *Global) With(key string, value interface{}) *Global {
-	newEntry := g.entry
-	newEntry.Fields = append(newEntry.Fields, Field{Key: key, Value: value})
+	newEntry := g.entry.With(Field{Key: key, Value: value})
 
 	return &Global{
 		entry:       newEntry,

@@ -59,8 +59,7 @@ func TestAdapter_Log(t *testing.T) {
 		entry := logger.Entry{
 			Level:   logger.ErrorLevel,
 			Message: message,
-		}
-		entry.Fields = append(entry.Fields, logger.Field{
+		}.With(logger.Field{
 			Key:   "k",
 			Value: "v",
 		})
