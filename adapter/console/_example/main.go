@@ -21,12 +21,12 @@ func main() {
 
 	log.Info(ctx,
 		"Some info",
-		"field_name", "field_value",
+		logger.Field{Key: "field_name", Value: "field_value"},
 	)
 
 	log.Warn(ctx,
 		"Deprecated configuration parameter. It will be removed.",
-		"parameter", "some value",
+		logger.Field{Key: "parameter", Value: "some value"},
 	)
 
 	log.WithError(ErrSome).

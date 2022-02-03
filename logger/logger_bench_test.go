@@ -83,9 +83,10 @@ func BenchmarkGlobalInfo3Fields(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		global.Info(ctx,
 			message,
-			"k1", "v",
-			"k2", "v",
-			"k3", "v") // 136ns, 1 allocs
+			logger.Field{Key: "k1", Value: "v"},
+			logger.Field{Key: "k2", Value: "v"},
+			logger.Field{Key: "k3", Value: "v"},
+		) // 136ns, 1 allocs
 	}
 }
 
@@ -98,9 +99,10 @@ func BenchmarkNormalInfo3Fields(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		log.Info(ctx,
 			message,
-			"k1", "v",
-			"k2", "v",
-			"k3", "v") // 136ns, 1 allocs
+			logger.Field{Key: "k1", Value: "v"},
+			logger.Field{Key: "k2", Value: "v"},
+			logger.Field{Key: "k3", Value: "v"},
+		) // 136ns, 1 allocs
 	}
 }
 

@@ -64,36 +64,33 @@ func (g *Global) adapterValue() *atomic.Value {
 }
 
 // Debug logs a message at DebugLevel.
-func (g *Global) Debug(ctx context.Context, msg string, keyValues ...interface{}) {
-	g.log(ctx, DebugLevel, msg, keyValues)
+func (g *Global) Debug(ctx context.Context, msg string, fields ...Field) {
+	g.log(ctx, DebugLevel, msg, fields)
 }
 
-func (g *Global) log(ctx context.Context, level Level, msg string, keyValues []interface{}) {
-	e := g.entry
-	e.Level = level
-	e.Message = msg
-	e.SkippedCallerFrames += 2
+func (g *Global) log(ctx context.Context, level Level, msg string, fields []Field) {
+	newEntry := g.entry
+	newEntry.Level = level
+	newEntry.Message = msg
+	newEntry.SkippedCallerFrames += 2
+	newEntry.Fields = mergeFields(newEntry.Fields, fields)
 
-	if len(e.Fields) > 0 || len(keyValues) > 1 {
-		e.Fields = mergeFields(e.Fields, keyValues)
-	}
-
-	g.getAdapter().Log(ctx, e)
+	g.getAdapter().Log(ctx, newEntry)
 }
 
 // Info logs a message at InfoLevel.
-func (g *Global) Info(ctx context.Context, msg string, keyValues ...interface{}) {
-	g.log(ctx, InfoLevel, msg, keyValues)
+func (g *Global) Info(ctx context.Context, msg string, fields ...Field) {
+	g.log(ctx, InfoLevel, msg, fields)
 }
 
 // Warn logs a message at WarnLevel.
-func (g *Global) Warn(ctx context.Context, msg string, keyValues ...interface{}) {
-	g.log(ctx, WarnLevel, msg, keyValues)
+func (g *Global) Warn(ctx context.Context, msg string, fields ...Field) {
+	g.log(ctx, WarnLevel, msg, fields)
 }
 
 // Error logs a message at ErrorLevel.
-func (g *Global) Error(ctx context.Context, msg string, keyValues ...interface{}) {
-	g.log(ctx, ErrorLevel, msg, keyValues)
+func (g *Global) Error(ctx context.Context, msg string, fields ...Field) {
+	g.log(ctx, ErrorLevel, msg, fields)
 }
 
 // With creates a new child logger with field.

@@ -25,13 +25,13 @@ func main() {
 
 	log.Info(ctx,
 		"Some info",
-		"f1", "v1",
-		"f2", "f2",
+		logger.Field{Key: "f1", Value: "v1"},
+		logger.Field{Key: "f2", Value: "f2"},
 	)
 
 	log.Warn(ctx,
 		"Deprecated configuration parameter. It will be removed.",
-		"parameter", "some",
+		logger.Field{Key: "parameter", Value: "some"},
 	)
 
 	log.WithError(ErrSome).
