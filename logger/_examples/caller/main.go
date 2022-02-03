@@ -43,8 +43,8 @@ func (a ReportCallerAdapter) Log(ctx context.Context, entry logger.Entry) {
 	entry.SkippedCallerFrames++ // each middleware adapter must additionally skip one frame (at least)
 
 	if _, file, line, ok := runtime.Caller(entry.SkippedCallerFrames); ok {
-		entry.Fields = append(entry.Fields, logger.Field{Key: "file", Value: file})
-		entry.Fields = append(entry.Fields, logger.Field{Key: "line", Value: line})
+		entry = entry.With(logger.Field{Key: "file", Value: file})
+		entry = entry.With(logger.Field{Key: "line", Value: line})
 	}
 
 	a.NextAdapter.Log(ctx, entry)

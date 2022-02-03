@@ -36,12 +36,13 @@ type AddFieldFromContextAdapter struct {
 }
 
 func (a AddFieldFromContextAdapter) Log(ctx context.Context, entry logger.Entry) {
-	entry.Fields = append(entry.Fields,
+	// entry.With creates an entry and adds a new field to it
+	newEntry := entry.With(
 		logger.Field{
 			Key:   tag,
 			Value: ctx.Value(tag),
 		},
 	)
-	entry.SkippedCallerFrames++ // each middleware adapter must additionally skip one frame
-	a.NextAdapter.Log(ctx, entry)
+	newEntry.SkippedCallerFrames++ // each middleware adapter must additionally skip one frame
+	a.NextAdapter.Log(ctx, newEntry)
 }
