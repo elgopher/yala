@@ -21,13 +21,13 @@ var ErrAnother = errors.New("another error")
 var ctx = context.Background()
 
 type anyLogger interface {
-	Info(context.Context, string)
-	Debug(context.Context, string)
-	Warn(context.Context, string)
-	Error(context.Context, string)
+	Info(context.Context, string, ...interface{})
+	Debug(context.Context, string, ...interface{})
+	Warn(context.Context, string, ...interface{})
+	Error(context.Context, string, ...interface{})
 }
 
-type loggerMethod func(l anyLogger, ctx context.Context, msg string)
+type loggerMethod func(l anyLogger, ctx context.Context, msg string, keyValues ...interface{})
 
 var loggerMethods = map[string]loggerMethod{
 	"Debug": anyLogger.Debug,
@@ -59,37 +59,6 @@ func TestGlobalLogging(t *testing.T) {
 			global.WithError(ErrSome).Warn(ctx, message)
 		})
 	})
-
-	t.Run("should log message using global adapter", func(t *testing.T) {
-		var global logger.Global
-
-		type functionUnderTest func(ctx context.Context, msg string)
-		tests := map[logger.Level]functionUnderTest{
-			logger.DebugLevel: global.Debug,
-			logger.InfoLevel:  global.Info,
-			logger.WarnLevel:  global.Warn,
-			logger.ErrorLevel: global.Error,
-		}
-
-		for lvl, log := range tests {
-			testName := lvl.String()
-
-			t.Run(testName, func(t *testing.T) {
-				adapter := &adapterMock{}
-				global.SetAdapter(adapter)
-				// when
-				log(ctx, message)
-				// then
-				adapter.HasExactlyOneEntry(t,
-					logger.Entry{
-						Level:               lvl,
-						Message:             message,
-						SkippedCallerFrames: 2,
-					},
-				)
-			})
-		}
-	})
 }
 
 func TestNormalLogger(t *testing.T) {
@@ -105,34 +74,100 @@ func TestNormalLogger(t *testing.T) {
 		})
 	})
 
-	t.Run("should log message using adapter", func(t *testing.T) {
-		type functionUnderTest func(l logger.Logger, ctx context.Context, msg string)
-		tests := map[logger.Level]functionUnderTest{
-			logger.DebugLevel: logger.Logger.Debug,
-			logger.InfoLevel:  logger.Logger.Info,
-			logger.WarnLevel:  logger.Logger.Warn,
-			logger.ErrorLevel: logger.Logger.Error,
-		}
+}
 
-		for lvl, log := range tests {
-			testName := lvl.String()
+func TestLogging(t *testing.T) {
+	type newLogger func(adapter logger.Adapter) anyLogger
+	loggers := map[string]newLogger{
+		"normal": func(adapter logger.Adapter) anyLogger {
+			return logger.WithAdapter(adapter)
+		},
+		"global": func(adapter logger.Adapter) anyLogger {
+			var global logger.Global
+			global.SetAdapter(adapter)
+			return &global
+		},
+	}
 
-			t.Run(testName, func(t *testing.T) {
-				adapter := &adapterMock{}
-				normalLogger := logger.WithAdapter(adapter)
-				// when
-				log(normalLogger, context.Background(), message)
-				// then
-				adapter.HasExactlyOneEntry(t,
-					logger.Entry{
-						Level:               lvl,
-						Message:             message,
-						SkippedCallerFrames: 2,
-					},
-				)
+	for loggerName, newLogger := range loggers {
+		t.Run(loggerName, func(t *testing.T) {
+			t.Run("should log message using adapter", func(t *testing.T) {
+				type functionUnderTest func(l anyLogger, ctx context.Context, msg string, keyValues ...interface{})
+				tests := map[logger.Level]functionUnderTest{
+					logger.DebugLevel: anyLogger.Debug,
+					logger.InfoLevel:  anyLogger.Info,
+					logger.WarnLevel:  anyLogger.Warn,
+					logger.ErrorLevel: anyLogger.Error,
+				}
+
+				for lvl, log := range tests {
+					testName := lvl.String()
+
+					t.Run(testName, func(t *testing.T) {
+						adapter := &adapterMock{}
+						l := newLogger(adapter)
+						// when
+						log(l, context.Background(), message)
+						// then
+						adapter.HasExactlyOneEntry(t,
+							logger.Entry{
+								Level:               lvl,
+								Message:             message,
+								SkippedCallerFrames: 2,
+							},
+						)
+					})
+
+					t.Run(testName+" with field", func(t *testing.T) {
+						adapter := &adapterMock{}
+						l := newLogger(adapter)
+						// when
+						log(l, context.Background(), message, "key", "value")
+						// then
+						adapter.HasExactlyOneEntry(t,
+							logger.Entry{
+								Level:               lvl,
+								Message:             message,
+								Fields:              []logger.Field{{Key: "key", Value: "value"}},
+								SkippedCallerFrames: 2,
+							},
+						)
+					})
+
+					t.Run(testName+" with field without value", func(t *testing.T) {
+						adapter := &adapterMock{}
+						l := newLogger(adapter)
+						// when
+						log(l, context.Background(), message, "key")
+						// then
+						adapter.HasExactlyOneEntry(t,
+							logger.Entry{
+								Level:               lvl,
+								Message:             message,
+								SkippedCallerFrames: 2,
+							},
+						)
+					})
+
+					t.Run(testName+" with two fields", func(t *testing.T) {
+						adapter := &adapterMock{}
+						l := newLogger(adapter)
+						// when
+						log(l, context.Background(), message, "k1", "v1", "k2", "v2")
+						// then
+						adapter.HasExactlyOneEntry(t,
+							logger.Entry{
+								Level:               lvl,
+								Message:             message,
+								Fields:              []logger.Field{{"k1", "v1"}, {"k2", "v2"}},
+								SkippedCallerFrames: 2,
+							},
+						)
+					})
+				}
 			})
-		}
-	})
+		})
+	}
 }
 
 func TestWith(t *testing.T) {

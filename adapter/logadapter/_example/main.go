@@ -23,12 +23,16 @@ func main() {
 
 	log.Debug(ctx, "Hello standard log")
 
-	log.With("f1", "v1").
-		With("f2", "f2").
-		Info(ctx, "Some info")
+	log.Info(ctx,
+		"Some info",
+		"f1", "v1",
+		"f2", "f2",
+	)
 
-	log.With("parameter", "some").
-		Warn(ctx, "Deprecated configuration parameter. It will be removed.")
+	log.Warn(ctx,
+		"Deprecated configuration parameter. It will be removed.",
+		"parameter", "some",
+	)
 
 	log.WithError(ErrSome).
 		Error(ctx, "Some error")

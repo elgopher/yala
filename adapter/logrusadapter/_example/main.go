@@ -26,12 +26,16 @@ func main() {
 
 	log.Debug(ctx, "Hello logrus ")
 
-	log.With("field_name", "field_value").
-		With("another", "ccc").
-		Info(ctx, "Some info")
+	log.Info(ctx,
+		"Some info",
+		"field_name", "field_value",
+		"another", "ccc",
+	)
 
-	log.With("parameter", "some").
-		Warn(ctx, "Deprecated configuration parameter. It will be removed.")
+	log.Warn(ctx,
+		"Deprecated configuration parameter. It will be removed.",
+		"parameter", "some",
+	)
 
 	log.WithError(ErrSome).
 		Error(ctx, "Some error")

@@ -25,11 +25,11 @@ func WithAdapter(adapter Adapter) Logger {
 }
 
 // Debug logs a message at DebugLevel.
-func (l Logger) Debug(ctx context.Context, msg string) {
-	l.log(ctx, DebugLevel, msg)
+func (l Logger) Debug(ctx context.Context, msg string, keyValues ...interface{}) {
+	l.log(ctx, DebugLevel, msg, keyValues)
 }
 
-func (l Logger) log(ctx context.Context, lvl Level, msg string) {
+func (l Logger) log(ctx context.Context, lvl Level, msg string, keyValues []interface{}) {
 	if l.adapter == nil {
 		return
 	}
@@ -39,22 +39,42 @@ func (l Logger) log(ctx context.Context, lvl Level, msg string) {
 	e.Message = msg
 	e.SkippedCallerFrames += 2
 
+	if len(e.Fields) > 0 || len(keyValues) > 1 {
+		e.Fields = mergeFields(e.Fields, keyValues)
+	}
+
 	l.adapter.Log(ctx, e)
 }
 
+func mergeFields(fields []Field, keyValues []interface{}) []Field {
+	le := len(fields)
+	merged := make([]Field, le+len(keyValues)/2)
+	copy(merged, fields)
+
+	for i := 0; i < len(keyValues)-1; i += 2 {
+		merged[le] = Field{
+			Key:   keyValues[i].(string),
+			Value: keyValues[i+1],
+		}
+		le++
+	}
+
+	return merged
+}
+
 // Info logs a message at InfoLevel.
-func (l Logger) Info(ctx context.Context, msg string) {
-	l.log(ctx, InfoLevel, msg)
+func (l Logger) Info(ctx context.Context, msg string, keyValues ...interface{}) {
+	l.log(ctx, InfoLevel, msg, keyValues)
 }
 
 // Warn logs a message at WarnLevel.
-func (l Logger) Warn(ctx context.Context, msg string) {
-	l.log(ctx, WarnLevel, msg)
+func (l Logger) Warn(ctx context.Context, msg string, keyValues ...interface{}) {
+	l.log(ctx, WarnLevel, msg, keyValues)
 }
 
 // Error logs a message at ErrorLevel.
-func (l Logger) Error(ctx context.Context, msg string) {
-	l.log(ctx, ErrorLevel, msg)
+func (l Logger) Error(ctx context.Context, msg string, keyValues ...interface{}) {
+	l.log(ctx, ErrorLevel, msg, keyValues)
 }
 
 // With creates a new logger with field.

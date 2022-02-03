@@ -18,10 +18,10 @@ func main() {
 
 	requestLogger.Debug(ctx, "request started")
 
-	requestLogger.
-		With("rows_updated", 3).
-		With("table", "gophers").
-		Debug(ctx, "sql update executed")
+	requestLogger.Debug(ctx,
+		"sql update executed",
+		"rows_updated", 3,
+		"table", "gophers")
 
 	requestLogger.Debug(ctx, "request finished")
 }

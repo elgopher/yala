@@ -64,32 +64,36 @@ func (g *Global) adapterValue() *atomic.Value {
 }
 
 // Debug logs a message at DebugLevel.
-func (g *Global) Debug(ctx context.Context, msg string) {
-	g.log(ctx, DebugLevel, msg)
+func (g *Global) Debug(ctx context.Context, msg string, keyValues ...interface{}) {
+	g.log(ctx, DebugLevel, msg, keyValues)
 }
 
-func (g *Global) log(ctx context.Context, level Level, msg string) {
+func (g *Global) log(ctx context.Context, level Level, msg string, keyValues []interface{}) {
 	e := g.entry
 	e.Level = level
 	e.Message = msg
 	e.SkippedCallerFrames += 2
 
+	if len(e.Fields) > 0 || len(keyValues) > 1 {
+		e.Fields = mergeFields(e.Fields, keyValues)
+	}
+
 	g.getAdapter().Log(ctx, e)
 }
 
 // Info logs a message at InfoLevel.
-func (g *Global) Info(ctx context.Context, msg string) {
-	g.log(ctx, InfoLevel, msg)
+func (g *Global) Info(ctx context.Context, msg string, keyValues ...interface{}) {
+	g.log(ctx, InfoLevel, msg, keyValues)
 }
 
 // Warn logs a message at WarnLevel.
-func (g *Global) Warn(ctx context.Context, msg string) {
-	g.log(ctx, WarnLevel, msg)
+func (g *Global) Warn(ctx context.Context, msg string, keyValues ...interface{}) {
+	g.log(ctx, WarnLevel, msg, keyValues)
 }
 
 // Error logs a message at ErrorLevel.
-func (g *Global) Error(ctx context.Context, msg string) {
-	g.log(ctx, ErrorLevel, msg)
+func (g *Global) Error(ctx context.Context, msg string, keyValues ...interface{}) {
+	g.log(ctx, ErrorLevel, msg, keyValues)
 }
 
 // With creates a new child logger with field.
