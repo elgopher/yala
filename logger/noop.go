@@ -21,7 +21,7 @@ type initialGlobalNoopAdapter struct {
 func (g *initialGlobalNoopAdapter) Log(_ context.Context, entry Entry) {
 	if entry.Level == WarnLevel || entry.Level == ErrorLevel {
 		g.once.Do(func() {
-			framesToSkip := 3
+			const framesToSkip = 4
 			_, file, line, _ := runtime.Caller(entry.SkippedCallerFrames + framesToSkip)
 			fmt.Printf("%s:%d cannot log message with level %s. Please configure the global logger.\n", file, line, entry.Level) // nolint
 		})
