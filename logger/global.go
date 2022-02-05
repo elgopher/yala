@@ -12,6 +12,7 @@ import (
 //
 //		package yourpackage
 //		import "github.com/elgopher/yala/logger"
+//
 //		var log logger.Global // define global logger, no need to initialize (by default nothing is logged)
 //
 //		func SetLoggerAdapter(adapter logger.Adapter) {
@@ -19,6 +20,9 @@ import (
 //		}
 //
 // It is safe to use it concurrently.
+//
+// Please do not copy logger.Global instance. If you want to create a child logger, please use With
+// and WithError methods. These methods will create *logger.Global using shared adapter.
 type Global struct {
 	entry       Entry
 	adapter     atomic.Value  // not used when logger is a child
