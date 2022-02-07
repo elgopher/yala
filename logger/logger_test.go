@@ -135,6 +135,218 @@ func TestNormalLogger(t *testing.T) {
 	})
 }
 
+func TestLogFields(t *testing.T) {
+	type fieldsLogger interface {
+		DebugFields(context.Context, string, logger.Fields)
+		InfoFields(context.Context, string, logger.Fields)
+		WarnFields(context.Context, string, logger.Fields)
+		ErrorFields(context.Context, string, logger.Fields)
+	}
+
+	type newLogger func(adapter logger.Adapter, loggerFields logger.Fields) fieldsLogger
+
+	tests := map[string]newLogger{
+		"normal logger": func(adapter logger.Adapter, loggerFields logger.Fields) fieldsLogger {
+			log := logger.WithAdapter(adapter)
+
+			return log.WithFields(loggerFields)
+		},
+		"global logger": func(adapter logger.Adapter, loggerFields logger.Fields) fieldsLogger {
+			var log logger.Global
+			log.SetAdapter(adapter)
+
+			return log.WithFields(loggerFields)
+		},
+	}
+
+	levelToMethodMapping := map[logger.Level]func(fieldsLogger, context.Context, string, logger.Fields){
+		logger.DebugLevel: fieldsLogger.DebugFields,
+		logger.InfoLevel:  fieldsLogger.InfoFields,
+		logger.WarnLevel:  fieldsLogger.WarnFields,
+		logger.ErrorLevel: fieldsLogger.ErrorFields,
+	}
+
+	for name, createLogger := range tests {
+		//
+		t.Run(name, func(t *testing.T) {
+			for lvl, logFields := range levelToMethodMapping {
+				//
+				t.Run(lvl.String(), func(t *testing.T) {
+					//
+					t.Run("should log message with empty fields", func(t *testing.T) {
+						adapter := &adapterMock{}
+						log := createLogger(adapter, nil)
+						// when
+						logFields(log, ctx, message, logger.Fields{})
+						// then
+						adapter.HasExactlyOneEntry(t, logger.Entry{
+							Level:               lvl,
+							Message:             message,
+							SkippedCallerFrames: 2,
+						})
+					})
+
+					t.Run("should log message with nil fields", func(t *testing.T) {
+						adapter := &adapterMock{}
+						log := createLogger(adapter, nil)
+						// when
+						logFields(log, ctx, message, nil)
+						// then
+						adapter.HasExactlyOneEntry(t, logger.Entry{
+							Level:               lvl,
+							Message:             message,
+							SkippedCallerFrames: 2,
+						})
+					})
+
+					t.Run("should log message with one field", func(t *testing.T) {
+						adapter := &adapterMock{}
+						log := createLogger(adapter, nil)
+						// when
+						logFields(log, ctx, message, logger.Fields{
+							"k": "v",
+						})
+						// then
+						adapter.HasExactlyOneEntry(t, logger.Entry{
+							Level:               lvl,
+							Fields:              []logger.Field{{"k", "v"}},
+							Message:             message,
+							SkippedCallerFrames: 2,
+						})
+					})
+
+					t.Run("should log message with two fields", func(t *testing.T) {
+						adapter := &adapterMock{}
+						log := createLogger(adapter, nil)
+						// when
+						logFields(log, ctx, message, logger.Fields{
+							"k1": "v1",
+							"k2": "v2",
+						})
+						// then
+						assert.ElementsMatch(t,
+							[]logger.Field{
+								{"k1", "v1"},
+								{"k2", "v2"},
+							},
+							adapter.entries[0].Fields)
+					})
+
+					t.Run("should append fields to existing logger fields", func(t *testing.T) {
+						adapter := &adapterMock{}
+						log := createLogger(adapter, logger.Fields{
+							"k1": "v1",
+							"k2": "v2",
+						})
+						// when
+						logFields(log, ctx, message, logger.Fields{
+							"k3": "v3",
+							"k4": "v4",
+						})
+						// then
+						assert.ElementsMatch(t,
+							[]logger.Field{
+								{"k1", "v1"},
+								{"k2", "v2"},
+								{"k3", "v3"},
+								{"k4", "v4"},
+							},
+							adapter.entries[0].Fields)
+					})
+				})
+			}
+		})
+	}
+}
+
+func TestLogCause(t *testing.T) {
+	type errorLogger interface {
+		ErrorCause(context.Context, string, error)
+		ErrorCauseFields(context.Context, string, error, logger.Fields)
+	}
+
+	type newLogger func(adapter logger.Adapter, originalError error) errorLogger
+
+	loggers := map[string]newLogger{
+		"normal logger": func(adapter logger.Adapter, originalError error) errorLogger {
+			log := logger.WithAdapter(adapter)
+
+			return log.WithError(originalError)
+		},
+		"global logger": func(adapter logger.Adapter, originalError error) errorLogger {
+			var log logger.Global
+			log.SetAdapter(adapter)
+
+			return log.WithError(originalError)
+		},
+	}
+
+	for loggerName, createNewLogger := range loggers {
+		t.Run(loggerName, func(t *testing.T) {
+			t.Run("should log cause", func(t *testing.T) {
+				adapter := &adapterMock{}
+				log := createNewLogger(adapter, nil)
+				// when
+				log.ErrorCause(ctx, message, ErrSome)
+				// then
+				adapter.HasExactlyOneEntryWithError(t, ErrSome)
+			})
+
+			t.Run("should log cause and field", func(t *testing.T) {
+				adapter := &adapterMock{}
+				log := createNewLogger(adapter, nil)
+				// when
+				log.ErrorCauseFields(ctx, message, ErrSome, logger.Fields{
+					"k": "v",
+				})
+				// then
+				adapter.HasExactlyOneEntry(t, logger.Entry{
+					Level:               logger.ErrorLevel,
+					Message:             message,
+					Fields:              []logger.Field{{"k", "v"}},
+					Error:               ErrSome,
+					SkippedCallerFrames: 2,
+				})
+			})
+
+			methods := map[string]func(errorLogger, error){
+				"ErrorCauseFields": func(errorLogger errorLogger, cause error) {
+					errorLogger.ErrorCauseFields(ctx, message, cause, logger.Fields{})
+				},
+				"ErrorCause": func(errorLogger errorLogger, cause error) {
+					errorLogger.ErrorCause(ctx, message, cause)
+				},
+			}
+
+			t.Run("should override original error", func(t *testing.T) {
+				for methodName, runLoggerMethodWithCause := range methods {
+					t.Run(methodName, func(t *testing.T) {
+						adapter := &adapterMock{}
+						log := createNewLogger(adapter, ErrSome)
+						// when
+						runLoggerMethodWithCause(log, ErrAnother)
+						// then
+						adapter.HasExactlyOneEntryWithError(t, ErrAnother)
+					})
+				}
+			})
+
+			t.Run("should override error with nil", func(t *testing.T) {
+				for methodName, runLoggerMethodWithCause := range methods {
+					t.Run(methodName, func(t *testing.T) {
+						adapter := &adapterMock{}
+						log := createNewLogger(adapter, ErrSome)
+						// when
+						runLoggerMethodWithCause(log, nil)
+						// then
+						adapter.HasExactlyOneEntryWithError(t, nil)
+					})
+				}
+			})
+		})
+	}
+}
+
 func TestWith(t *testing.T) {
 	globalWith := func(l anyLogger, k string, v interface{}) anyLogger {
 		return l.(*logger.Global).With(k, v) // nolint:forcetypeassert // no generics still in Go
@@ -183,6 +395,25 @@ func TestWith(t *testing.T) {
 				return l.(logger.Logger).With(k, v) // nolint:forcetypeassert // no generics still in Go
 			},
 		},
+		"global, WithFields": {
+			NewLoggerWithField: func(adapter logger.Adapter, field logger.Field) anyLogger {
+				var global logger.Global
+				global.SetAdapter(adapter)
+
+				return global.With(field.Key, field.Value)
+			},
+			With: func(l anyLogger, k string, v interface{}) anyLogger {
+				return l.(*logger.Global).WithFields(logger.Fields{k: v}) // nolint:forcetypeassert // no generics still in Go
+			},
+		},
+		"normal, WithFields": {
+			NewLoggerWithField: func(adapter logger.Adapter, field logger.Field) anyLogger {
+				return logger.WithAdapter(adapter).With(field.Key, field.Value)
+			},
+			With: func(l anyLogger, k string, v interface{}) anyLogger {
+				return l.(logger.Logger).WithFields(logger.Fields{k: v}) // nolint:forcetypeassert // no generics still in Go
+			},
+		},
 	}
 
 	field1 := logger.Field{Key: "field1_name", Value: "field1_value"}
@@ -228,6 +459,45 @@ func TestWith(t *testing.T) {
 			})
 		})
 	}
+}
+
+func TestLogger_WithFields(t *testing.T) {
+	t.Run("should create a new logger with fields", func(t *testing.T) {
+		adapter := &adapterMock{}
+		newLogger := logger.WithAdapter(adapter)
+		// when
+		newLogger = newLogger.WithFields(logger.Fields{
+			"k1": "v1",
+			"k2": "v2",
+		})
+		// then
+		newLogger.Info(ctx, message)
+		require.Len(t, adapter.entries, 1)
+		assert.ElementsMatch(t,
+			[]logger.Field{{"k1", "v1"}, {"k2", "v2"}},
+			adapter.entries[0].Fields,
+		)
+	})
+}
+
+func TestGlobal_WithFields(t *testing.T) {
+	t.Run("should create a new logger with fields", func(t *testing.T) {
+		adapter := &adapterMock{}
+		var log logger.Global
+		log.SetAdapter(adapter)
+		// when
+		newLogger := log.WithFields(logger.Fields{
+			"k1": "v1",
+			"k2": "v2",
+		})
+		// then
+		newLogger.Info(ctx, message)
+		require.Len(t, adapter.entries, 1)
+		assert.ElementsMatch(t,
+			[]logger.Field{{"k1", "v1"}, {"k2", "v2"}},
+			adapter.entries[0].Fields,
+		)
+	})
 }
 
 func TestWithError(t *testing.T) {
@@ -309,68 +579,6 @@ func TestWithError(t *testing.T) {
 			})
 		})
 	}
-}
-
-func TestEntry_With(t *testing.T) {
-	field1 := logger.Field{Key: "k1", Value: "v1"}
-	field2 := logger.Field{Key: "k2", Value: "v2"}
-
-	t.Run("should add field to empty entry", func(t *testing.T) {
-		entry := logger.Entry{}
-		newEntry := entry.With(field1)
-		assert.Empty(t, entry.Fields)
-		require.Len(t, newEntry.Fields, 1)
-		assert.Equal(t, newEntry.Fields[0], field1)
-	})
-
-	t.Run("should add field to entry with one field", func(t *testing.T) {
-		entry := logger.Entry{}.With(field1)
-		newEntry := entry.With(field2)
-		require.Len(t, entry.Fields, 1)
-		require.Len(t, newEntry.Fields, 2)
-		assert.Equal(t, entry.Fields[0], field1)
-		assert.Equal(t, newEntry.Fields[0], field1)
-		assert.Equal(t, newEntry.Fields[1], field2)
-	})
-}
-
-func TestLevel_MoreSevereThan(t *testing.T) {
-	t.Run("should return true", func(t *testing.T) {
-		assert.True(t, logger.InfoLevel.MoreSevereThan(logger.DebugLevel))
-		assert.True(t, logger.WarnLevel.MoreSevereThan(logger.DebugLevel))
-		assert.True(t, logger.ErrorLevel.MoreSevereThan(logger.DebugLevel))
-
-		assert.True(t, logger.WarnLevel.MoreSevereThan(logger.InfoLevel))
-		assert.True(t, logger.ErrorLevel.MoreSevereThan(logger.InfoLevel))
-
-		assert.True(t, logger.ErrorLevel.MoreSevereThan(logger.WarnLevel))
-	})
-
-	t.Run("should return false", func(t *testing.T) {
-		assert.False(t, logger.DebugLevel.MoreSevereThan(logger.DebugLevel))
-
-		assert.False(t, logger.DebugLevel.MoreSevereThan(logger.InfoLevel))
-		assert.False(t, logger.InfoLevel.MoreSevereThan(logger.InfoLevel))
-
-		assert.False(t, logger.DebugLevel.MoreSevereThan(logger.WarnLevel))
-		assert.False(t, logger.InfoLevel.MoreSevereThan(logger.WarnLevel))
-		assert.False(t, logger.WarnLevel.MoreSevereThan(logger.WarnLevel))
-
-		assert.False(t, logger.DebugLevel.MoreSevereThan(logger.ErrorLevel))
-		assert.False(t, logger.InfoLevel.MoreSevereThan(logger.ErrorLevel))
-		assert.False(t, logger.WarnLevel.MoreSevereThan(logger.ErrorLevel))
-		assert.False(t, logger.ErrorLevel.MoreSevereThan(logger.ErrorLevel))
-	})
-}
-
-func TestLevel_String(t *testing.T) {
-	t.Run("should convert to string", func(t *testing.T) {
-		assert.Equal(t, "DEBUG", logger.DebugLevel.String())
-		assert.Equal(t, "INFO", logger.InfoLevel.String())
-		assert.Equal(t, "WARN", logger.WarnLevel.String())
-		assert.Equal(t, "ERROR", logger.ErrorLevel.String())
-		assert.Equal(t, "10", logger.Level(10).String())
-	})
 }
 
 func TestWithSkippedCallerFrame(t *testing.T) {

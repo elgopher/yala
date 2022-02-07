@@ -44,6 +44,27 @@ func (e Entry) With(field Field) Entry {
 	return e
 }
 
+type Fields map[string]interface{}
+
+// WithFields creates a new entry with additional fields. Fields will be appended, not replaced.
+func (e Entry) WithFields(fields Fields) Entry {
+	if len(fields) == 0 {
+		return e
+	}
+
+	fieldsLength := len(e.Fields)
+	slice := make([]Field, len(e.Fields)+len(fields))
+	copy(slice, e.Fields)
+	e.Fields = slice
+
+	for k, v := range fields {
+		e.Fields[fieldsLength] = Field{k, v}
+		fieldsLength++
+	}
+
+	return e
+}
+
 // Level is a severity level of message. Use Level.MoreSevereThan to compare two levels.
 type Level int8
 

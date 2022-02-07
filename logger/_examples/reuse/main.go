@@ -14,14 +14,18 @@ func main() {
 	log := logger.WithAdapter(console.StdoutAdapter())
 
 	// requestLogger will log all messages with at least two fields: request_id and user
-	requestLogger := log.With("request_id", "123").With("user", "elgopher")
+	requestLogger := log.WithFields(logger.Fields{
+		"request_id": "123",
+		"user":       "elgopher",
+	})
 
 	requestLogger.Debug(ctx, "request started")
 
 	requestLogger.
-		With("rows_updated", 3).
-		With("table", "gophers").
-		Debug(ctx, "sql update executed")
+		DebugFields(ctx, "sql update executed", logger.Fields{
+			"rows_updated": 3,
+			"table":        "gophers",
+		})
 
 	requestLogger.Debug(ctx, "request finished")
 }

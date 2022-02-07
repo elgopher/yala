@@ -19,8 +19,9 @@ func main() {
 
 	log := logger.WithAdapter(adapter)
 
-	log.With("this", "value").
-		Info(ctx, "this field will be replaced with that")
+	log.InfoFields(ctx, "this field will be replaced with that", logger.Fields{
+		"this": "value",
+	})
 }
 
 // RenameFieldsAdapter is a middleware (decorator) renaming all fields equal to From into To.

@@ -12,7 +12,7 @@ import (
 )
 
 // Adapter runs benchmarks on any implementation of logger.Adapter.
-func Adapter(b *testing.B, adapter logger.Adapter) {
+func Adapter(b *testing.B, adapter logger.Adapter) { // nolint:funlen
 	b.Helper()
 
 	ctx := context.Background()
@@ -26,6 +26,21 @@ func Adapter(b *testing.B, adapter logger.Adapter) {
 
 		for i := 0; i < b.N; i++ {
 			global.Info(ctx, "msg")
+		}
+	})
+
+	b.Run("global logger info with two fields", func(b *testing.B) {
+		var global logger.Global
+		global.SetAdapter(adapter)
+
+		b.ReportAllocs()
+		b.ResetTimer()
+
+		for i := 0; i < b.N; i++ {
+			global.InfoFields(ctx, "msg", logger.Fields{
+				"field1": "value",
+				"field2": "value",
+			})
 		}
 	})
 

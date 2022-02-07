@@ -4,6 +4,7 @@
 package logger_test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/elgopher/yala/logger"
@@ -57,7 +58,7 @@ func BenchmarkMultipleWith(b *testing.B) {
 	var global logger.Global
 
 	for i := 0; i < b.N; i++ {
-		_ = global.With("k1", "v").With("k2", "v").With("k3", "v") // 235-315ns, 3 allocs
+		global.With("k1", "v").With("k2", "v").With("k3", "v").Info(ctx, "ads") // 530-700ns, 6 allocs
 	}
 }
 
@@ -70,3 +71,24 @@ func BenchmarkWithError(b *testing.B) {
 		_ = global.WithError(ErrSome) // 2.6ns, 0 allocs
 	}
 }
+
+func BenchmarkGlobal_InfoFields(b *testing.B) {
+	var log logger.Global
+
+	log.SetAdapter(discardAdapter{})
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		log.InfoFields(ctx, message, logger.Fields{
+			"a": 1,
+			"b": 2,
+			"c": 3,
+		})
+	}
+}
+
+type discardAdapter struct{}
+
+func (d discardAdapter) Log(context.Context, logger.Entry) {}
