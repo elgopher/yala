@@ -19,17 +19,18 @@ func main() {
 	// log using standard log package
 	standardLog := log.New(os.Stdout, "", log.LstdFlags|log.Lshortfile)
 	adapter := logadapter.Adapter(standardLog)
-	log := logger.WithAdapter(adapter)
+	yalaLogger := logger.WithAdapter(adapter)
 
-	log.Debug(ctx, "Hello standard log")
+	yalaLogger.Debug(ctx, "Hello standard log")
 
-	log.With("f1", "v1").
-		With("f2", "f2").
-		Info(ctx, "Some info")
+	yalaLogger.InfoFields(ctx, "Some info", logger.Fields{
+		"f1": "v1",
+		"f2": "v2",
+	})
 
-	log.With("parameter", "some").
-		Warn(ctx, "Deprecated configuration parameter. It will be removed.")
+	yalaLogger.WarnFields(ctx, "Deprecated configuration parameter. It will be removed.", logger.Fields{
+		"parameter": "some",
+	})
 
-	log.WithError(ErrSome).
-		Error(ctx, "Some error")
+	yalaLogger.ErrorCause(ctx, "Some error", ErrSome)
 }

@@ -21,12 +21,14 @@ func main() {
 
 	log.Debug(ctx, "Hello glog ") // Debug will be logged as Info
 
-	log.With("field_name", "field_value").
-		Info(ctx, "Some info")
+	log.InfoFields(ctx, "Some info", logger.Fields{
+		"field_name": "field_value",
+		"other_name": "field_value",
+	})
 
-	log.With("parameter", "some").
-		Warn(ctx, "Deprecated configuration parameter. It will be removed.")
+	log.WarnFields(ctx, "Deprecated configuration parameter. It will be removed.", logger.Fields{
+		"parameter": "some",
+	})
 
-	log.WithError(ErrSome).
-		Error(ctx, "Error occurred")
+	log.ErrorCause(ctx, "Error occurred", ErrSome)
 }

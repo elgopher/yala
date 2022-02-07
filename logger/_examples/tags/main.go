@@ -25,8 +25,7 @@ func main() {
 	// log.Info() -> AddFieldFromContextAdapter -> console adapter
 	log.Info(ctx, "tagged message") // INFO tagged message tag=value
 
-	log.With("k", "v").
-		Info(ctx, "tagged message") // INFO tagged message k=v tag=value
+	log.InfoFields(ctx, "tagged message", logger.Fields{"k": "v"}) // INFO tagged message k=v tag=value
 }
 
 // AddFieldFromContextAdapter is a middleware (decorator) which adds
@@ -36,13 +35,10 @@ type AddFieldFromContextAdapter struct {
 }
 
 func (a AddFieldFromContextAdapter) Log(ctx context.Context, entry logger.Entry) {
-	// entry.With creates an entry and adds a new field to it
-	newEntry := entry.With(
-		logger.Field{
-			Key:   tag,
-			Value: ctx.Value(tag),
-		},
-	)
+	// entry.WithFields creates a copy of the entry with additional fields
+	newEntry := entry.WithFields(logger.Fields{
+		tag: ctx.Value(tag),
+	})
 	newEntry.SkippedCallerFrames++ // each middleware adapter must additionally skip one frame
 	a.NextAdapter.Log(ctx, newEntry)
 }

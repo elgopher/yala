@@ -60,11 +60,12 @@ func SetLoggerAdapter(adapter logger.Adapter) {
 func Function(ctx context.Context) {
 	log.Debug(ctx, "Debug message")
 	
-	log.With("field_name", "value").
-		Info(ctx, "Message with field")
+	log.InfoFields(ctx, "Message with field", logger.Fields{
+		"field_name": "value", 
+		"other_name": "value",
+	})
 	
-	log.WithError(errors.New("some")).
-		Error(ctx, "Message with error")
+	log.ErrorCause(ctx, "Message with error", errors.New("some"))
 }
 ```
 
@@ -207,5 +208,5 @@ Unfortunately such interface is much harder to implement, than interface with a 
 
 * even though your package will be independent of any specific logging implementation, you still have to import 
   `github.com/elgopher/yala/logger`. This package is relatively small though, compared to real logging libraries
-  (about ~200 lines of production code) and **it does not import any external libraries**.
+  (about ~250 lines of production code) and **it does not import any external libraries**.
 * yala is not optimized for **extreme** high performance, because this would hurt the developer experience and readability of the created code. Any intermediary API ads overhead - global synchronized variables, wrapper code and even polymorphism slow down the execution a bit. The overhead varies, but it is usually a matter of tens of nanoseconds per call. 

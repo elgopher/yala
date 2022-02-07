@@ -69,36 +69,77 @@ func (g *Global) adapterValue() *atomic.Value {
 
 // Debug logs a message at DebugLevel.
 func (g *Global) Debug(ctx context.Context, msg string) {
-	g.log(ctx, DebugLevel, msg)
+	g.log(ctx, DebugLevel, msg, g.entry.Error, nil)
 }
 
-func (g *Global) log(ctx context.Context, level Level, msg string) {
-	e := g.entry
-	e.Level = level
-	e.Message = msg
-	e.SkippedCallerFrames += 2
+// DebugFields logs a message at DebugLevel with fields.
+func (g *Global) DebugFields(ctx context.Context, msg string, fields Fields) {
+	g.log(ctx, DebugLevel, msg, g.entry.Error, fields)
+}
 
-	g.getAdapter().Log(ctx, e)
+func (g *Global) log(ctx context.Context, level Level, msg string, cause error, fields Fields) {
+	newEntry := g.entry.WithFields(fields)
+	newEntry.Level = level
+	newEntry.Message = msg
+	newEntry.Error = cause
+	newEntry.SkippedCallerFrames += 2
+
+	g.getAdapter().Log(ctx, newEntry)
 }
 
 // Info logs a message at InfoLevel.
 func (g *Global) Info(ctx context.Context, msg string) {
-	g.log(ctx, InfoLevel, msg)
+	g.log(ctx, InfoLevel, msg, g.entry.Error, nil)
+}
+
+// InfoFields logs a message at InfoLevel with fields.
+func (g *Global) InfoFields(ctx context.Context, msg string, fields Fields) {
+	g.log(ctx, InfoLevel, msg, g.entry.Error, fields)
 }
 
 // Warn logs a message at WarnLevel.
 func (g *Global) Warn(ctx context.Context, msg string) {
-	g.log(ctx, WarnLevel, msg)
+	g.log(ctx, WarnLevel, msg, g.entry.Error, nil)
+}
+
+// WarnFields logs a message at WarnLevel with fields.
+func (g *Global) WarnFields(ctx context.Context, msg string, fields Fields) {
+	g.log(ctx, WarnLevel, msg, g.entry.Error, fields)
 }
 
 // Error logs a message at ErrorLevel.
 func (g *Global) Error(ctx context.Context, msg string) {
-	g.log(ctx, ErrorLevel, msg)
+	g.log(ctx, ErrorLevel, msg, g.entry.Error, nil)
 }
 
-// With creates a new child logger with field.
+// ErrorCause logs a message at ErrorLevel with cause.
+func (g *Global) ErrorCause(ctx context.Context, msg string, cause error) {
+	g.log(ctx, ErrorLevel, msg, cause, nil)
+}
+
+// ErrorFields logs a message at ErrorLevel with fields.
+func (g *Global) ErrorFields(ctx context.Context, msg string, fields Fields) {
+	g.log(ctx, ErrorLevel, msg, g.entry.Error, fields)
+}
+
+// ErrorCauseFields logs a message at ErrorLevel with cause and fields.
+func (g *Global) ErrorCauseFields(ctx context.Context, msg string, cause error, fields Fields) {
+	g.log(ctx, ErrorLevel, msg, cause, fields)
+}
+
+// With creates a new child logger with additional field.
 func (g *Global) With(key string, value interface{}) *Global {
 	newEntry := g.entry.With(Field{Key: key, Value: value})
+
+	return &Global{
+		entry:       newEntry,
+		rootAdapter: g.adapterValue(),
+	}
+}
+
+// WithFields creates a new logger with additional fields.
+func (g *Global) WithFields(fields Fields) *Global {
+	newEntry := g.entry.WithFields(fields)
 
 	return &Global{
 		entry:       newEntry,

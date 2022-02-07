@@ -22,12 +22,14 @@ func main() {
 
 	log.Debug(ctx, "Hello zerolog")
 
-	log.With("field_name", "field_value").
-		Info(ctx, "Some info")
+	log.InfoFields(ctx, "Some info", logger.Fields{
+		"field_name": "field_value",
+		"other_name": "field_value",
+	})
 
-	log.With("parameter", "some").
-		Warn(ctx, "Deprecated configuration parameter. It will be removed.")
+	log.WarnFields(ctx, "Deprecated configuration parameter. It will be removed.", logger.Fields{
+		"parameter": "some",
+	})
 
-	log.WithError(ErrSome).
-		Error(ctx, "Some error")
+	log.ErrorCause(ctx, "Some error", ErrSome)
 }
