@@ -89,19 +89,6 @@ func Run(t *testing.T, subject Subject) { // nolint
 		assert.Equal(t, logger.InfoLevel, out.Level)
 	})
 
-	t.Run("should add error field when Entry has an error", func(t *testing.T) {
-		var builder strings.Builder
-		adapter := subject.NewAdapter(&builder)
-		e := entry
-		const err = "err"
-		e.Error = errors.New(err) // nolint
-		// when
-		adapter.Log(ctx, e)
-		// then
-		out := subject.UnmarshalMessage(t, builder.String())
-		assert.Equal(t, err, out.Error)
-	})
-
 	t.Run("should log message with field", func(t *testing.T) {
 		fields := map[string]struct {
 			value interface{}
@@ -168,52 +155,72 @@ func Run(t *testing.T, subject Subject) { // nolint
 		}
 	})
 
-	t.Run("should log message with two fields", func(t *testing.T) {
-		var builder strings.Builder
-		adapter := subject.NewAdapter(&builder)
+	t.Run("should log message with fields and error", func(t *testing.T) {
 		const (
 			stringFieldValue = "string"
 			intFieldValue    = 2
+			errorFieldValue  = "error"
 		)
-		entryWithFields := entry.With(
-			logger.Field{
-				Key:   "StringField",
-				Value: stringFieldValue,
-			},
-		)
-		entryWithFields = entryWithFields.With(
-			logger.Field{
-				Key:   "IntField",
-				Value: intFieldValue,
-			},
-		)
-		// when
-		adapter.Log(ctx, entryWithFields)
-		// then
-		out := subject.UnmarshalMessage(t, builder.String())
-		assert.Equal(t, stringFieldValue, out.StringField)
-		assert.Equal(t, intFieldValue, out.IntField)
-	})
 
-	t.Run("should log with field and error", func(t *testing.T) {
-		var builder strings.Builder
-		adapter := subject.NewAdapter(&builder)
-		const (
-			stringFieldValue = "string"
-			err              = "err"
-		)
-		entryWithFieldAndError := entry.With(
-			logger.Field{
-				Key:   "StringField",
-				Value: stringFieldValue,
+		tests := map[string]struct {
+			entry               logger.Entry
+			expectedStringField string
+			expectedIntField    int
+			expectedErrorField  string
+		}{
+			"error only": {
+				entry: func() logger.Entry {
+					e := entry
+					e.Error = errors.New(errorFieldValue) // nolint:goerr113
+
+					return e
+				}(),
+				expectedErrorField: errorFieldValue,
 			},
-		)
-		entryWithFieldAndError.Error = errors.New(err) // nolint
-		// when
-		adapter.Log(ctx, entryWithFieldAndError)
-		// then
-		out := subject.UnmarshalMessage(t, builder.String())
-		assert.Equal(t, stringFieldValue, out.StringField)
-		assert.Equal(t, err, out.Error)
+			"two fields": {
+				entry: entry.
+					With(logger.Field{Key: "StringField", Value: stringFieldValue}).
+					With(logger.Field{Key: "IntField", Value: intFieldValue}),
+				expectedStringField: stringFieldValue,
+				expectedIntField:    intFieldValue,
+			},
+			"field and error": {
+				entry: func() logger.Entry {
+					e := entry.With(logger.Field{Key: "StringField", Value: stringFieldValue})
+					e.Error = errors.New(errorFieldValue) // nolint:goerr113
+
+					return e
+				}(),
+				expectedStringField: stringFieldValue,
+				expectedErrorField:  errorFieldValue,
+			},
+			"two fields and error": {
+				entry: func() logger.Entry {
+					e := entry.
+						With(logger.Field{Key: "StringField", Value: stringFieldValue}).
+						With(logger.Field{Key: "IntField", Value: intFieldValue})
+					e.Error = errors.New(errorFieldValue) // nolint:goerr113
+
+					return e
+				}(),
+				expectedStringField: stringFieldValue,
+				expectedIntField:    intFieldValue,
+				expectedErrorField:  errorFieldValue,
+			},
+		}
+
+		for name, test := range tests {
+			t.Run(name, func(t *testing.T) {
+				var builder strings.Builder
+				adapter := subject.NewAdapter(&builder)
+				// when
+				adapter.Log(ctx, test.entry)
+				// then
+				out := subject.UnmarshalMessage(t, builder.String())
+				assert.Equal(t, test.expectedStringField, out.StringField)
+				assert.Equal(t, test.expectedIntField, out.IntField)
+				assert.Equal(t, test.expectedErrorField, out.Error)
+			})
+		}
 	})
 }

@@ -5,11 +5,14 @@ package benchmark
 
 import (
 	"context"
+	"errors"
 	"testing"
 	"time"
 
 	"github.com/elgopher/yala/logger"
 )
+
+var ErrSome = errors.New("ErrSome")
 
 // Adapter runs benchmarks on any implementation of logger.Adapter.
 func Adapter(b *testing.B, adapter logger.Adapter) { // nolint:funlen
@@ -29,7 +32,7 @@ func Adapter(b *testing.B, adapter logger.Adapter) { // nolint:funlen
 		}
 	})
 
-	b.Run("global logger info with two fields", func(b *testing.B) {
+	b.Run("global logger info with three fields", func(b *testing.B) {
 		var global logger.Global
 		global.SetAdapter(adapter)
 
@@ -40,6 +43,7 @@ func Adapter(b *testing.B, adapter logger.Adapter) { // nolint:funlen
 			global.InfoFields(ctx, "msg", logger.Fields{
 				"field1": "value",
 				"field2": "value",
+				"field3": "value",
 			})
 		}
 	})
@@ -78,4 +82,18 @@ func Adapter(b *testing.B, adapter logger.Adapter) { // nolint:funlen
 			})
 		})
 	}
+
+	b.Run("normal logger error with cause and two fields", func(b *testing.B) {
+		log := logger.WithAdapter(adapter)
+
+		b.ReportAllocs()
+		b.ResetTimer()
+
+		for i := 0; i < b.N; i++ {
+			log.ErrorCauseFields(ctx, "msg", ErrSome, logger.Fields{
+				"field1": "value1",
+				"field2": "value2",
+			})
+		}
+	})
 }
