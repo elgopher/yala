@@ -19,7 +19,8 @@ type Adapter struct {
 // LogrusLogger is either *logrus.Logger or *logrus.Entry.
 type LogrusLogger interface {
 	WithField(key string, value interface{}) *logrus.Entry
-	WithError(err error) *logrus.Entry
+	WithFields(logrus.Fields) *logrus.Entry
+	WithError(error) *logrus.Entry
 	Log(lvl logrus.Level, args ...interface{})
 }
 
@@ -29,17 +30,30 @@ func (a Adapter) Log(ctx context.Context, entry logger.Entry) {
 		return
 	}
 
-	logrusLogger := a.Logger
+	logrusLogger := loggerWithFields(a.Logger, entry)
+	logrusLogger.Log(logrusLevel(entry), entry.Message)
+}
 
-	for _, f := range entry.Fields {
-		logrusLogger = logrusLogger.WithField(f.Key, f.Value)
+func loggerWithFields(logrusLogger LogrusLogger, entry logger.Entry) LogrusLogger { // nolint:ireturn
+	length := len(entry.Fields)
+	if entry.Error != nil {
+		length++
+	}
+
+	if length == 0 {
+		return logrusLogger
+	}
+
+	fields := logrus.Fields{}
+	for _, field := range entry.Fields {
+		fields[field.Key] = field.Value
 	}
 
 	if entry.Error != nil {
-		logrusLogger = logrusLogger.WithError(entry.Error)
+		fields[logrus.ErrorKey] = entry.Error
 	}
 
-	logrusLogger.Log(logrusLevel(entry), entry.Message)
+	return logrusLogger.WithFields(fields)
 }
 
 func logrusLevel(entry logger.Entry) logrus.Level {
