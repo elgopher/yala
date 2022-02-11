@@ -50,7 +50,7 @@ func TestAdapter_Log(t *testing.T) {
 			entry          logger.Entry
 			expectedRecord log15.Record
 		}{
-			"fields": {
+			"field": {
 				entry: logger.Entry{
 					Level:   logger.InfoLevel,
 					Message: message,
@@ -60,6 +60,18 @@ func TestAdapter_Log(t *testing.T) {
 					Lvl: log15.LvlInfo,
 					Msg: message,
 					Ctx: []interface{}{"k", "v"},
+				},
+			},
+			"fields": {
+				entry: logger.Entry{
+					Level:   logger.InfoLevel,
+					Message: message,
+					Fields:  []logger.Field{{Key: "k1", Value: "v1"}, {Key: "k2", Value: "v2"}},
+				},
+				expectedRecord: log15.Record{
+					Lvl: log15.LvlInfo,
+					Msg: message,
+					Ctx: []interface{}{"k1", "v1", "k2", "v2"},
 				},
 			},
 			"error": {
@@ -74,7 +86,7 @@ func TestAdapter_Log(t *testing.T) {
 					Ctx: []interface{}{"error", err},
 				},
 			},
-			"fields and error": {
+			"field and error": {
 				entry: logger.Entry{
 					Level:   logger.ErrorLevel,
 					Message: message,
@@ -85,6 +97,19 @@ func TestAdapter_Log(t *testing.T) {
 					Lvl: log15.LvlError,
 					Msg: message,
 					Ctx: []interface{}{"k", "v", "error", err},
+				},
+			},
+			"fields and error": {
+				entry: logger.Entry{
+					Level:   logger.ErrorLevel,
+					Message: message,
+					Fields:  []logger.Field{{Key: "k1", Value: "v1"}, {Key: "k2", Value: "v2"}},
+					Error:   stringError("err message"),
+				},
+				expectedRecord: log15.Record{
+					Lvl: log15.LvlError,
+					Msg: message,
+					Ctx: []interface{}{"k1", "v1", "k2", "v2", "error", err},
 				},
 			},
 		}

@@ -22,25 +22,43 @@ func (a Adapter) Log(ctx context.Context, entry logger.Entry) {
 		return
 	}
 
-	log15Logger := a.Logger
-	for _, field := range entry.Fields {
-		log15Logger = log15Logger.New(field.Key, field.Value)
-	}
-
-	if entry.Error != nil {
-		log15Logger = log15Logger.New("error", entry.Error)
-	}
+	log15ctx := toCtx(entry)
 
 	switch entry.Level {
 	case logger.DebugLevel:
-		log15Logger.Debug(entry.Message)
+		a.Logger.Debug(entry.Message, log15ctx...)
 	case logger.InfoLevel:
-		log15Logger.Info(entry.Message)
+		a.Logger.Info(entry.Message, log15ctx...)
 	case logger.WarnLevel:
-		log15Logger.Warn(entry.Message)
+		a.Logger.Warn(entry.Message, log15ctx...)
 	case logger.ErrorLevel:
-		log15Logger.Error(entry.Message)
+		a.Logger.Error(entry.Message, log15ctx...)
 	default:
-		log15Logger.Info(entry.Message)
+		a.Logger.Info(entry.Message, log15ctx...)
 	}
+}
+
+func toCtx(entry logger.Entry) []interface{} {
+	entryError := entry.Error
+
+	const lengthOfField = 2
+
+	length := len(entry.Fields) * lengthOfField
+	if entryError != nil {
+		length += lengthOfField
+	}
+
+	log15ctx := make([]interface{}, length)
+
+	for i, field := range entry.Fields {
+		log15ctx[i*lengthOfField] = field.Key
+		log15ctx[i*lengthOfField+1] = field.Value
+	}
+
+	if entryError != nil {
+		log15ctx[length-lengthOfField] = "error"
+		log15ctx[length-1] = entryError
+	}
+
+	return log15ctx
 }
