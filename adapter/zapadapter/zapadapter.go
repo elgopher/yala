@@ -22,19 +22,8 @@ func (a Adapter) Log(_ context.Context, entry logger.Entry) {
 		return
 	}
 
-	zapLogger := a.Logger
-
-	if entry.Error != nil {
-		zapLogger = zapLogger.With(zap.Error(entry.Error))
-	}
-
-	fields := make([]zap.Field, len(entry.Fields))
-
-	for i, f := range entry.Fields {
-		fields[i] = zap.Any(f.Key, f.Value)
-	}
-
-	zapLogger = zapLogger.WithOptions(zap.AddCallerSkip(entry.SkippedCallerFrames + 1))
+	zapLogger := a.Logger.WithOptions(zap.AddCallerSkip(entry.SkippedCallerFrames + 1))
+	fields := zapFields(entry)
 
 	switch entry.Level {
 	case logger.DebugLevel:
@@ -48,4 +37,23 @@ func (a Adapter) Log(_ context.Context, entry logger.Entry) {
 	default:
 		zapLogger.Info(entry.Message, fields...)
 	}
+}
+
+func zapFields(entry logger.Entry) []zap.Field {
+	length := len(entry.Fields)
+	if entry.Error != nil {
+		length++
+	}
+
+	fields := make([]zap.Field, length)
+
+	for i, f := range entry.Fields {
+		fields[i] = zap.Any(f.Key, f.Value)
+	}
+
+	if entry.Error != nil {
+		fields[length-1] = zap.Error(entry.Error)
+	}
+
+	return fields
 }
