@@ -21,7 +21,6 @@ linters:
     - gofumpt
     - exhaustivestruct
     - scopelint
-    - gochecknoinits
     - gochecknoglobals
   presets:
     - bugs
