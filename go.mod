@@ -9,7 +9,7 @@ require (
 	github.com/sirupsen/logrus v1.9.0
 	github.com/stretchr/testify v1.8.2
 	go.uber.org/atomic v1.10.0
-	go.uber.org/zap v1.20.0
+	go.uber.org/zap v1.24.0
 )
 
 require (
