@@ -3,7 +3,7 @@ module github.com/elgopher/yala
 go 1.18
 
 require (
-	github.com/golang/glog v1.0.0
+	github.com/golang/glog v1.2.4
 	github.com/inconshreveable/log15 v2.16.0+incompatible
 	github.com/rs/zerolog v1.29.0
 	github.com/sirupsen/logrus v1.9.0
