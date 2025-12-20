@@ -28,7 +28,7 @@ Tiny **structured logging** abstraction or facade for various logging libraries,
 go get github.com/elgopher/yala        
 ```
 
-Please note that at least Go `1.17` is required.
+Please note that at least Go `1.19` is required.
 
 ## How to use
 
