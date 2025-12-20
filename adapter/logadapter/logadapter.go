@@ -8,7 +8,7 @@ import (
 	"github.com/elgopher/yala/logger"
 )
 
-func Adapter(l *log.Logger) logger.Adapter { // nolint
+func Adapter(l *log.Logger) logger.Adapter {
 	if l == nil {
 		return noopAdapter{}
 	}
@@ -21,7 +21,7 @@ type printerLogger struct {
 }
 
 func (p printerLogger) Println(skipCallerFrames int, msg string) {
-	_ = p.Logger.Output(skipCallerFrames+2, msg) // nolint
+	_ = p.Logger.Output(skipCallerFrames+2, msg) //nolint
 }
 
 type noopAdapter struct{}

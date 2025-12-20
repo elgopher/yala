@@ -43,7 +43,7 @@ type InterfaceField struct {
 }
 
 // Run runs tests common to all logger.Adapter implementations.
-func Run(t *testing.T, subject Subject) { // nolint
+func Run(t *testing.T, subject Subject) { //nolint
 	ctx := context.Background()
 
 	var entry = logger.Entry{
@@ -171,7 +171,7 @@ func Run(t *testing.T, subject Subject) { // nolint
 			"error only": {
 				entry: func() logger.Entry {
 					e := entry
-					e.Error = errors.New(errorFieldValue) // nolint:goerr113
+					e.Error = errors.New(errorFieldValue)
 
 					return e
 				}(),
@@ -187,7 +187,7 @@ func Run(t *testing.T, subject Subject) { // nolint
 			"field and error": {
 				entry: func() logger.Entry {
 					e := entry.With(logger.Field{Key: "StringField", Value: stringFieldValue})
-					e.Error = errors.New(errorFieldValue) // nolint:goerr113
+					e.Error = errors.New(errorFieldValue)
 
 					return e
 				}(),
@@ -199,7 +199,7 @@ func Run(t *testing.T, subject Subject) { // nolint
 					e := entry.
 						With(logger.Field{Key: "StringField", Value: stringFieldValue}).
 						With(logger.Field{Key: "IntField", Value: intFieldValue})
-					e.Error = errors.New(errorFieldValue) // nolint:goerr113
+					e.Error = errors.New(errorFieldValue)
 
 					return e
 				}(),

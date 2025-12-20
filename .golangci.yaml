@@ -1,32 +1,82 @@
-issues:
-  exclude-rules:
-    # Disable some linters in tests.
-    - path: _test\.go
-      linters:
-        - funlen
-        - maligned
-        - gomnd
-    - path: adapter/internal/adaptertest
-      linters:
-        - funlen
-        - maligned
-        - gomnd
-
+version: "2"
 linters:
+  default: none
   enable:
+    - asasalint
+    - asciicheck
+    - bidichk
+    - containedctx
+    - contextcheck
+    - cyclop
+    - decorder
+    - dogsled
+    - dupl
+    - durationcheck
+    - embeddedstructfieldcheck
+    - errcheck
+    - errchkjson
+    - errname
+    - errorlint
+    - exhaustive
+    - exptostd
+    - fatcontext
+    - forbidigo
+    - forcetypeassert
+    - gocheckcompilerdirectives
+    - gochecksumtype
+    - gocognit
+    - gocritic
+    - gocyclo
+    - gomoddirectives
+    - gomodguard
+    - goprintffuncname
+    - gosmopolitan
+    - govet
+    - grouper
+    - iface
+    - ineffassign
+    - interfacebloat
+    - lll
+    - loggercheck
+    - maintidx
+    - makezero
+    - mirror
+    - misspell
+    - nakedret
+    - nilerr
+    - nilnesserr
+    - nilnil
+    - noctx
+    - nolintlint
+    - perfsprint
+    - prealloc
+    - reassign
+    - recvcheck
+    - revive
+    - staticcheck
+    - tagalign
+    - tagliatelle
+    - testableexamples
+    - testifylint
     - testpackage
-    - exportloopref
-  disable:
-    - interfacer
-    - paralleltest
-    - gofumpt
-    - exhaustivestruct
-    - scopelint
-    - gochecknoglobals
-  presets:
-    - bugs
-    - complexity
-    - format
-    - performance
-    - style
+    - thelper
+    - tparallel
+    - unconvert
+    - unparam
     - unused
+    - usestdlibvars
+    - usetesting
+    - wastedassign
+    - whitespace
+    - wrapcheck
+  settings:
+    revive:
+      severity: warning
+    cyclop:
+      max-complexity: 20
+    nakedret:
+      max-func-lines: 50
+    lll:
+      line-length: 120
+    gocognit:
+      min-complexity: 64

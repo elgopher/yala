@@ -349,7 +349,7 @@ func TestLogCause(t *testing.T) {
 
 func TestWith(t *testing.T) {
 	globalWith := func(l anyLogger, k string, v interface{}) anyLogger {
-		return l.(*logger.Global).With(k, v) // nolint:forcetypeassert // no generics still in Go
+		return l.(*logger.Global).With(k, v) //nolint:forcetypeassert // no generics still in Go
 	}
 
 	tests := map[string]struct {
@@ -392,7 +392,7 @@ func TestWith(t *testing.T) {
 				return logger.WithAdapter(adapter).With(field.Key, field.Value)
 			},
 			With: func(l anyLogger, k string, v interface{}) anyLogger {
-				return l.(logger.Logger).With(k, v) // nolint:forcetypeassert // no generics still in Go
+				return l.(logger.Logger).With(k, v) //nolint:forcetypeassert // no generics still in Go
 			},
 		},
 		"global, WithFields": {
@@ -403,7 +403,7 @@ func TestWith(t *testing.T) {
 				return global.With(field.Key, field.Value)
 			},
 			With: func(l anyLogger, k string, v interface{}) anyLogger {
-				return l.(*logger.Global).WithFields(logger.Fields{k: v}) // nolint:forcetypeassert // no generics still in Go
+				return l.(*logger.Global).WithFields(logger.Fields{k: v}) //nolint:forcetypeassert // no generics still in Go
 			},
 		},
 		"normal, WithFields": {
@@ -411,7 +411,7 @@ func TestWith(t *testing.T) {
 				return logger.WithAdapter(adapter).With(field.Key, field.Value)
 			},
 			With: func(l anyLogger, k string, v interface{}) anyLogger {
-				return l.(logger.Logger).WithFields(logger.Fields{k: v}) // nolint:forcetypeassert // no generics still in Go
+				return l.(logger.Logger).WithFields(logger.Fields{k: v}) //nolint:forcetypeassert // no generics still in Go
 			},
 		},
 	}
@@ -454,8 +454,8 @@ func TestWith(t *testing.T) {
 				loggerWithField1.Info(ctx, message)
 				loggerWithBothFields.Info(ctx, message)
 				require.Len(t, adapter.entries, 2)
-				assert.Equal(t, adapter.entries[0].Fields, []logger.Field{field1})
-				assert.Equal(t, adapter.entries[1].Fields, []logger.Field{field1, field2})
+				assert.Equal(t, []logger.Field{field1}, adapter.entries[0].Fields)
+				assert.Equal(t, []logger.Field{field1, field2}, adapter.entries[1].Fields)
 			})
 		})
 	}
@@ -502,7 +502,7 @@ func TestGlobal_WithFields(t *testing.T) {
 
 func TestWithError(t *testing.T) {
 	globalWithError := func(l anyLogger, err error) anyLogger {
-		return l.(*logger.Global).WithError(err) // nolint:forcetypeassert // no generics still in Go
+		return l.(*logger.Global).WithError(err) //nolint:forcetypeassert // no generics still in Go
 	}
 
 	loggersWithError := map[string]struct {
@@ -545,7 +545,7 @@ func TestWithError(t *testing.T) {
 				return logger.WithAdapter(adapter).WithError(err)
 			},
 			WithError: func(l anyLogger, err error) anyLogger {
-				return l.(logger.Logger).WithError(err) // nolint:forcetypeassert // no generics still in Go
+				return l.(logger.Logger).WithError(err) //nolint:forcetypeassert // no generics still in Go
 			},
 		},
 	}
@@ -591,7 +591,7 @@ func TestWithSkippedCallerFrame(t *testing.T) {
 				return logger.WithAdapter(adapter)
 			},
 			skipOneFrame: func(l anyLogger, adapter logger.Adapter) anyLogger {
-				return l.(logger.Logger).WithSkippedCallerFrame() // nolint:forcetypeassert // no generics still in Go
+				return l.(logger.Logger).WithSkippedCallerFrame() //nolint:forcetypeassert // no generics still in Go
 			},
 		},
 		"global": {
@@ -602,7 +602,7 @@ func TestWithSkippedCallerFrame(t *testing.T) {
 				return &global
 			},
 			skipOneFrame: func(l anyLogger, adapter logger.Adapter) anyLogger {
-				return l.(*logger.Global).WithSkippedCallerFrame() // nolint:forcetypeassert // no generics still in Go
+				return l.(*logger.Global).WithSkippedCallerFrame() //nolint:forcetypeassert // no generics still in Go
 			},
 		},
 	}

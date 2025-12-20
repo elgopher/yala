@@ -23,7 +23,7 @@ func (g *initialGlobalNoopAdapter) Log(_ context.Context, entry Entry) {
 		g.once.Do(func() {
 			const framesToSkip = 4
 			_, file, line, _ := runtime.Caller(entry.SkippedCallerFrames + framesToSkip)
-			fmt.Printf("%s:%d cannot log message with level %s. Please configure the global logger.\n", file, line, entry.Level) // nolint
+			fmt.Printf("%s:%d cannot log message with level %s. Please configure the global logger.\n", file, line, entry.Level) //nolint
 		})
 	}
 }

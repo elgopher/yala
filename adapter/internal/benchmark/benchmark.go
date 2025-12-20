@@ -15,7 +15,7 @@ import (
 var ErrSome = errors.New("ErrSome")
 
 // Adapter runs benchmarks on any implementation of logger.Adapter.
-func Adapter(b *testing.B, adapter logger.Adapter) { // nolint:funlen
+func Adapter(b *testing.B, adapter logger.Adapter) { //nolint:funlen
 	b.Helper()
 
 	ctx := context.Background()
@@ -62,9 +62,9 @@ func Adapter(b *testing.B, adapter logger.Adapter) { // nolint:funlen
 	fields := map[string]interface{}{
 		"string":  "str",
 		"int":     1,
-		"int64":   int64(64),     // nolint
-		"float64": 1.64,          // nolint
-		"float32": float32(1.32), // nolint
+		"int64":   int64(64),
+		"float64": 1.64,
+		"float32": float32(1.32),
 		"time":    time.Time{},
 	}
 

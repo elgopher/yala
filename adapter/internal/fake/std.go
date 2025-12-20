@@ -1,7 +1,6 @@
 package fake
 
 import (
-	"io/ioutil"
 	"os"
 	"testing"
 
@@ -12,7 +11,7 @@ func swap(t *testing.T, get func() *os.File, set func(*os.File)) SwappedFile {
 	t.Helper()
 
 	prev := get()
-	tmpFile, err := ioutil.TempFile("", "")
+	tmpFile, err := os.CreateTemp(os.TempDir(), "")
 	require.NoError(t, err)
 
 	set(tmpFile)
@@ -40,7 +39,7 @@ func (f SwappedFile) Release() {
 func (f SwappedFile) String(t *testing.T) string {
 	t.Helper()
 
-	line, err := ioutil.ReadFile(f.current.Name())
+	line, err := os.ReadFile(f.current.Name())
 	require.NoError(t, err)
 
 	return string(line)

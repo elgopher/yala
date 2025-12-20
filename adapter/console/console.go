@@ -7,8 +7,7 @@
 //
 // The format of message produced by console adapters is:
 //
-//		LEVEL message key=value key=value error=error
-//
+//	LEVEL message key=value key=value error=error
 package console
 
 import (
@@ -21,12 +20,12 @@ import (
 )
 
 // StdoutAdapter returns a logger.Adapter implementation which prints log messages to stdout.
-func StdoutAdapter() logger.Adapter { // nolint
+func StdoutAdapter() logger.Adapter {
 	return printer.Adapter{Printer: WriterPrinter{os.Stdout}}
 }
 
 // StderrAdapter returns a logger.Adapter implementation which prints log messages to stderr.
-func StderrAdapter() logger.Adapter { // nolint
+func StderrAdapter() logger.Adapter {
 	return printer.Adapter{Printer: WriterPrinter{os.Stderr}}
 }
 

@@ -10,14 +10,14 @@ import (
 
 // Global is a logger shared globally. You can use it to define global logger for your package:
 //
-//		package yourpackage
-//		import "github.com/elgopher/yala/logger"
+//	package yourpackage
+//	import "github.com/elgopher/yala/logger"
 //
-//		var log logger.Global // define global logger, no need to initialize (by default nothing is logged)
+//	var log logger.Global // define global logger, no need to initialize (by default nothing is logged)
 //
-//		func SetLoggerAdapter(adapter logger.Adapter) {
-//			log.SetAdapter(adapter)
-//		}
+//	func SetLoggerAdapter(adapter logger.Adapter) {
+//		log.SetAdapter(adapter)
+//	}
 //
 // It is safe to use it concurrently.
 //
@@ -46,7 +46,7 @@ func (g *Global) SetAdapter(adapter Adapter) {
 	g.adapterValue().Store(adapterWrapper{Adapter: adapter})
 }
 
-func (g *Global) getAdapter() Adapter { // nolint:ireturn
+func (g *Global) getAdapter() Adapter { //nolint:ireturn
 	value := g.adapterValue()
 
 	adapter, ok := value.Load().(Adapter)

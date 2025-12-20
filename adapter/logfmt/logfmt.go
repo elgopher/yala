@@ -41,11 +41,7 @@ func writeValue(builder *strings.Builder, value interface{}) {
 		valueStr = strings.ReplaceAll(valueStr, `"`, `\"`)
 	}
 
-	requiresQuoting := false
-
-	if strings.ContainsRune(valueStr, ' ') || strings.ContainsRune(valueStr, '=') {
-		requiresQuoting = true
-	}
+	requiresQuoting := strings.ContainsRune(valueStr, ' ') || strings.ContainsRune(valueStr, '=')
 
 	if requiresQuoting {
 		builder.WriteByte('"')

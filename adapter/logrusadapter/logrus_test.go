@@ -39,7 +39,7 @@ func TestAdapter_Log(t *testing.T) {
 	})
 }
 
-func newAdapter(writer io.Writer) logger.Adapter { // nolint
+func newAdapter(writer io.Writer) logger.Adapter {
 	logrusLogger := logrus.New()
 	logrusLogger.SetFormatter(&logrus.JSONFormatter{})
 	logrusLogger.SetOutput(writer)
