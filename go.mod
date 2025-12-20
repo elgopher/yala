@@ -6,7 +6,7 @@ require (
 	github.com/golang/glog v1.0.0
 	github.com/inconshreveable/log15 v2.16.0+incompatible
 	github.com/rs/zerolog v1.29.0
-	github.com/sirupsen/logrus v1.9.0
+	github.com/sirupsen/logrus v1.9.1
 	github.com/stretchr/testify v1.8.2
 	go.uber.org/atomic v1.10.0
 	go.uber.org/zap v1.24.0
