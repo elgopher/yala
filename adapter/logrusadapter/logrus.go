@@ -34,7 +34,7 @@ func (a Adapter) Log(ctx context.Context, entry logger.Entry) {
 	logrusLogger.Log(logrusLevel(entry), entry.Message)
 }
 
-func loggerWithFields(logrusLogger LogrusLogger, entry logger.Entry) LogrusLogger { // nolint:ireturn
+func loggerWithFields(logrusLogger LogrusLogger, entry logger.Entry) LogrusLogger { //nolint:ireturn
 	length := len(entry.Fields)
 	if entry.Error != nil {
 		length++

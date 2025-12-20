@@ -28,7 +28,7 @@ func TestConcurrency(t *testing.T) {
 			global.WithError(ErrSome).Error(ctx, message)
 		})
 		// then
-		assert.Equal(t, adapter.Count(), 6000)
+		assert.Equal(t, 6000, adapter.Count())
 	})
 
 	t.Run("normal log functions", func(t *testing.T) {
@@ -44,7 +44,7 @@ func TestConcurrency(t *testing.T) {
 			log.WithError(ErrSome).Error(ctx, message)
 		})
 		// then
-		assert.Equal(t, adapter.Count(), 6000)
+		assert.Equal(t, 6000, adapter.Count())
 	})
 
 	t.Run("With should not data race when -race flag is used", func(t *testing.T) {

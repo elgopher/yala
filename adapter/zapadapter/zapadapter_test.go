@@ -57,7 +57,7 @@ func TestAdapter_Log(t *testing.T) {
 	})
 }
 
-func newAdapter(writer io.Writer) logger.Adapter { // nolint
+func newAdapter(writer io.Writer) logger.Adapter {
 	scheme := generateUniqueScheme() // Zap does not allow to override existing scheme
 	_ = zap.RegisterSink(scheme, func(url *url.URL) (zap.Sink, error) {
 		return sinkWriter{Writer: writer}, nil
